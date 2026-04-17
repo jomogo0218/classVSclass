@@ -38,13 +38,14 @@ const defaultSkillKeywords = [
 const SCHOOL_CONFLICTS = [
     { start: "2026-03-25", end: "2026-03-26", label: "全校第一次段考", type: "exam" },
     { start: "2026-04-15", end: "2026-04-17", label: "高二畢旅/高一公訓/國二隔宿", type: "event" },
-    { start: "2026-04-18", end: "2026-04-23", label: "嘉義市運動會", type: "event" },
     { start: "2026-04-21", end: "2026-04-22", label: "國三模擬考", type: "exam" },
     { start: "2026-04-23", end: "2026-04-24", label: "高三畢業考", type: "exam" },
     { start: "2026-05-01", end: "2026-05-01", label: "勞動節 (全校放假)", type: "holiday" },
     { start: "2026-05-05", end: "2026-05-06", label: "國三第二次段考", type: "exam" },
+    { start: "2026-05-08", end: "2026-05-08", label: "高一國一母親節合唱比賽", type: "event" },
     { start: "2026-05-14", end: "2026-05-15", label: "全校第二次段考", type: "exam" },
     { start: "2026-05-16", end: "2026-05-17", label: "國中教育會考", type: "exam" },
+    { start: "2026-05-22", end: "2026-05-22", label: "國三生涯發展講座", type: "event" },
     { start: "2026-06-05", end: "2026-06-05", label: "畢業典禮", type: "event" },
     { start: "2026-06-19", end: "2026-06-19", label: "端午節 (放假)", type: "holiday" },
     { start: "2026-06-26", end: "2026-06-30", label: "全校期末考", type: "exam" }
