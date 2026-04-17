@@ -515,3 +515,71 @@ footer {
     .vs-badge { padding-bottom: 0; border: none; }
     h1 { font-size: 1.75rem; }
 }
+
+/* 🆕 行事曆提醒樣式 */
+.calendar-alerts {
+    background: rgba(244, 63, 94, 0.05);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    border-radius: 1.2rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.alert-header {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #f43f5e;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.alert-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 0.6rem;
+    padding: 0.5rem 0.8rem;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.alert-item:last-child { margin-bottom: 0; }
+
+.alert-item.exam { border-left-color: #f43f5e; }
+.alert-item.event { border-left-color: #fb923c; }
+.alert-item.holiday { border-left-color: #22c55e; }
+
+.alert-item.ongoing {
+    background: rgba(244, 63, 94, 0.15);
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.1);
+    transform: scale(1.02);
+}
+
+.alert-date {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text-dim);
+    font-family: 'Outfit';
+    white-space: nowrap;
+}
+
+.alert-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

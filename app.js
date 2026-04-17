@@ -34,12 +34,29 @@ const defaultSkillKeywords = [
     "體育", "音樂", "美術", "視覺藝術", "表演藝術", "童軍", "家政", "生活科技", "資訊科技", "機器人", "社團", "週會", "輔導", "健康教育", "軍訓", "生命教育", "藝術生活", "創客", "Maker", "表演創作", "自習", "空堂"
 ];
 
+// 🆕 行事曆衝突資料 (由 PDF 解析)
+const SCHOOL_CONFLICTS = [
+    { start: "2026-03-25", end: "2026-03-26", label: "全校第一次段考", type: "exam" },
+    { start: "2026-04-15", end: "2026-04-17", label: "高二畢旅/高一公訓/國二隔宿", type: "event" },
+    { start: "2026-04-18", end: "2026-04-23", label: "嘉義市運動會", type: "event" },
+    { start: "2026-04-21", end: "2026-04-22", label: "國三模擬考", type: "exam" },
+    { start: "2026-04-23", end: "2026-04-24", label: "高三畢業考", type: "exam" },
+    { start: "2026-05-01", end: "2026-05-01", label: "勞動節 (全校放假)", type: "holiday" },
+    { start: "2026-05-05", end: "2026-05-06", label: "國三第二次段考", type: "exam" },
+    { start: "2026-05-14", end: "2026-05-15", label: "全校第二次段考", type: "exam" },
+    { start: "2026-05-16", end: "2026-05-17", label: "國中教育會考", type: "exam" },
+    { start: "2026-06-05", end: "2026-06-05", label: "畢業典禮", type: "event" },
+    { start: "2026-06-19", end: "2026-06-19", label: "端午節 (放假)", type: "holiday" },
+    { start: "2026-06-26", end: "2026-06-30", label: "全校期末考", type: "exam" }
+];
+
 async function init() {
     try {
         const response = await fetch('schedules.json');
         if (!response.ok) throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
         scheduleData = await response.json();
         
+        initCalendarAlerts(); // 🆕 初始化提醒
         extractUniqueSubjects();
         populateSelectors();
         populateFilterList();
@@ -50,6 +67,36 @@ async function init() {
         console.error("Failed to load schedule data:", error);
         showError(error);
     }
+}
+
+// 🆕 動態顯示行事曆提醒
+function initCalendarAlerts() {
+    const container = document.getElementById('calendarAlerts');
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    
+    // 過濾出「今天以後」或「正在進行中」的活動
+    const activeConflicts = SCHOOL_CONFLICTS.filter(c => {
+        return c.end >= todayStr;
+    }).slice(0, 3); // 只顯示最近 3 個
+
+    if (activeConflicts.length === 0) {
+        container.style.display = 'none';
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="alert-header">🚨 重要日程提醒</div>
+        ${activeConflicts.map(c => {
+            const isOngoing = todayStr >= c.start && todayStr <= c.end;
+            return `
+                <div class="alert-item ${c.type} ${isOngoing ? 'ongoing' : ''}">
+                    <span class="alert-date">${c.start === c.end ? c.start.slice(5) : c.start.slice(5) + '~' + c.end.slice(5)}</span>
+                    <span class="alert-label">${c.label}</span>
+                </div>
+            `;
+        }).join('')}
+    `;
 }
 
 function showError(error) {
