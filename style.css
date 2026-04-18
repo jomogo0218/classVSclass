@@ -81,30 +81,36 @@ h1 span {
 
 .app-container {
     display: flex;
-    height: 100%;
+    height: 100vh;
     width: 100%;
+    gap: 1.5rem;
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
 /* Sidebar */
 .sidebar {
-    width: 320px;
+    width: 320px; /* 稍微縮回一點寬度 */
     background: var(--sidebar-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
     border-right: 1px solid var(--border);
-    padding: 1.5rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-shrink: 0;
     z-index: 10;
-    box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+    box-shadow: 10px 0 40px rgba(0,0,0,0.3);
+    overflow-y: auto; /* 核心修正：允許側邊欄滾動避免重疊 */
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 .logo-mini {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
 }
 
 .logo-mini h1 {
@@ -119,14 +125,14 @@ h1 span {
 .control-box {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1rem;
 }
 
 .class-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    border-radius: 1.2rem;
-    padding: 1rem;
+    border-radius: 1.5rem;
+    padding: 1.2rem;
     transition: all 0.3s ease;
 }
 
@@ -164,10 +170,10 @@ select {
     width: 100%;
     background: rgba(15, 23, 42, 0.6);
     border: 1px solid var(--border);
-    border-radius: 0.8rem;
+    border-radius: 1rem;
     padding: 0.8rem;
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 800;
     cursor: pointer;
     outline: none;
@@ -193,7 +199,7 @@ select option {
 }
 
 .stats-large {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 800;
     color: #fff;
     text-align: center;
@@ -223,13 +229,13 @@ select option {
 .filter-box {
     background: rgba(0,0,0,0.3);
     border: 1px solid var(--border);
-    border-radius: 1.2rem;
-    padding: 1rem;
-    flex-grow: 1;
-    min-height: 0;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    min-height: 200px;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    margin-bottom: 0.5rem;
 }
 
 .filter-header {
@@ -287,23 +293,56 @@ select option {
     align-items: center;
     gap: 0.8rem;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1.1rem; /* 字體加大一點更好選 */
     font-weight: 600;
     color: var(--text-main);
-    padding: 0.4rem;
-    border-radius: 0.6rem;
-    transition: background 0.2s;
+    padding: 0.6rem 1rem;
+    border-radius: 1rem;
+    transition: all 0.2s;
+    background: rgba(255, 255, 255, 0.03);
+    margin-bottom: 4px;
 }
 
 .filter-item:hover {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(4px);
 }
 
 .filter-item input {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: var(--accent);
+    display: none; /* 隱藏原生勾選框 */
+}
+
+/* 🆕 自定義勾選框樣式 */
+.custom-checkbox {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    position: relative;
+    transition: all 0.2s;
+    background: rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+.filter-item input:checked + .custom-checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.filter-item input:checked + .custom-checkbox::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.subject-name {
+    flex-grow: 1;
 }
 
 /* Custom Scrollbar */
@@ -314,44 +353,53 @@ select option {
 
 .main-content {
     flex-grow: 1;
-    height: 100vh;
-    padding: 0.8rem;
+    height: 100%;
+    padding: 0.5rem;
     background: transparent;
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .schedule-wrapper {
     height: 100%;
-    background: rgba(15, 23, 42, 0.3);
-    border-radius: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 2.5rem;
     border: 1px solid var(--border);
+    padding: 1.8rem;
+    box-sizing: border-box;
     overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
 }
 
 table {
     width: 100%;
     height: 100%;
     border-collapse: separate;
-    border-spacing: 4px;
+    border-spacing: 8px;
     table-layout: fixed;
 }
 
 th {
-    background: rgba(255, 255, 255, 0.03);
+    background: transparent;
     font-weight: 800;
-    color: var(--accent);
-    font-size: 1.8vh;
+    color: var(--text-dim);
+    font-size: 1.5vh;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    padding-bottom: 10px;
 }
 
 td {
     text-align: center;
-    border: none;
+    border: 1px solid rgba(255,255,255,0.03);
     background: rgba(255, 255, 255, 0.02);
-    border-radius: 0.8rem;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+td:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .period-num {
@@ -368,27 +416,27 @@ td {
 }
 
 .subject-item {
-    padding: 0.1rem 0.4rem;
+    padding: 0.2rem 0.4rem;
     border-radius: 0.8rem;
-    font-size: 2.5vh;
-    font-weight: 800;
-    line-height: 1;
+    font-size: 2.2vh;
+    font-weight: 700;
+    line-height: 1.2;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
-    margin: 1px;
-    border: 1px solid transparent;
+    gap: 0.3rem;
     width: 100%;
     box-sizing: border-box;
-    letter-spacing: -1.5px;
+    letter-spacing: -1px;
 }
 
-/* Make single subjects fill more space */
+/* Make single subjects fill space but with more margin */
 .subject-item:only-child {
-    height: 100%;
-    font-size: 3vh;
+    height: calc(100% - 10px);
+    font-size: 2.6vh;
+    display: flex;
+    align-items: center;
 }
 
 .class-a-sub { background: rgba(56, 189, 248, 0.1); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.2); }
@@ -582,4 +630,15 @@ footer {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+.footer-note {
+    margin-top: auto;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+    opacity: 0.6;
+    letter-spacing: 2px;
+    padding-top: 1rem;
 }

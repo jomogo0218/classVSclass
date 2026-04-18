@@ -137,12 +137,17 @@ function extractUniqueSubjects() {
 }
 
 function selectAllFilters(checked) {
+    const searchTerm = document.getElementById('subjectSearch').value.toLowerCase();
     const subjectsMap = getSubjectsMap();
+    
     subjectsMap.forEach((display, norm) => {
-        if (checked) allowedSubjects.add(norm);
-        else allowedSubjects.delete(norm);
+        // 只有符合搜尋條件的科目才會被勾選/取消勾選
+        if (display.toLowerCase().includes(searchTerm)) {
+            if (checked) allowedSubjects.add(norm);
+            else allowedSubjects.delete(norm);
+        }
     });
-    populateFilterList();
+    populateFilterList(searchTerm);
     updateTable();
 }
 
@@ -173,18 +178,20 @@ function populateFilterList(searchTerm = "") {
     container.innerHTML = '';
     
     const subjectsMap = getSubjectsMap();
+    const sortedEntries = Array.from(subjectsMap.entries()).sort((a, b) => a[1].localeCompare(b[1]));
 
-    Array.from(subjectsMap.entries())
-        .filter(([norm, display]) => display.toLowerCase().includes(searchTerm))
-        .sort((a, b) => a[1].localeCompare(b[1]))
-        .forEach(([norm, display]) => {
+    let foundCount = 0;
+    sortedEntries.forEach(([norm, display]) => {
+        if (display.toLowerCase().includes(searchTerm)) {
+            foundCount++;
             const div = document.createElement('label');
             div.className = 'filter-item';
             const isChecked = allowedSubjects.has(norm);
             
             div.innerHTML = `
                 <input type="checkbox" value="${norm}" ${isChecked ? 'checked' : ''}>
-                <span>${display}</span>
+                <span class="custom-checkbox"></span>
+                <span class="subject-name">${display}</span>
             `;
             
             div.querySelector('input').addEventListener('change', (e) => {
@@ -194,7 +201,12 @@ function populateFilterList(searchTerm = "") {
             });
             
             container.appendChild(div);
-        });
+        }
+    });
+
+    if (foundCount === 0) {
+        container.innerHTML = `<div style="color: var(--text-dim); text-align: center; padding: 2rem; font-size: 0.9rem;">找不到相符科目</div>`;
+    }
 }
 
 function populateSelectors() {
