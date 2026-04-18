@@ -195,18 +195,19 @@ input  { font-family: inherit; }
     text-transform: uppercase; letter-spacing: 1.5px;
     margin-bottom: 0.4rem; opacity: 0.8;
 }
-.grade-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.grade-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
 
 .class-btn {
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text-2);
     border-radius: 0.5rem;
-    padding: 0.4rem 0.1rem;
-    font-size: 0.72rem; font-weight: 700;
+    padding: 0.45rem 0.2rem;
+    font-size: 0.78rem; font-weight: 700;
     text-align: center;
     transition: all 0.15s;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    word-break: keep-all;
 }
 .class-btn:hover  { border-color: var(--accent); color: var(--accent); }
 .class-btn.active {

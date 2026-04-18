@@ -124,18 +124,31 @@ function buildClassPicker() {
     const picker = document.getElementById('classPicker');
     picker.innerHTML = '';
 
-    // 依學群分組
+    // 明確定義年級分組順序
+    const GRADE_ORDER = ['國一','國二','國三','高一','高二','高三','其他'];
+
     const groups = {};
+    GRADE_ORDER.forEach(g => groups[g] = []);
+
     scheduleData.classes.forEach(cls => {
-        const grp = cls.match(/[^\d]+/)[0].trim(); // e.g. '國一', '高三'
-        if (!groups[grp]) groups[grp] = [];
-        groups[grp].push(cls);
+        let matched = false;
+        for (const grade of GRADE_ORDER.slice(0, -1)) {
+            if (cls.startsWith(grade)) {
+                groups[grade].push(cls);
+                matched = true;
+                break;
+            }
+        }
+        if (!matched) groups['其他'].push(cls);
     });
 
-    Object.entries(groups).forEach(([grp, classes]) => {
+    GRADE_ORDER.forEach(grade => {
+        const classes = groups[grade];
+        if (classes.length === 0) return;
+
         const groupEl = document.createElement('div');
         groupEl.className = 'grade-group';
-        groupEl.innerHTML = `<div class="grade-label">${grp}</div>`;
+        groupEl.innerHTML = `<div class="grade-label">${grade}</div>`;
 
         const btnsEl = document.createElement('div');
         btnsEl.className = 'grade-buttons';
@@ -143,8 +156,10 @@ function buildClassPicker() {
         classes.sort().forEach(cls => {
             const btn = document.createElement('button');
             btn.className   = 'class-btn';
-            btn.textContent = cls.replace(/[^\d]+/,''); // just the number+name part
-            btn.title       = cls;
+            // 顯示文字：取出年級後的部分（班號或班名）
+            const suffix = cls.slice(grade.length).trim();
+            btn.textContent = suffix || cls;
+            btn.title       = cls;   // hover 顯示完整名稱
             btn.dataset.cls = cls;
             btn.onclick     = () => toggleClass(cls);
             btnsEl.appendChild(btn);
