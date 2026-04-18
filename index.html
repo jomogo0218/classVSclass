@@ -81,17 +81,20 @@
         </aside>
 
         <main class="main-content">
+            <div class="week-nav">
+                <div class="week-controls">
+                    <button class="nav-btn" onclick="changeWeek(-7)">◀ 上週</button>
+                    <button class="nav-btn today" onclick="resetWeek()">本週</button>
+                    <div id="currentWeekDisplay" class="week-display">2026 / 04 / 20 ~ 04 / 24</div>
+                    <button class="nav-btn" onclick="changeWeek(7)">下週 ▶</button>
+                </div>
+                <div id="weekConflictNotice" class="week-conflict-notice"></div>
+            </div>
+
             <div class="schedule-wrapper">
                 <table id="comparisonTable">
-                    <thead>
-                        <tr>
-                            <th width="10%">節次</th>
-                            <th>週一</th>
-                            <th>週二</th>
-                            <th>週三</th>
-                            <th>週四</th>
-                            <th>週五</th>
-                        </tr>
+                    <thead id="tableHead">
+                        <!-- 由 JS 動態注入帶日期的表頭 -->
                     </thead>
                     <tbody id="tableBody">
                         <!-- Content -->

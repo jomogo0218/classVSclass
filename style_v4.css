@@ -678,13 +678,76 @@ footer {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.footer-note {
-    margin-top: auto;
-    color: var(--text-dim);
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-align: center;
-    opacity: 0.6;
-    letter-spacing: 2px;
-    padding-top: 1rem;
+/* 🆕 週數導覽樣式 */
+.week-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    animation: fadeIn 0.5s ease-out;
 }
+
+.week-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba(30, 41, 59, 0.6);
+    padding: 0.5rem 1.5rem;
+    border-radius: 3rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+}
+
+.nav-btn:hover {
+    background: rgba(56, 189, 248, 0.1);
+    transform: scale(1.1);
+}
+
+.nav-btn.today {
+    color: #fff;
+    background: rgba(255,255,255,0.05);
+}
+
+.week-display {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+    min-width: 240px;
+    text-align: center;
+}
+
+.week-conflict-notice {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(244, 63, 94, 0.1);
+    padding: 0.4rem 1.5rem;
+    border-radius: 2rem;
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    display: none;
+}
+
+.week-conflict-notice span {
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 0 4px;
+}
+
+.week-conflict-notice .exam { background: #f43f5e; }
+.week-conflict-notice .event { background: #fb923c; }
+.week-conflict-notice .holiday { background: #22c55e; }

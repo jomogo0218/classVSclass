@@ -28,6 +28,25 @@ const periodNames = [
 
 let allowedSubjects = new Set();
 let allUniqueSubjects = [];
+let currentMonday = getMonday(new Date()); // 追蹤目前顯示的週一日期
+
+function getMonday(d) {
+    const date = new Date(d);
+    date.setHours(0,0,0,0);
+    const day = date.getDay();
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1); 
+    return new Date(date.setDate(diff));
+}
+
+function changeWeek(days) {
+    currentMonday.setDate(currentMonday.getDate() + days);
+    renderTable();
+}
+
+function resetWeek() {
+    currentMonday = getMonday(new Date());
+    renderTable();
+}
 
 // Default subjects that should be checked initially
 const defaultSkillKeywords = [
@@ -301,7 +320,63 @@ function renderTable() {
     const classAName = selectedClassA;
     const classBName = selectedClassB;
     const tbody = document.getElementById('tableBody');
+    const thead = document.getElementById('tableHead');
+    const weekDisplay = document.getElementById('currentWeekDisplay');
+    const conflictNotice = document.getElementById('weekConflictNotice');
+    
     tbody.innerHTML = '';
+    thead.innerHTML = '';
+    conflictNotice.innerHTML = '';
+
+    // 計算本週日期
+    const dateList = [];
+    for(let i=0; i<5; i++) {
+        const d = new Date(currentMonday);
+        d.setDate(d.getDate() + i);
+        dateList.push(d);
+    }
+
+    // 更新上方週數顯示
+    const dStart = dateList[0];
+    const dEnd = dateList[4];
+    weekDisplay.textContent = `${dStart.getFullYear()} / ${String(dStart.getMonth()+1).padStart(2,'0')} / ${String(dStart.getDate()).padStart(2,'0')} ~ ${String(dEnd.getMonth()+1).padStart(2,'0')} / ${String(dEnd.getDate()).padStart(2,'0')}`;
+
+    // 檢查本週是否有全校性大活動並顯示提示
+    const weekConflicts = [];
+    const dateStrings = dateList.map(d => d.toISOString().split('T')[0]);
+    
+    // 生成表頭
+    const headTr = document.createElement('tr');
+    const thPeriod = document.createElement('th');
+    thPeriod.style.width = '10%';
+    thPeriod.textContent = '節次';
+    headTr.appendChild(thPeriod);
+    
+    const dayNames = ["週一", "週二", "週三", "週四", "週五"];
+    dateList.forEach((date, i) => {
+        const th = document.createElement('th');
+        const dStr = date.toISOString().split('T')[0];
+        const conflict = SCHOOL_CONFLICTS.find(c => dStr >= c.start && dStr <= c.end);
+        
+        const shortDate = `${date.getMonth()+1}/${date.getDate()}`;
+        if (conflict) {
+            th.innerHTML = `${dayNames[i]}<br><span style="font-size: 0.7rem; color: #f43f5e;">(${shortDate}) ${conflict.label}</span>`;
+            th.style.color = "#f43f5e";
+            if (!weekConflicts.some(c => c.label === conflict.label)) weekConflicts.push(conflict);
+        } else {
+            th.innerHTML = `${dayNames[i]}<br><span style="font-size: 0.7rem; opacity: 0.6;">(${shortDate})</span>`;
+        }
+        headTr.appendChild(th);
+    });
+    thead.appendChild(headTr);
+
+    // 顯示週衝突摘要
+    if (weekConflicts.length > 0) {
+        conflictNotice.innerHTML = `⚠️ 本週有重要日程：${weekConflicts.map(c => `<span class="${c.type}">${c.label}</span>`).join('、')}`;
+        conflictNotice.style.display = 'block';
+    } else {
+        conflictNotice.style.display = 'none';
+    }
 
     if (!classAName && !classBName) {
         tbody.innerHTML = '<tr><td colspan="6" style="padding: 4rem; color: var(--text-dim); text-align: center; font-size: 2vh;">請在左側選擇班級...</td></tr>';
