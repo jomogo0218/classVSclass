@@ -13,7 +13,10 @@ const DAY_NAMES    = ['週一','週二','週三','週四','週五'];
 const COLORS       = 6; // number of color cycles
 
 const SKILL_KEYWORDS = ['體育','音樂','美術','視覺藝術','表演藝術','童軍','家政','生活科技',
-    '資訊科技','機器人','社團','班週會','輔導','健康教育','軍訓','生命教育','藝術','創客','Maker','自習','空堂'];
+    '資訊科技','機器人','社團','班週會','輔導','健康教育','軍訓','生命教育','藝術','創客','Maker','自習','空堂',
+    // 彈性/探究/多元課程
+    '彈性','多元','選修','探究','實作','科技','環境','生命科學','地球科學',
+    '生涯','週會','本土語','閱讀','識字','晨讀','科學'];
 
 const CONFLICTS = [
     { start:'2026-03-25', end:'2026-03-26', label:'全校第一次段考',           type:'exam'    },
@@ -31,7 +34,7 @@ const CONFLICTS = [
     { start:'2026-06-26', end:'2026-06-30', label:'全校期末考',               type:'exam'    },
 ];
 
-const STORAGE_KEY_SUBJECTS = 'classVSclass_allowed_subjects_v2';
+const STORAGE_KEY_SUBJECTS = 'classVSclass_allowed_subjects_v3';
 
 // ===== 狀態 =====
 let scheduleData    = null;
