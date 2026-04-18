@@ -191,7 +191,7 @@ input  { font-family: inherit; }
 
 .grade-group { }
 .grade-label {
-    font-size: 0.65rem; font-weight: 800; color: var(--accent);
+    font-size: 0.72rem; font-weight: 800; color: var(--accent);
     text-transform: uppercase; letter-spacing: 1.5px;
     margin-bottom: 0.4rem; opacity: 0.8;
 }
@@ -325,7 +325,7 @@ input  { font-family: inherit; }
 }
 
 .stat-item {
-    font-size: 0.78rem; color: var(--text-2);
+    font-size: 0.88rem; color: var(--text-2);
 }
 .stat-item strong { color: var(--accent); font-weight: 800; }
 
@@ -366,16 +366,16 @@ input  { font-family: inherit; }
 .schedule-table thead th {
     background: var(--surface);
     color: var(--text-2);
-    font-size: 0.72rem; font-weight: 700;
+    font-size: 0.9rem; font-weight: 700;
     text-transform: uppercase; letter-spacing: 1px;
-    padding: 0.5rem 0.3rem;
+    padding: 0.6rem 0.4rem;
     text-align: center;
     position: sticky; top: 0; z-index: 10;
     border-bottom: 2px solid var(--border);
 }
 .schedule-table thead th.period-col { width: 90px; }
 .schedule-table thead th .date-sub {
-    display: block; font-size: 0.65rem;
+    display: block; font-size: 0.8rem;
     color: var(--text-3); font-weight: 500;
     letter-spacing: 0; text-transform: none; margin-top: 2px;
 }
@@ -385,13 +385,13 @@ input  { font-family: inherit; }
 /* Period Column */
 td.period-cell {
     background: var(--surface);
-    text-align: center; padding: 0.3rem;
+    text-align: center; padding: 0.4rem;
     vertical-align: middle;
     position: sticky; left: 0; z-index: 5;
     border-right: 1px solid var(--border);
 }
-.p-name { display: block; font-size: 0.7rem; font-weight: 800; color: var(--text-1); }
-.p-time { display: block; font-size: 0.58rem; color: var(--text-3); margin-top: 2px; }
+.p-name { display: block; font-size: 0.88rem; font-weight: 800; color: var(--text-1); }
+.p-time { display: block; font-size: 0.7rem; color: var(--text-3); margin-top: 2px; }
 
 /* Data Cells */
 .schedule-table td {
@@ -413,18 +413,18 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
 .cell-inner { display: flex; flex-direction: column; gap: 2px; height: 100%; }
 
 .class-slot {
-    display: flex; align-items: center; gap: 0.3rem;
-    padding: 0.2rem 0.4rem; border-radius: 0.3rem;
-    font-size: 0.7rem;
+    display: flex; align-items: center; gap: 0.35rem;
+    padding: 0.25rem 0.5rem; border-radius: 0.3rem;
+    font-size: 0.88rem;
 }
 .slot-class-tag {
-    font-size: 0.58rem; font-weight: 800;
-    padding: 1px 4px; border-radius: 3px;
-    flex-shrink: 0; opacity: 0.8;
-    min-width: 34px; text-align: center;
+    font-size: 0.7rem; font-weight: 800;
+    padding: 1px 5px; border-radius: 3px;
+    flex-shrink: 0; opacity: 0.9;
+    min-width: 36px; text-align: center;
 }
 .slot-subject { font-weight: 700; flex: 1; }
-.slot-teacher { font-size: 0.58rem; color: var(--text-3); flex-shrink: 0; }
+.slot-teacher { font-size: 0.72rem; color: var(--text-3); flex-shrink: 0; }
 
 /* class color coding */
 .slot-color-0 { background: rgba(56,189,248,0.12); }
@@ -444,8 +444,8 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
 /* Match badge */
 .match-badge {
     display: inline-block;
-    font-size: 0.58rem; font-weight: 800;
-    padding: 2px 6px; border-radius: 2rem;
+    font-size: 0.7rem; font-weight: 800;
+    padding: 2px 8px; border-radius: 2rem;
     margin-top: 2px; align-self: center;
 }
 .badge-pe    { background: var(--orange); color: #fff; }
