@@ -31,16 +31,26 @@
             </div>
 
             <div class="control-box">
-                <div class="class-card card-a">
-                    <div class="card-header"><span class="dot"></span> 班級 A</div>
-                    <select id="classA"><option value="">選擇...</option></select>
-                </div>
+                <div class="selection-card">
+                    <div class="picker-group">
+                        <div class="picker-header">
+                            <span class="dot a"></span> 選擇班級 A
+                            <span id="selectedA" class="selected-label">請點選...</span>
+                        </div>
+                        <div id="gridA" class="class-grid"></div>
+                    </div>
+                    
+                    <div class="vs-divider">
+                        <span>VS</span>
+                    </div>
 
-                <div class="vs-mini">VS</div>
-
-                <div class="class-card card-b">
-                    <div class="card-header"><span class="dot"></span> 班級 B</div>
-                    <select id="classB"><option value="">選擇...</option></select>
+                    <div class="picker-group">
+                        <div class="picker-header">
+                            <span class="dot b"></span> 選擇班級 B
+                            <span id="selectedB" class="selected-label">請點選...</span>
+                        </div>
+                        <div id="gridB" class="class-grid"></div>
+                    </div>
                 </div>
             </div>
 

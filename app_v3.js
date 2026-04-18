@@ -209,37 +209,88 @@ function populateFilterList(searchTerm = "") {
     }
 }
 
+let selectedClassA = "";
+let selectedClassB = "";
+
 function populateSelectors() {
-    const classA = document.getElementById('classA');
-    const classB = document.getElementById('classB');
+    const gridA = document.getElementById('gridA');
+    const gridB = document.getElementById('gridB');
     
-    // Clear
-    classA.innerHTML = '<option value="">請選擇班級...</option>';
-    classB.innerHTML = '<option value="">請選擇班級...</option>';
+    gridA.innerHTML = '';
+    gridB.innerHTML = '';
     
-    scheduleData.classes.sort().forEach(className => {
-        const optA = document.createElement('option');
-        optA.value = className;
-        optA.textContent = className;
-        classA.appendChild(optA);
-        
-        const optB = document.createElement('option');
-        optB.value = className;
-        optB.textContent = className;
-        classB.appendChild(optB);
+    // 按年級分組 (首位數字)
+    const grades = {};
+    scheduleData.classes.forEach(className => {
+        const grade = className.charAt(0);
+        if (!grades[grade]) grades[grade] = [];
+        grades[grade].push(className);
     });
 
-    // Set defaults if available
+    Object.keys(grades).sort().forEach(grade => {
+        const groupLabel = document.createElement('div');
+        groupLabel.className = 'grid-grade-label';
+        groupLabel.textContent = `第 ${grade} 學群`;
+        
+        const containerA = document.createElement('div');
+        containerA.className = 'grade-row';
+        const containerB = document.createElement('div');
+        containerB.className = 'grade-row';
+
+        grades[grade].sort().forEach(className => {
+            const btnA = createGridBtn(className, 'A');
+            const btnB = createGridBtn(className, 'B');
+            containerA.appendChild(btnA);
+            containerB.appendChild(btnB);
+        });
+
+        gridA.appendChild(groupLabel.cloneNode(true));
+        gridA.appendChild(containerA);
+        gridB.appendChild(groupLabel.cloneNode(true));
+        gridB.appendChild(containerB);
+    });
+
+    // 預選兩個班級
     if (scheduleData.classes.length >= 2) {
-        classA.selectedIndex = 1;
-        classB.selectedIndex = 2;
-        updateTable();
+        selectClass('A', scheduleData.classes[0]);
+        selectClass('B', scheduleData.classes[1]);
     }
 }
 
+function createGridBtn(className, type) {
+    const btn = document.createElement('button');
+    btn.className = `grid-btn btn-${type}`;
+    btn.textContent = className;
+    btn.dataset.class = className;
+    btn.onclick = () => selectClass(type, className);
+    return btn;
+}
+
+function selectClass(type, className) {
+    if (type === 'A') {
+        selectedClassA = className;
+        document.getElementById('selectedA').textContent = className;
+        updateGridHighlight('A', className);
+    } else {
+        selectedClassB = className;
+        document.getElementById('selectedB').textContent = className;
+        updateGridHighlight('B', className);
+    }
+    updateTable();
+}
+
+function updateGridHighlight(type, className) {
+    const btns = document.querySelectorAll(`.grid-btn.btn-${type}`);
+    btns.forEach(btn => {
+        if (btn.dataset.class === className) btn.classList.add('active');
+        else btn.classList.add('inactive'); // 沒選中的變淡
+        if (btn.dataset.class !== className) btn.classList.remove('active');
+        if (btn.dataset.class === className) btn.classList.remove('inactive');
+    });
+}
+
 function setupEventListeners() {
-    document.getElementById('classA').addEventListener('change', updateTable);
-    document.getElementById('classB').addEventListener('change', updateTable);
+    // Grid buttons have their own click listeners
 }
 
 function updateTable() {
@@ -247,8 +298,8 @@ function updateTable() {
 }
 
 function renderTable() {
-    const classAName = document.getElementById('classA').value;
-    const classBName = document.getElementById('classB').value;
+    const classAName = selectedClassA;
+    const classBName = selectedClassB;
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = '';
 
