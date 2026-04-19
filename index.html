@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="app.css?v=20260418d">
+    <link rel="stylesheet" href="app.css?v=20260419_schedule_v4">
 </head>
 <body>
 
@@ -31,8 +31,17 @@
         <button class="week-btn today-btn" id="btnToday">本週</button>
     </div>
 
+    <!-- TAB SWITCHER -->
+    <div class="topbar-tabs">
+        <button class="tab-btn active" data-tab="comparison">🔍 課表對照</button>
+        <button class="tab-btn" data-tab="scheduling">🏆 賽程排定</button>
+    </div>
+
     <div id="conflictBanner" class="conflict-banner" style="display:none"></div>
 </header>
+
+<!-- ========== CONTENT WRAPPER ========== -->
+<div id="tab-comparison" class="tab-content active">
 
 <!-- ========== MAIN LAYOUT ========== -->
 <div class="app-layout">
@@ -109,10 +118,10 @@
                     <tbody id="tableBody"></tbody>
                 </table>
             </div>
-        </div>
-
+        </div> <!-- end table-wrapper -->
     </main>
-</div>
+</div> <!-- end app-layout -->
+</div> <!-- end tab-comparison -->
 
 <!-- MOBILE OVERLAY -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -127,6 +136,69 @@
     </div>
 </div>
 
-<script src="app.js?v=20260418e"></script>
+<!-- ========== SCHEDULING TAB ========== -->
+<div id="tab-scheduling" class="tab-content">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <section class="panel">
+                <div class="panel-header">
+                    <span class="panel-icon">📝</span>
+                    <h2 class="panel-title">待排賽事</h2>
+                </div>
+                <div class="search-box">
+                    <input type="search" id="matchSearch" class="search-input" placeholder="🔍 搜尋盃賽/班級...">
+                </div>
+                <div class="match-list" id="pendingMatchList">
+                    <!-- JS generated -->
+                </div>
+            </section>
+        </aside>
+
+        <main class="main-content">
+            <div class="schedule-header">
+                <h2 id="currentSchedulingMatch">請先從左側選擇賽事</h2>
+                <div id="schedulingTips" style="display:none">
+                    💡 點選下方推薦時段即可排入賽程 (橘色/藍色背景)
+                </div>
+            </div>
+            
+            <div class="table-wrapper">
+                <div id="schedulingEmpty" class="empty-state">
+                    <div class="empty-icon">📅</div>
+                    <p>尚未選擇賽事</p>
+                </div>
+                <div id="schedulingTableScroll" class="table-scroll" style="display:none">
+                    <table class="schedule-table" id="schedulingTable">
+                        <thead id="schedulingTableHead"></thead>
+                        <tbody id="schedulingTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- WEEK SUMMARY OF SCHEDULED MATCHES -->
+            <div class="scheduled-panel" id="scheduledPanel">
+                <div class="panel-header-row">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h3 class="panel-title">📅 本週已排定賽程</h3>
+                        <button onclick="document.getElementById('scheduledPanel').classList.toggle('collapsed')" style="background: var(--bg-card-hover); border: 1px solid var(--border-color); color: var(--text-2); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                            <i class="fas fa-arrows-alt-v" style="transition: transform 0.2s;"></i> 開啟 / 收合面板
+                        </button>
+                    </div>
+                    <div class="panel-actions" style="display: flex; gap: 8px;">
+                        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importScheduleData(event)">
+                        <button class="btn-action" onclick="document.getElementById('importFile').click()"><i class="fas fa-file-import"></i> 匯入檔</button>
+                        <button class="btn-action" onclick="exportScheduleData()"><i class="fas fa-download"></i> 下載檔</button>
+                        <button class="btn-action" onclick="exportSchedule()"><i class="fas fa-print"></i> 列印/PDF</button>
+                    </div>
+                </div>
+                <div class="scheduled-grid" id="scheduledGrid">
+                    <!-- Javascript will fill this -->
+                </div>
+            </div>
+        </main>
+    </div>
+</div> <!-- end tab-scheduling -->
+
+<script src="app.js?v=20260419_schedule_v4"></script>
 </body>
 </html>

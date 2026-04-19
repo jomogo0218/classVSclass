@@ -17,8 +17,8 @@
     --text-3:       #64748b;
     --accent:       #38bdf8;
     --accent-glow:  rgba(56,189,248,0.25);
-    --purple:       #a78bfa;
-    --purple-glow:  rgba(167,139,250,0.25);
+    --purple:       #ff41a2; /* Much brighter pink/red */
+    --purple-glow:  rgba(255, 65, 162, 0.4);
     --green:        #4ade80;
     --orange:       #fb923c;
     --red:          #f87171;
@@ -28,11 +28,12 @@
     --cell-pe:      rgba(251,146,60,0.18);
     --cell-skill:   rgba(56,189,248,0.13);
     --cell-partial: rgba(251,191,36,0.10);
-    --cell-blocked: rgba(248,113,113,0.06);
+    --cell-blocked: rgba(248, 113, 113, 0.08);
+    --cell-scheduled: rgba(34, 197, 94, 0.7); 
 
     /* Sidebar width */
     --sidebar-w: 300px;
-    --topbar-h:  60px;
+    --topbar-h:  40px;
 
     color-scheme: dark;
 }
@@ -70,11 +71,11 @@ input  { font-family: inherit; }
 .topbar-week {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.3rem;
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 2rem;
-    padding: 0.3rem 0.8rem;
+    padding: 0.1rem 0.6rem;
     flex-shrink: 0;
 }
 
@@ -102,20 +103,41 @@ input  { font-family: inherit; }
 
 .conflict-banner {
     flex: 1;
-    background: rgba(248,113,113,0.12);
-    border: 1px solid rgba(248,113,113,0.3);
-    border-radius: 0.6rem;
-    padding: 0.3rem 0.9rem;
-    font-size: 0.78rem;
+    background: rgba(248,113,113,0.1);
+    border: 1px solid rgba(248,113,113,0.2);
+    border-radius: 0.3rem;
+    padding: 0.1rem 0.6rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: var(--red);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* ========== TABS ========== */
+.topbar-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+.tab-btn {
+    background: transparent; border: 1px solid transparent;
+    color: var(--text-2); font-size: 0.78rem; font-weight: 700;
+    padding: 0.2rem 0.8rem; border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+.tab-btn:hover { background: var(--surface-2); color: var(--text-1); }
+.tab-btn.active {
+    background: var(--accent); color: #000;
+}
+.tab-content {
+    display: none;
+    width: 100%; height: 100%;
+}
+.tab-content.active { display: block; }
 
 /* ========== LAYOUT ========== */
 .app-layout {
@@ -510,4 +532,119 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
     .table-scroll  { overflow: auto; max-height: 70vh; }
 
     .stats-bar { flex-wrap: wrap; gap: 0.8rem; padding: 0.5rem 0.8rem; }
+}
+
+/* ========== SCHEDULING UI ========== */
+.tab-content#tab-scheduling .sidebar { width: 240px; } /* Slightly narrower sidebar for more table room */
+
+.match-list {
+    display: flex; flex-direction: column; gap: 4px;
+    max-height: calc(100vh - 250px); overflow-y: auto;
+}
+.match-item {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 0.5rem; padding: 0.4rem 0.6rem;
+    cursor: pointer; transition: all 0.2s;
+}
+.match-item:hover { border-color: var(--accent); }
+.match-item.active { border-color: var(--accent); background: var(--accent-glow); }
+
+.match-cat-row { display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px; }
+.match-cat { font-size: 0.6rem; color: var(--accent); font-weight: 800; text-transform: uppercase; }
+.match-date-badge { font-size: 0.6rem; background: var(--accent-glow); color: var(--accent); padding: 1px 4px; border-radius: 4px; font-weight: 800; }
+.match-teams { display: flex; flex-direction: column; gap: 0; }
+.match-team { font-size: 0.8rem; font-weight: 700; color: var(--text-1); }
+.match-vs { font-size: 0.6rem; color: var(--text-3); font-weight: 800; margin: 0; }
+
+.schedule-header { padding: 0.3rem 0.8rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+.schedule-header h2 { font-size: 0.85rem; font-weight: 800; color: var(--text-1); }
+#schedulingTips { font-size: 0.68rem; color: var(--accent); margin-top: 0; }
+
+/* Interactive Cells for Scheduling */
+.scheduling-cell { cursor: pointer !important; position: relative; }
+.scheduling-cell:hover::after {
+    content: '📌 排入'; position: absolute; inset: 0;
+    background: rgba(56,189,248,0.8); color: #000;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 900; border-radius: 0.4rem; z-index: 20;
+}
+
+/* Compact Table for Scheduling */
+#schedulingTable td { padding: 2px; min-height: 45px; }
+#schedulingTable .class-slot { padding: 1px 4px; font-size: 0.82rem; }
+#schedulingTable .match-badge { padding: 1px 6px; font-size: 0.62rem; }
+
+/* Scheduled Panel */
+.scheduled-panel { padding: 0.8rem 1rem; border-top: 1px solid var(--border); background: rgba(0,0,0,0.3); }
+.panel-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+.scheduled-panel .panel-title { font-size: 0.85rem; margin-bottom: 0; }
+
+.btn-action {
+    background: var(--surface-2); border: 1px solid var(--accent);
+    color: var(--accent); font-size: 0.7rem; font-weight: 700;
+    padding: 0.35rem 0.6rem; border-radius: 0.4rem; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 4px;
+}
+.btn-action:hover { background: var(--accent); color: #000; }
+
+/* Collapsible behavior */
+.scheduled-panel.collapsed .scheduled-grid { display: none; }
+.scheduled-panel.collapsed .fa-arrows-alt-v { transform: rotate(-90deg); }
+
+.scheduled-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+.scheduled-day { background: var(--surface); border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.5rem; min-height: 80px; }
+.scheduled-day h4 { font-size: 0.72rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 3px; margin-bottom: 4px; }
+
+.scheduled-match {
+    background: var(--surface-2); border-left: 2px solid var(--accent);
+    padding: 0.3rem 0.4rem; border-radius: 0.3rem; margin-bottom: 4px;
+    font-size: 0.7rem; position: relative;
+}
+.match-time-tag { font-weight: 800; color: rgba(0,0,0,0.6); margin-bottom: 1px; display: block; font-size: 0.6rem; }
+.match-team-names { font-weight: 700; color: #000; line-height: 1.2; }
+.match-remove-btn {
+    position: absolute; top: 2px; right: 4px;
+    background: none; border: none; font-size: 1rem; color: rgba(0,0,0,0.4);
+    font-weight: 900;
+}
+.match-remove-btn:hover { color: var(--red); }
+
+/* Force black text for scheduled cells */
+.cell-scheduled, .cell-scheduled * { color: #000 !important; }
+
+/* ========== MOBILE & PRINT ========== */
+
+/* Mobile (Tablets and Phones) */
+@media screen and (max-width: 1000px) {
+    .sidebar { display: none !important; } /* Hide sidebar on small screens */
+    .brand-title, .brand-sub, .conflict-banner { display: none !important; }
+    
+    .scheduled-grid { grid-template-columns: 1fr; gap: 0.8rem; }
+    .scheduled-day { min-height: auto; }
+    
+    .schedule-table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .schedule-table { min-width: 850px; }
+}
+
+/* Print Styling (For Official Announcement) */
+@media print {
+    @page { size: landscape; margin: 0.5cm; }
+    body { background: #fff !important; color: #000 !important; overflow: visible !important; }
+    .topbar, .sidebar, #schedulingTips, .panel-actions, .match-remove-btn, .btn-icon, .btn-today { display: none !important; }
+    .app-layout { padding-top: 0 !important; height: auto !important; }
+    .tab-content { display: block !important; padding: 0 !important; }
+    .schedule-header h2 { font-size: 1.4rem !important; margin-bottom: 0.5rem; color: #000 !important; font-weight: bold !important; }
+    
+    .schedule-table { width: 100% !important; border: 1px solid #000 !important; border-collapse: collapse !important; }
+    .schedule-table th, .schedule-table td { 
+        border: 1px solid #000 !important; color: #000 !important; 
+        padding: 5px !important; font-size: 0.8rem !important;
+    }
+    .match-badge { border: 1px solid #000 !important; background: #eee !important; color: #000 !important; }
+    .cell-scheduled { background: #dcfce7 !important; } /* Light green in print */
+    
+    .scheduled-panel { border-top: 1px solid #000 !important; margin-top: 20px !important; }
+    .scheduled-grid { grid-template-columns: repeat(5, 1fr) !important; color: #000 !important; gap: 5px !important; }
+    .scheduled-day { border: 1px solid #000 !important; background: #fff !important; padding: 5px !important; min-height: auto !important; }
+    .scheduled-day h4 { color: #000 !important; border-bottom: 1px solid #000 !important; }
 }
