@@ -65,6 +65,29 @@ function getSportIcon(cat) {
     return '🏆';
 }
 
+// NEW: Initialize Firestore Listener
+function initFirestoreListener() {
+    if (!window.db) return;
+    console.log("Initializing Firestore Listener...");
+    db.collection('scheduledMatches').onSnapshot(querySnapshot => {
+        const matches = [];
+        querySnapshot.forEach(doc => {
+            matches.push({ matchId: parseInt(doc.id), ...doc.data() });
+        });
+        scheduledMatches = matches;
+        console.log("Firestore updated, matches count:", matches.length);
+        
+        // Re-render if we are in the middle of viewing
+        if (document.querySelector('.tab-btn[data-tab="scheduling"]').classList.contains('active')) {
+            renderSchedulingView();
+        } else {
+            renderTable();
+        }
+    }, err => {
+        console.warn("Firestore error (likely missing config):", err);
+    });
+}
+
 // ===== 初始化 =====
 async function init() {
     try {
@@ -77,13 +100,32 @@ async function init() {
         buildSubjectList();
         setupWeekControls();
         setupMobileSidebar();
-        setupTabSwitcher(); // NEW
+        setupTabSwitcher(); 
         
-        await loadMatches(); // NEW
-        loadScheduledMatches(); // NEW
+        await loadMatches(); 
+        
+        // Try to load from Firestore, otherwise fallback to LocalStorage
+        if (window.db) {
+            initFirestoreListener();
+            // Optional: Migration from LocalStorage if Firestore is empty
+            db.collection('scheduledMatches').limit(1).get().then(snap => {
+                if (snap.empty) {
+                    const localData = localStorage.getItem('classVSclass_scheduled_matches');
+                    if (localData) {
+                        try {
+                            const parsed = JSON.parse(localData);
+                            console.log("Migrating LocalStorage data to Firestore...");
+                            parsed.forEach(m => saveScheduledMatchToFirestore(m));
+                        } catch(e) {}
+                    }
+                }
+            });
+        } else {
+            loadScheduledMatches(); 
+        }
         
         renderTable();
-        renderSchedulingView(); // NEW
+        renderSchedulingView(); 
     } catch (e) {
         document.getElementById('errorModal').style.display = 'flex';
         document.getElementById('errorMsg').textContent = e.stack || e.message;
@@ -567,19 +609,64 @@ function getSportLimit(sport) {
 }
 
 async function loadMatches() {
+    if (window.db) {
+        try {
+            const snap = await db.collection('matches').get();
+            if (!snap.empty) {
+                const matches = [];
+                snap.forEach(doc => {
+                    matches.push({ id: parseInt(doc.id), ...doc.data() });
+                });
+                matchesData = matches.sort((a,b) => a.id - b.id);
+                console.log("Loaded matches from Firestore:", matchesData.length);
+                return;
+            }
+        } catch (e) {
+            console.warn("Firestore matches load failed, using local JSON:", e);
+        }
+    }
+
     const res = await fetch('matches.json');
     matchesData = await res.json();
-}
+    console.log("Loaded matches from static JSON:", matchesData.length);
 
-function loadScheduledMatches() {
-    const saved = localStorage.getItem('classVSclass_scheduled_matches');
-    if (saved) {
-        try { scheduledMatches = JSON.parse(saved); } catch(e) { scheduledMatches = []; }
+    // Auto-migrate if Firestore is empty
+    if (window.db && matchesData.length > 0) {
+        db.collection('matches').limit(1).get().then(snap => {
+            if (snap.empty) {
+                console.log("Migrating matchesData to Firestore...");
+                matchesData.forEach(m => {
+                    const { id, ...data } = m;
+                    db.collection('matches').doc(id.toString()).set(data);
+                });
+            }
+        });
     }
 }
 
 function saveScheduledMatches() {
     localStorage.setItem('classVSclass_scheduled_matches', JSON.stringify(scheduledMatches));
+    
+    // Also update Firestore if available
+    if (window.db) {
+        // Warning: This simplistic approach might be slow for many matches, but fine for current scale.
+        // For better performance, we should do individual doc updates (see call sites).
+    }
+}
+
+function saveScheduledMatchToFirestore(match) {
+    if (!window.db) return;
+    const { matchId, date, periodIndex } = match;
+    db.collection('scheduledMatches').doc(matchId.toString()).set({
+        date,
+        periodIndex
+    }).catch(err => console.error("Error saving match:", err));
+}
+
+function removeScheduledMatchFromFirestore(matchId) {
+    if (!window.db) return;
+    db.collection('scheduledMatches').doc(matchId.toString()).delete()
+        .catch(err => console.error("Error removing match:", err));
 }
 
 function renderSchedulingView() {
@@ -818,20 +905,24 @@ function renderSchedulingTable() {
                 td.onclick = () => {
                     if (isSelf) {
                         if (confirm('確定取消此時段的排程？')) {
-                            scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== selectedMatchId);
+                            const targetId = selectedMatchId;
+                            scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== targetId);
                             saveScheduledMatches();
+                            removeScheduledMatchFromFirestore(targetId);
                             renderSchedulingView();
                         }
                         return;
                     }
                     if (confirm(`確定排入？\n${thisSport} 限制：${sportOccupants.length}/${limit}\n班級狀況：OK (同班不同性別)`)) {
-                        scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== selectedMatchId);
-                        scheduledMatches.push({
+                        const newMatch = {
                             matchId: selectedMatchId,
                             date: dateStr,
                             periodIndex: p
-                        });
+                        };
+                        scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== selectedMatchId);
+                        scheduledMatches.push(newMatch);
                         saveScheduledMatches();
+                        saveScheduledMatchToFirestore(newMatch);
                         renderSchedulingView();
                         renderTable();
                     }
@@ -914,8 +1005,10 @@ function renderScheduledGrid() {
             div.querySelector('.match-remove-btn').onclick = (e) => {
                 e.stopPropagation();
                 if (confirm('確定移除此賽程？')) {
+                    const targetId = sm.matchId;
                     scheduledMatches = scheduledMatches.filter(item => item !== sm);
                     saveScheduledMatches();
+                    removeScheduledMatchFromFirestore(targetId);
                     renderSchedulingView();
                     renderTable();
                 }
@@ -963,6 +1056,10 @@ function importScheduleData(event) {
             if (Array.isArray(data)) {
                 scheduledMatches = data;
                 saveScheduledMatches(); // Save to localStorage
+                // Bulk sync to Firestore if available
+                if (window.db) {
+                    data.forEach(m => saveScheduledMatchToFirestore(m));
+                }
                 renderSchedulingView();
                 renderTable();
                 alert(`成功匯入 ${data.length} 筆賽程資料！`);
