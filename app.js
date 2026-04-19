@@ -592,8 +592,10 @@ function renderMatchList() {
     const list = document.getElementById('pendingMatchList');
     list.innerHTML = '';
     
-    // Filter by search
+    // Filter by search and exclude already finished matches
     const filtered = matchesData.filter(m => {
+        if (m.status === '✅ 已結束' || m.status.includes('已結束')) return false;
+        
         const text = (m.category + m.teamA + m.teamB).toLowerCase();
         return text.includes(matchSearchTerm.toLowerCase());
     });
