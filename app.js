@@ -1195,6 +1195,18 @@ function clearAllSchedules() {
     }
 }
 
+// ===== 面板收合 =====
+function toggleScheduledPanel() {
+    const panel = document.getElementById('scheduledPanel');
+    const isCollapsed = panel.classList.toggle('collapsed');
+    const btn = document.getElementById('btnToggleScheduled');
+    if (btn) {
+        btn.innerHTML = isCollapsed
+            ? '<i class="fas fa-chevron-down"></i> 展開'
+            : '<i class="fas fa-chevron-up"></i> 收合';
+    }
+}
+
 // ===== 診斷工具 =====
 function showDiagnostics() {
     const total = matchesData.length;

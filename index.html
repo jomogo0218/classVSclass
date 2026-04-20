@@ -151,16 +151,19 @@
             <!-- 已排定清單 -->
             <div class="scheduled-panel" id="scheduledPanel">
                 <div class="panel-header-row">
-                    <h3 class="panel-title">📅 本週已排定賽程</h3>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <h3 class="panel-title">📅 本週已排定賽程</h3>
+                        <button class="btn-action" id="btnToggleScheduled" onclick="toggleScheduledPanel()" title="收合/展開">
+                            <i class="fas fa-chevron-up" id="iconToggleScheduled"></i> 收合
+                        </button>
+                    </div>
                     <div class="panel-actions">
                         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importScheduleData(event)">
                         <button class="btn-action" onclick="document.getElementById('importFile').click()"><i class="fas fa-file-import"></i> 匯入</button>
-                        <div style="display:flex; gap:8px">
                         <button class="btn-action" onclick="showDiagnostics()">🔍 診斷</button>
                         <button class="btn-action" onclick="location.reload()" style="background:#2563eb; color:#fff">更新</button>
                         <button class="btn-action" onclick="clearAllSchedules()" style="background:#ef4444; color:#fff">🗑️ 清空</button>
                         <button class="btn-action" onclick="exportSchedule()"><i class="fas fa-print"></i> 列印</button>
-                    </div>
                     </div>
                 </div>
                 <div class="scheduled-grid" id="scheduledGrid"></div>
