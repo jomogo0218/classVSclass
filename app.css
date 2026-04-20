@@ -621,28 +621,31 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
 .scheduled-day h4 { font-size: 0.72rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 3px; margin-bottom: 4px; }
 
 .scheduled-match {
+    display: flex; align-items: center; gap: 12px; /* 橫向並排，間隔 12px */
     background: var(--surface-2); border-left: 2px solid var(--accent);
-    padding: 0.3rem 0.4rem; border-radius: 0.3rem; margin-bottom: 4px;
-    font-size: 0.7rem; position: relative;
+    padding: 0.4rem 0.8rem; border-radius: 0.4rem; margin-bottom: 4px;
+    position: relative;
 }
 .match-time-tag { 
-    display: block; 
-    font-size: 1.1rem; /* 顯著加大 */
+    font-size: 1.1rem; 
     font-weight: 900; 
     color: var(--text-1); 
-    margin-bottom: 4px;
-    letter-spacing: 1px;
+    white-space: nowrap; /* 強制不換行 */
+    letter-spacing: 0.5px;
 }
 .match-team-names { 
-    font-size: 1rem; /* 對戰名字也放大 */
+    font-size: 1rem; 
     font-weight: 700; 
     color: var(--text-2); 
-    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 太長的話顯示省略號 */
+    flex: 1;
 }
 .match-remove-btn { 
-    position: absolute; top: 6px; right: 8px; /* 移到右上角 */
     background: transparent; border: none; color: var(--text-3);
-    font-size: 1.2rem; cursor: pointer; opacity: 0.6;
+    font-size: 1.1rem; cursor: pointer; opacity: 0.5;
+    padding: 0 4px; border-radius: 4px;
 }
 .match-remove-btn:hover { color: var(--red); }
 
