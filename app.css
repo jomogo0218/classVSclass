@@ -32,10 +32,10 @@
     --cell-blocked:    rgba(239, 68, 68, 0.04);   /* 紅 */
     --cell-scheduled:  rgba(16, 185, 129, 0.25); /* 綠 (已排定) */
     
-    --topbar-h:        54px;
-    --sidebar-w:       280px;
-    --radius-lg:       16px;
-    --radius-md:       10px;
+    --topbar-h:        44px; /* 專業窄導航欄 */
+    --sidebar-w:       240px; /* 緊湊側邊欄 */
+    --radius-lg:       12px;
+    --radius-md:       8px;
 }
 
 /* ---------- Base ---------- */
@@ -96,57 +96,57 @@ button:active { transform: scale(0.95); }
 
 /* ========== PANELS & CARDS (玻璃面板) ========== */
 .panel {
-    padding: 1.5rem; border-bottom: 1px solid var(--border-light);
+    padding: 0.85rem 0.75rem; border-bottom: 1px solid var(--border-light);
 }
-.panel-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
-.panel-icon { font-size: 1.2rem; filter: drop-shadow(0 0 8px var(--brand-secondary)); }
-.panel-title { font-size: 1rem; font-weight: 800; letter-spacing: 0.5px; color: #fff; }
+.panel-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.8rem; }
+.panel-icon { font-size: 1.1rem; filter: drop-shadow(0 0 8px var(--brand-secondary)); }
+.panel-title { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.5px; color: #fff; }
 
 .action-link {
     background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-light);
-    color: var(--text-secondary); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;
+    color: var(--text-secondary); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem;
 }
 .action-link:hover { color: #fff; border-color: var(--brand-secondary); }
 
 /* --- Search Box --- */
 .search-input {
-    width: 100%; height: 42px; background: rgba(0,0,0,0.2);
+    width: 100%; height: 36px; background: rgba(0,0,0,0.2);
     border: 1px solid var(--border-light); border-radius: var(--radius-md);
-    padding: 0 1rem; color: #fff; font-size: 0.9rem;
+    padding: 0 0.8rem; color: #fff; font-size: 0.85rem;
     transition: all 0.3s;
 }
 .search-input:focus { border-color: var(--brand-secondary); outline: none; box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2); }
 
 /* ========== TABLE (旗艦數據表格) ========== */
-.table-controls { padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.table-controls { padding: 0.8rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 
-.week-nav { display: flex; align-items: center; gap: 1rem; background: rgba(255, 255, 255, 0.03); padding: 8px 16px; border-radius: 50px; border: 1px solid var(--border-light); }
-.nav-btn { background: none; border: none; color: var(--text-primary); font-size: 1.2rem; width: 36px; height: 36px; border-radius: 50%; }
+.week-nav { display: flex; align-items: center; gap: 0.7rem; background: rgba(255, 255, 255, 0.03); padding: 6px 14px; border-radius: 50px; border: 1px solid var(--border-light); }
+.nav-btn { background: none; border: none; color: var(--text-primary); font-size: 1rem; width: 30px; height: 30px; border-radius: 50%; }
 .nav-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--brand-secondary); }
-#weekRange { font-size: 1.15rem; font-weight: 900; letter-spacing: 1px; min-width: 200px; text-align: center; }
+#weekRange { font-size: 1.05rem; font-weight: 900; letter-spacing: 1px; min-width: 180px; text-align: center; }
 
-#btnToday { background: var(--brand-gradient); color: #000; font-weight: 900; border-radius: 20px; font-size: 0.8rem; padding: 4px 12px; }
+#btnToday { background: var(--brand-gradient); color: #000; font-weight: 900; border-radius: 20px; font-size: 0.75rem; padding: 2px 10px; }
 
-.table-wrapper { flex: 1; padding: 0 1.5rem 1.5rem; overflow: hidden; }
+.table-wrapper { flex: 1; padding: 0 1rem 1rem; overflow: hidden; }
 .table-scroll { width: 100%; height: 100%; overflow: auto; border-radius: var(--radius-lg); border: 1px solid var(--border-light); background: var(--surface-card); }
 
 .schedule-table { width: 100%; border-collapse: separate; border-spacing: 0; }
 .schedule-table thead th {
     position: sticky; top: 0; z-index: 20; background: #1e293b;
-    padding: 1rem; font-size: 0.9rem; font-weight: 800; color: var(--text-secondary);
+    padding: 0.6rem; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary);
     border-bottom: 1px solid var(--border-light);
 }
 .schedule-table thead th.has-conflict { color: var(--red) !important; background: rgba(239, 68, 68, 0.15); }
-.date-sub { display: block; font-size: 0.75rem; font-weight: 400; margin-top: 4px; opacity: 0.6; }
+.date-sub { display: block; font-size: 0.7rem; font-weight: 400; margin-top: 2px; opacity: 0.6; }
 
 .period-cell {
     position: sticky; left: 0; z-index: 10; background: #1e293b;
-    width: 100px; border-right: 1px solid var(--border-light); text-align: center; padding: 12px;
+    width: 80px; border-right: 1px solid var(--border-light); text-align: center; padding: 10px;
 }
-.p-name { display: block; font-size: 1.3rem; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
-.p-time { display: block; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-top: 4px; }
+.p-name { display: block; font-size: 1.1rem; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+.p-time { display: block; font-size: 0.65rem; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
 
-.schedule-table td { padding: 6px; border: 1px solid rgba(255,255,255,0.02); min-height: 80px; transition: all 0.2s; }
+.schedule-table td { padding: 4px; border: 1px solid rgba(255,255,255,0.02); min-height: 60px; transition: all 0.2s; }
 .schedule-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
 
 /* --- Cell Status Colors --- */
@@ -159,23 +159,23 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; pointer-events:
 .cell-inner { display: flex; flex-direction: column; gap: 6px; }
 
 .class-slot {
-    display: flex; align-items: center; gap: 0.6rem;
-    padding: 6px 10px; border-radius: 8px; font-size: 0.95rem;
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 4px 8px; border-radius: 6px; font-size: 0.88rem;
     transition: transform 0.2s; background: rgba(255,255,255,0.03);
 }
 .class-slot:hover { transform: translateX(3px); background: rgba(255,255,255,0.06); }
 
 .slot-class-tag {
-    font-size: 0.7rem; font-weight: 900; padding: 2px 6px; border-radius: 5px;
-    min-width: 40px; text-align: center;
+    font-size: 0.68rem; font-weight: 900; padding: 1px 5px; border-radius: 5px;
+    min-width: 32px; text-align: center;
 }
 .slot-subject { font-weight: 800; color: #fff; flex: 1; }
-.slot-teacher { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+.slot-teacher { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
 
 .match-badge {
     background: var(--brand-secondary); color: #000; font-weight: 900;
-    font-size: 0.65rem; padding: 2px 10px; border-radius: 30px;
-    align-self: flex-start; margin-top: 3px;
+    font-size: 0.62rem; padding: 1px 8px; border-radius: 30px;
+    align-self: flex-start; margin-top: 2px;
     box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
 }
 
