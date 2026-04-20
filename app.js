@@ -912,33 +912,32 @@ function renderSchedulingTable() {
             inner.className = 'cell-inner';
             const dateStr = isoDate(dates[di]);
 
-            const match = matchesData.find(m => m.id === selectedMatchId);
+            const matchIdNum = Number(selectedMatchId);
             const thisSport  = getSportType(match.category);
             const thisGender = getGender(match.category);
             const thisClasses = getMatchClasses(match);
             const limit      = getSportLimit(thisSport);
 
-            // 1. Check Sport Limit (All matches of same sport in slot)
+            // 1. 統計同時段、同運動的比賽數（ID 統一轉 Number 比對）
             const sportOccupants = scheduledMatches.filter(sm => {
                 if (sm.date !== dateStr || sm.periodIndex !== p) return false;
-                const m = matchesData.find(md => md.id === sm.matchId);
+                const m = matchesData.find(md => Number(md.id) === Number(sm.matchId));
                 return m && getSportType(m.category) === thisSport;
             });
-            
-            // 2. Check Class Conflict (Identify if involved classes are in same-gender matches)
+
+            // 2. 班級衝突（同班同節已有賽事）
             let classConflictReason = null;
-            const scheduledInSlot = scheduledMatches.filter(sm => sm.date === dateStr && sm.periodIndex === p && sm.matchId !== selectedMatchId);
-            
+            const scheduledInSlot = scheduledMatches.filter(sm =>
+                sm.date === dateStr && sm.periodIndex === p && Number(sm.matchId) !== matchIdNum
+            );
+
             for (const sm of scheduledInSlot) {
-                const m = matchesData.find(md => md.id === sm.matchId);
-                if (!m) continue; // Skip if match data is missing (finished/removed)
+                const m = matchesData.find(md => Number(md.id) === Number(sm.matchId));
+                if (!m) continue;
                 const mClasses = getMatchClasses(m);
                 const mGender  = getGender(m.category);
-                
-                // Compare classes
                 for (const cls of thisClasses) {
                     if (mClasses.includes(cls)) {
-                        // Class matched! Check gender.
                         if (mGender === thisGender || mGender === '通用' || thisGender === '通用') {
                             classConflictReason = `${cls} 已有${mGender}子賽事`;
                             break;
@@ -948,8 +947,10 @@ function renderSchedulingTable() {
                 if (classConflictReason) break;
             }
 
-            const isSelf = scheduledMatches.some(sm => sm.matchId === selectedMatchId && sm.date === dateStr && sm.periodIndex === p);
-            const isFull = sportOccupants.length >= limit && !isSelf;
+            const isSelf = scheduledMatches.some(sm =>
+                Number(sm.matchId) === matchIdNum && sm.date === dateStr && sm.periodIndex === p
+            );
+            const isFull    = sportOccupants.length >= limit && !isSelf;
             const isBlocked = (isFull || classConflictReason) && !isSelf;
 
             const slots = classes.map((cls, cidx) => {
