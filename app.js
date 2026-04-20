@@ -939,34 +939,43 @@ function renderSchedulingTable() {
                 td.className = 'cell-blocked';
             }
 
-            // Click to Schedule
-            if (!isBlocked && (allSkill || allPE)) {
-                td.onclick = () => {
-                    if (isSelf) {
-                        if (confirm('確定取消此時段的排程？')) {
-                            const targetId = selectedMatchId;
-                            scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== targetId);
-                            saveScheduledMatches();
-                            removeScheduledMatchFromFirestore(targetId);
-                            renderSchedulingView();
-                        }
-                        return;
-                    }
-                    if (confirm(`確定排入？\n${thisSport} 限制：${sportOccupants.length}/${limit}\n班級狀況：OK (同班不同性別)`)) {
-                        const newMatch = {
-                            matchId: selectedMatchId,
-                            date: dateStr,
-                            periodIndex: p
-                        };
-                        scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== selectedMatchId);
-                        scheduledMatches.push(newMatch);
+            // Click to Schedule (Admin Override mode: Allow everything but warn)
+            td.onclick = () => {
+                const hasWarning = isBlocked || (!allSkill && !allPE);
+                const warningMsg = isBlocked ? (classConflictReason || '時段已滿') : '該時段有正式學科課程';
+
+                if (isSelf) {
+                    if (confirm('確定取消此時段的排程？')) {
+                        const targetId = selectedMatchId;
+                        scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== targetId);
                         saveScheduledMatches();
-                        saveScheduledMatchToFirestore(newMatch);
+                        removeScheduledMatchFromFirestore(targetId);
                         renderSchedulingView();
-                        renderTable();
                     }
+                    return;
+                }
+
+                if (hasWarning) {
+                    if (!confirm(`⚠️ 注意：${warningMsg}，確定要強制排入嗎？`)) return;
+                } else {
+                    if (!confirm(`確定排入此時段？`)) return;
+                }
+                
+                const newMatch = {
+                    matchId: selectedMatchId,
+                    date: dateStr,
+                    periodIndex: p
                 };
-            }
+                
+                // Clear any existing schedule for this specific match first
+                scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== selectedMatchId);
+                scheduledMatches.push(newMatch);
+                saveScheduledMatches();
+                saveScheduledMatchToFirestore(newMatch);
+                renderSchedulingView();
+                renderTable();
+            };
+            td.style.cursor = 'pointer';
 
             // Show classes in cell
             slots.forEach((s, i) => {
