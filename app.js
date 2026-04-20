@@ -534,7 +534,9 @@ function buildTableBody() {
                 b.style.color = '#000';
                 b.style.marginTop = '4px';
                 b.style.fontSize = '0.65rem';
-                b.innerHTML = `${getSportIcon(matchInfo.category)} 賽程：${matchInfo ? matchInfo.teamA + ' vs ' + matchInfo.teamB : '比賽'}`;
+                b.innerHTML = matchInfo 
+                    ? `${getSportIcon(matchInfo.category)} 賽程：${matchInfo.teamA} vs ${matchInfo.teamB}`
+                    : `🏆 已結束賽事 (ID: ${existingMatch.matchId})`;
                 inner.appendChild(b);
             }
 
@@ -817,6 +819,7 @@ function renderSchedulingTable() {
             
             for (const sm of scheduledInSlot) {
                 const m = matchesData.find(md => md.id === sm.matchId);
+                if (!m) continue; // Skip if match data is missing (finished/removed)
                 const mClasses = getMatchClasses(m);
                 const mGender  = getGender(m.category);
                 
@@ -863,16 +866,18 @@ function renderSchedulingTable() {
                 // Show the conflicting match
                 const conflictingSM = scheduledInSlot.find(sm => {
                     const m = matchesData.find(md => md.id === sm.matchId);
-                    return getMatchClasses(m).some(cls => thisClasses.includes(cls));
+                    return m && getMatchClasses(m).some(cls => thisClasses.includes(cls));
                 });
                 if (conflictingSM) {
                     const m = matchesData.find(md => md.id === conflictingSM.matchId);
-                    const info = document.createElement('div');
-                    info.style.fontSize = '0.7rem';
-                    info.style.color = 'var(--text-3)';
-                    info.style.marginTop = '4px';
-                    info.textContent = `衝突：${m.teamA} vs ${m.teamB}`;
-                    inner.appendChild(info);
+                    if (m) {
+                        const info = document.createElement('div');
+                        info.style.fontSize = '0.7rem';
+                        info.style.color = 'var(--text-3)';
+                        info.style.marginTop = '4px';
+                        info.textContent = `衝突：${m.teamA} vs ${m.teamB}`;
+                        inner.appendChild(info);
+                    }
                 }
             } else if (isFull) {
                 td.className = 'cell-blocked';
