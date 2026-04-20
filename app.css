@@ -324,8 +324,17 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
     font-size: 11px; font-weight: 700; padding: 1px 5px; border-radius: 3px;
     flex-shrink: 0; min-width: 36px; text-align: center;
 }
-.slot-subject { font-weight: 600; color: var(--text-1); flex: 1; }
-.slot-teacher { font-size: 11px; color: var(--text-3); }
+.slot-subject { font-weight: 600; color: var(--text-1); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.slot-teacher {
+    font-size: 11px;
+    color: #5f6368;
+    font-weight: 500;
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding-left: 4px;
+    border-left: 1px solid #dadce0;
+    margin-left: 2px;
+}
 .slot-core { opacity: 0.4; }
 
 /* 標籤顏色系統 */
