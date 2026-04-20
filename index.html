@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>排課對照系統 - 羽球盃賽版</title>
+    <title>排課配課系統 - 2026羽球盃賽版</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="index.css">
 </head>
@@ -18,32 +18,48 @@
 <div class="tab-content active" id="tab-comparison">
     <div class="app-layout">
         <aside class="sidebar">
-            <section class="panel">
-                <div class="panel-header">
-                    <span class="panel-icon">🏫</span>
-                    <h2 class="panel-title">班級選取</h2>
-                    <button class="action-link" id="btnClearClasses">清空</button>
-                </div>
-                <div class="class-picker" id="classPicker">
-                    <!-- JS generated -->
-                </div>
-            </section>
-            
-            <section class="panel">
-                <div class="panel-header">
-                    <span class="panel-icon">⚙️</span>
-                    <h2 class="panel-title">可排科目</h2>
-                </div>
-                <input type="search" id="subjectSearch" class="search-input" placeholder="🔍 搜尋科目...">
-                <div class="subject-list" id="subjectList"></div>
-            </section>
+            <button id="sidebarToggle" class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+            <div id="sidebar" class="sidebar-content">
+                <section class="panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">🏫</span>
+                        <h2 class="panel-title">班級選取</h2>
+                        <button class="action-link" id="btnClearClasses">清空</button>
+                    </div>
+                    <div class="class-picker" id="classPicker"></div>
+                </section>
+                
+                <section class="panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">⚙️</span>
+                        <h2 class="panel-title">可排科目</h2>
+                    </div>
+                    <input type="search" id="subjectSearch" class="search-input" placeholder="🔍 搜尋科目...">
+                    <div class="subject-list" id="subjectList"></div>
+                    <div class="subject-actions">
+                        <button class="action-link" id="btnSelectAll">全選</button>
+                        <button class="action-link" id="btnDeselectAll">全不選</button>
+                    </div>
+                    <p class="setting-note">💾 設定自動儲存</p>
+                </section>
+
+                <section class="panel legend-panel">
+                    <div class="legend-row"><span class="legend-dot pe"></span>全班體育</div>
+                    <div class="legend-row"><span class="legend-dot skill"></span>全班可排</div>
+                    <div class="legend-row"><span class="legend-dot partial"></span>部分班可排</div>
+                    <div class="legend-row"><span class="legend-dot blocked"></span>含正課</div>
+                </section>
+            </div>
         </aside>
 
         <main class="main-content">
             <div class="table-controls">
                 <div class="week-nav">
                     <button class="nav-btn" id="btnPrevWeek"><i class="fas fa-chevron-left"></i></button>
-                    <h3 id="weekRange">載入中...</h3>
+                    <div class="week-info">
+                        <span id="weekLabel" class="week-label"></span>
+                        <h3 id="weekRange">載入中...</h3>
+                    </div>
                     <button class="nav-btn" id="btnNextWeek"><i class="fas fa-chevron-right"></i></button>
                     <button class="nav-btn" id="btnToday">今天</button>
                 </div>
@@ -91,7 +107,7 @@
         <main class="main-content">
             <div class="schedule-header">
                 <h2 id="currentSchedulingMatch">請先從左側選擇賽事</h2>
-                <div id="schedulingTips" style="display:none">💡 點選下方推薦時段即可排入賽程</div>
+                <div id="schedulingTips" style="display:none">💡 點選下方建議時段即可排入賽程</div>
             </div>
             
             <div class="table-wrapper">
@@ -107,26 +123,49 @@
             <div class="scheduled-panel" id="scheduledPanel">
                 <div class="panel-header-row">
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <h3 class="panel-title">📅 已排定賽程</h3>
-                        <button onclick="document.getElementById('scheduledPanel').classList.toggle('collapsed')" class="btn-toggle-ui">收合介面</button>
-                    </div>
-                    <div class="panel-actions">
-                        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importScheduleData(event)">
-                        <button class="btn-action" onclick="document.getElementById('importFile').click()">匯入</button>
-                        <button class="btn-action" onclick="exportScheduleData()">下載</button>
-                        <button class="btn-action" onclick="location.reload()" style="background:#3b82f6;color:white">更新</button>
-                        <button class="btn-action" onclick="clearAllSchedules()" style="background:#ef4444;color:white">清空</button>
+                        <h3 class="panel-title">📅 已排定賽程清單</h3>
+                        <button id="btnToggleScheduled" class="btn-toggle-ui"><i class="fas fa-chevron-down"></i> 開啟/收合面板</button>
                     </div>
                 </div>
+                <div id="ghostMatchesAlert" style="display:none; background:#fee2e2; color:#b91c1c; padding:10px; margin: 10px 0; border-radius:4px; font-size:0.9rem;">
+                   ⚠️ 偵測到有賽程落在此週期之外。 <button onclick="rescue502()">快速修正 5/02</button>
+                </div>
+                <!-- 賽程概覽區 -->
+                <div id="scheduledStatsSummary" style="background:#f3f4f6; padding:12px; margin: 10px 0; border-radius:6px; font-size:0.85rem;"></div>
+
                 <div class="scheduled-grid" id="scheduledGrid"></div>
+
+                <div class="admin-actions">
+                    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importScheduleData(event)">
+                    <button class="btn-action" onclick="document.getElementById('importFile').click()"><i class="fas fa-file-import"></i> 匯入</button>
+                    <button class="btn-action" onclick="exportScheduleData()"><i class="fas fa-download"></i> 下載</button>
+                    <button class="btn-action" onclick="location.reload()" style="background:#3b82f6;color:white"><i class="fas fa-sync"></i> 強制更新</button>
+                    <button class="btn-action" onclick="shiftDatesOneDay(1)"><i class="fas fa-calendar-plus"></i> 日期+1</button>
+                    <button class="btn-action" onclick="shiftDatesOneDay(-1)"><i class="fas fa-calendar-minus"></i> 日期-1</button>
+                    <button class="btn-action" onclick="exportSchedule()"><i class="fas fa-print"></i> 列印</button>
+                    <button class="btn-action" onclick="clearAllSchedules()" style="background:#ef4444;color:white"><i class="fas fa-trash"></i> 🗑️ 清除全部</button>
+                </div>
             </div>
         </main>
     </div>
 </div>
 
+<!-- Firebase (v8 legacy mode) -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="firebase-config.js"></script>
-<script src="app.js?v=20260420_final_fix"></script>
+<script src="app.js?v=20260420_stable"></script>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="error-modal" id="errorModal" style="display:none">
+    <div class="error-box">
+        <div class="error-icon">❌</div>
+        <h3>系統錯誤</h3>
+        <pre id="errorMsg"></pre>
+        <button onclick="location.reload()">重新整理</button>
+    </div>
+</div>
+
 </body>
 </html>

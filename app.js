@@ -7,10 +7,9 @@
 
 // ===== 常數 =====
 const PERIOD_NAMES = ['早自習','第1節','第2節','第3節','第4節','第5節','第6節','第7節','課業輔導','精進學習'];
-const PERIOD_TIMES = ['07:40-08:00','08:05-08:50','09:00-09:45','10:00-10:45','11:00-11:45','13:00-13:45','14:00-14:45','15:00-15:45','15:55-16:40','16:45-17:30'];
-const DAYS         = ['Mon','Tue','Wed','Thu','Fri'];
 const DAY_NAMES    = ['週一','週二','週三','週四','週五'];
-const COLORS       = 6; // number of color cycles
+const COLORS       = 10; // 固定為 10 班配色
+const PERIOD_TIMES = ['07:40-08:00','08:05-08:50','09:00-09:45','10:00-10:45','11:00-11:45','13:00-13:45','14:00-14:45','15:00-15:45','15:55-16:40','16:45-17:30'];
 
 const SKILL_KEYWORDS = ['體育','音樂','美術','視覺藝術','表演藝術','童軍','家政','生活科技',
     '資訊科技','機器人','社團','班週會','輔導','健康教育','軍訓','生命教育','藝術','創客','Maker','自習','空堂',
@@ -1137,6 +1136,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ===== 賽事清除工具 =====
+function clearAllSchedules() {
+    if (!confirm('⚠️ 警告：這將徹底清除雲端與本機的所有排程資料！\n此動作不可復原，確定要執行嗎？')) return;
+    if (!confirm('請進行最後確認：資料清除後賽程將全部回到「左側待排清單」。確定？')) return;
+    
+    scheduledMatches = [];
+    saveScheduledMatches();
+    
+    if (window.db) {
+        db.collection('scheduledMatches').get().then(snap => {
+            const batch = db.batch();
+            snap.forEach(doc => batch.delete(doc.ref));
+            return batch.commit();
+        }).then(() => {
+            alert('資料已成功清空！您可以重新排課了。');
+            location.reload();
+        });
+    } else {
+        location.reload();
+    }
+}
+
 // ===== 匯出功能 =====
 function exportSchedule() { window.print(); }
 
@@ -1199,7 +1220,7 @@ function rescue502() {
     }
 }
 
-init();
+// init() 被 DOMContentLoaded 呼叫，此處刪除重複呼叫
 function exportScheduleData() {
     if (scheduledMatches.length === 0) {
         alert('目前沒有排定的賽程資料可匯出！');
