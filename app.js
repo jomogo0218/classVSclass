@@ -711,8 +711,17 @@ async function loadMatches() {
     */
 
     const res = await fetch('matches.json?v=' + Date.now());
-    matchesData = await res.json();
-    console.log("Loaded matches from static JSON (Cache-busted):", matchesData.length);
+    const raw = await res.json();
+
+    // 依 ID 去重複，避免 matches.json 有重複條目導致同一場出現兩次
+    const seen = new Set();
+    matchesData = raw.filter(m => {
+        if (seen.has(m.id)) return false;
+        seen.add(m.id);
+        return true;
+    });
+
+    console.log(`載入賽事：原始 ${raw.length} 筆，去重後 ${matchesData.length} 筆`);
 
     // Auto-migrate if Firestore is empty
     if (window.db && matchesData.length > 0) {
