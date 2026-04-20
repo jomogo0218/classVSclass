@@ -612,18 +612,19 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
 .scheduled-grid { 
     display: grid; 
     grid-template-columns: repeat(5, 1fr); 
-    gap: 0.5rem; 
-    padding: 0.2rem;
-    /* 移除 max-height 與 overflow，讓它完全展開 */
+    gap: 0.3rem; /* 縮減間隔 */
+    padding: 0.1rem;
 }
-.scheduled-day { background: var(--surface); border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.5rem; min-height: 80px; }
+.scheduled-day { background: var(--surface); border: 1px solid var(--border); border-radius: 0.4rem; padding: 0.3rem; min-height: 80px; }
 .scheduled-day h4 { font-size: 0.72rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 3px; margin-bottom: 4px; }
 
 .scheduled-match {
-    display: flex; align-items: center; gap: 12px; /* 橫向並排，間隔 12px */
+    display: flex; align-items: center; gap: 6px; /* 縮減字與字之間的空隙 */
     background: var(--surface-2); border-left: 2px solid var(--accent);
-    padding: 0.4rem 0.8rem; border-radius: 0.4rem; margin-bottom: 4px;
+    padding: 0.3rem 0.5rem; /* 縮減上下左右補白 */
+    border-radius: 0.3rem; margin-bottom: 2px;
     position: relative;
+    overflow: hidden;
 }
 .match-time-tag { 
     font-size: 1.1rem; 
