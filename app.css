@@ -148,7 +148,7 @@ input  { font-family: inherit; }
 
 /* ========== SIDEBAR ========== */
 .sidebar {
-    width: var(--sidebar-w);
+    width: 200px;
     flex-shrink: 0;
     background: var(--surface);
     border-right: 1px solid var(--border);
@@ -548,7 +548,7 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
 }
 
 /* ========== SCHEDULING UI ========== */
-.tab-content#tab-scheduling .sidebar { width: 240px; } /* Slightly narrower sidebar for more table room */
+.tab-content#tab-scheduling .sidebar { width: 180px; } /* 極致縮窄側邊欄，讓課表有最大空間 */
 
 .match-list {
     display: flex; flex-direction: column; gap: 4px;
@@ -612,17 +612,17 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
 .scheduled-grid { 
     display: grid; 
     grid-template-columns: repeat(5, 1fr); 
-    gap: 0.3rem; /* 縮減間隔 */
-    padding: 0.1rem;
+    gap: 4px; /* 極致間距 */
+    padding: 0;
 }
 .scheduled-day { background: var(--surface); border: 1px solid var(--border); border-radius: 0.4rem; padding: 0.3rem; min-height: 80px; }
 .scheduled-day h4 { font-size: 0.72rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 3px; margin-bottom: 4px; }
 
 .scheduled-match {
-    display: flex; align-items: center; gap: 6px; /* 縮減字與字之間的空隙 */
+    display: flex; align-items: center; gap: 4px;
     background: var(--surface-2); border-left: 2px solid var(--accent);
-    padding: 0.3rem 0.5rem; /* 縮減上下左右補白 */
-    border-radius: 0.3rem; margin-bottom: 2px;
+    padding: 0.2rem 0.3rem; /* 最低限度補白 */
+    border-radius: 0.2rem; margin-bottom: 2px;
     position: relative;
     overflow: hidden;
 }
