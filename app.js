@@ -527,10 +527,10 @@ function buildTableBody() {
             slots.forEach(({ cls, cidx, subjClean, teacher, isSkill, isEmpty }) => {
                 if (selectedClasses.length === 1 || !isEmpty) {
                     const row   = document.createElement('div');
-                    row.className = `class-slot slot-color-${cidx % COLORS} ${!isSkill ? 'slot-core' : ''}`;
+                    row.className = `class-slot slot-color-${cidx % 10} ${!isSkill ? 'slot-core' : ''}`;
 
                     const tag   = document.createElement('span');
-                    tag.className   = `slot-class-tag tag-color-${cidx % COLORS}`;
+                    tag.className   = `slot-class-tag tag-color-${cidx % 10}`;
                     tag.textContent = cls.replace(/[^\d\u4e00-\u9fa5]/g,'').slice(-3); // short label
 
                     const sub   = document.createElement('span');
@@ -597,8 +597,26 @@ function updateStats() {
     document.getElementById('statSelected').innerHTML = `已選 <strong>${selectedClasses.length}</strong> 班`;
 }
 
+// ===== 介面控制 =====
+function setupToggleScheduledPanel() {
+    const btn = document.getElementById('btnToggleScheduled');
+    if (!btn) return;
+    btn.onclick = () => {
+        const grid = document.getElementById('scheduledGrid');
+        const icon = btn.querySelector('i');
+        if (grid.style.display === 'none') {
+            grid.style.display = 'grid';
+            icon.style.transform = 'rotate(0deg)';
+        } else {
+            grid.style.display = 'none';
+            icon.style.transform = 'rotate(180deg)';
+        }
+    };
+}
+
 // ===== 頁籤控制 =====
 function setupTabSwitcher() {
+    setupToggleScheduledPanel(); // 確保收合按鈕被初始化
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.onclick = () => {
             const tabId = btn.dataset.tab;
