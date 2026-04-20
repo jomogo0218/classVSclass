@@ -142,7 +142,10 @@ function getMonday(d) {
 }
 
 function isoDate(d) {
-    return d.toISOString().split('T')[0];
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const b = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${b}`;
 }
 
 function shortDate(d) {
