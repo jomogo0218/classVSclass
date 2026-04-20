@@ -407,21 +407,46 @@ function setupMobileSidebar() {
 function renderTable() {
     updateWeekDisplay();
     updateStats();
+    updateScheduleStats(); // 新增統計
 
     const emptyState  = document.getElementById('emptyState');
     const tableScroll = document.getElementById('tableScroll');
 
-    if (selectedClasses.length === 0) {
-        emptyState.style.display  = '';
-        tableScroll.style.display = 'none';
-        return;
-    }
+    // 即使沒選班級也顯示表格，讓使用者看全週賽程
     emptyState.style.display  = 'none';
     tableScroll.style.display = '';
 
     buildTableHead();
     buildTableBody();
 }
+
+function updateScheduleStats() {
+    const summary = document.getElementById('scheduledStatsSummary');
+    if (!summary) return;
+    
+    if (scheduledMatches.length === 0) {
+        summary.innerHTML = "目前尚無任何已排定賽程。";
+        return;
+    }
+
+    const counts = {};
+    scheduledMatches.forEach(m => {
+        counts[m.date] = (counts[m.date] || 0) + 1;
+    });
+
+    const currWeekDates = getWeekDates().map(isoDate);
+    const sortedDates = Object.keys(counts).sort();
+    
+    let html = `<strong>📅 全局賽程分布概覽：</strong><br>`;
+    sortedDates.forEach(d => {
+        const isThisWeek = currWeekDates.includes(d);
+        html += `<span style="display:inline-block; margin-right:12px; ${isThisWeek ? 'color:#10b981; font-weight:bold;' : 'color:#6b7280;'}">
+            ${isThisWeek ? '📍' : '▫️'} ${d.split('-').slice(1).join('/')}: ${counts[d]}場
+        </span>`;
+    });
+    summary.innerHTML = html;
+}
+
 
 function buildTableHead() {
     const thead = document.getElementById('tableHead');
