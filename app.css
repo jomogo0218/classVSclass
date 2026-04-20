@@ -191,25 +191,32 @@ input  { font-family: var(--font); }
 /* ─── 週控制列 ─── */
 .table-controls {
     background: var(--white); border-bottom: 1px solid var(--border);
-    padding: 8px 16px; display: flex; align-items: center; gap: 16px; flex-shrink: 0;
+    padding: 10px 16px; display: flex; align-items: center; gap: 16px; flex-shrink: 0;
 }
-.week-nav { display: flex; align-items: center; gap: 4px; }
-.week-info { text-align: center; min-width: 180px; }
-.week-label { display: block; font-size: 11px; color: var(--blue); font-weight: 700; }
-#weekRange { font-size: 15px; font-weight: 700; color: var(--text-1); }
+.week-nav { display: flex; align-items: center; gap: 8px; }
+.week-info { text-align: center; min-width: 200px; }
+.week-label { display: block; font-size: 11px; color: var(--blue); font-weight: 700; margin-bottom: 1px; }
+#weekRange { font-size: 16px; font-weight: 700; color: var(--text-1); letter-spacing: 0.3px; }
 .nav-btn {
-    background: none; border: 1px solid var(--border);
-    color: var(--text-2); width: 30px; height: 30px;
-    border-radius: 50%; display: grid; place-items: center;
-    font-size: 13px; transition: all 0.15s;
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 14px;
+    transition: all 0.15s;
+    flex-shrink: 0;
 }
-.nav-btn:hover { background: var(--bg); border-color: var(--text-3); }
+.nav-btn:hover { background: var(--bg); border-color: var(--blue); color: var(--blue); }
 .today-btn {
-    width: auto; padding: 0 14px; border-radius: 4px;
-    font-size: 13px; font-weight: 500; color: var(--blue);
-    border-color: var(--blue);
+    width: auto; padding: 0 16px; border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+    color: var(--white); background: var(--blue);
+    border-color: var(--blue); letter-spacing: 0.3px;
+    box-shadow: 0 1px 3px rgba(26,115,232,0.3);
 }
-.today-btn:hover { background: var(--blue-light); }
+.today-btn:hover { background: #1557b0; border-color: #1557b0; }
 
 .stat-bar { display: flex; gap: 16px; }
 .stat-item { font-size: 13px; color: var(--text-2); }
