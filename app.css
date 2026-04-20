@@ -368,8 +368,10 @@ input  { font-family: inherit; }
 .empty-sub { font-size: 0.8rem; margin-top: 0.3rem; }
 
 .table-scroll {
-    width: 100%; height: 100%;
+    width: 100%; 
+    flex: 1; /* 在彈性容器中充滿 */
     overflow: auto;
+    min-height: 0; /* 重要：防止 flex 項目被內容撐開 */
 }
 .table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
 .table-scroll::-webkit-scrollbar-track { background: var(--bg); }
@@ -575,7 +577,12 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
 #schedulingTable .match-badge { padding: 1px 6px; font-size: 0.62rem; }
 
 /* Scheduled Panel */
-.scheduled-panel { padding: 0.8rem 1rem; border-top: 1px solid var(--border); background: rgba(0,0,0,0.05); }
+.scheduled-panel { 
+    padding: 0.8rem 1rem; 
+    border-top: 1px solid var(--border); 
+    background: var(--surface-2);
+    flex-shrink: 0; /* 確保面板不會因為內容多而擠壓上方空間 */
+}
 .panel-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
 .scheduled-panel .panel-title { font-size: 0.85rem; margin-bottom: 0; }
 
@@ -591,7 +598,14 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
 .scheduled-panel.collapsed .scheduled-grid { display: none; }
 .scheduled-panel.collapsed .fa-arrows-alt-v { transform: rotate(-90deg); }
 
-.scheduled-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+.scheduled-grid { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 0.5rem; 
+    max-height: 220px; /* 限制最大高度 */
+    overflow-y: auto;  /* 超過時內部捲動 */
+    padding: 0.2rem;
+}
 .scheduled-day { background: var(--surface); border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.5rem; min-height: 80px; }
 .scheduled-day h4 { font-size: 0.72rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 3px; margin-bottom: 4px; }
 
