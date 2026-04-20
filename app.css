@@ -7,35 +7,35 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-    --bg:           #0a0f1e;
-    --surface:      #111827;
-    --surface-2:    #1a2236;
-    --border:       rgba(255,255,255,0.08);
-    --border-h:     rgba(255,255,255,0.18);
-    --text-1:       #f1f5f9;
-    --text-2:       #94a3b8;
+    --bg:           #f8fafc;
+    --surface:      #ffffff;
+    --surface-2:    #f1f5f9;
+    --border:       rgba(0,0,0,0.12);
+    --border-h:     rgba(0,0,0,0.25);
+    --text-1:       #0f172a;
+    --text-2:       #334155;
     --text-3:       #64748b;
-    --accent:       #38bdf8;
-    --accent-glow:  rgba(56,189,248,0.25);
-    --purple:       #ff41a2; /* Much brighter pink/red */
-    --purple-glow:  rgba(255, 65, 162, 0.4);
-    --green:        #4ade80;
-    --orange:       #fb923c;
-    --red:          #f87171;
-    --yellow:       #fbbf24;
+    --accent:       #0284c7;
+    --accent-glow:  rgba(2,132,199,0.15);
+    --purple:       #d946ef; /* Much brighter pink/red */
+    --purple-glow:  rgba(217, 70, 239, 0.2);
+    --green:        #16a34a;
+    --orange:       #ea580c;
+    --red:          #ef4444;
+    --yellow:       #eab308;
 
     /* Cell highlight colours */
-    --cell-pe:      rgba(251,146,60,0.18);
-    --cell-skill:   rgba(56,189,248,0.13);
-    --cell-partial: rgba(251,191,36,0.10);
-    --cell-blocked: rgba(248, 113, 113, 0.08);
-    --cell-scheduled: rgba(34, 197, 94, 0.7); 
+    --cell-pe:      rgba(234,88,12,0.12);
+    --cell-skill:   rgba(2,132,199,0.12);
+    --cell-partial: rgba(234,179,8,0.12);
+    --cell-blocked: rgba(239, 68, 68, 0.08);
+    --cell-scheduled: rgba(34, 197, 94, 0.3); 
 
     /* Sidebar width */
     --sidebar-w: 300px;
     --topbar-h:  40px;
 
-    color-scheme: dark;
+    color-scheme: light;
 }
 
 html, body { height: 100%; }
@@ -54,7 +54,7 @@ input  { font-family: inherit; }
 .topbar {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     height: var(--topbar-h);
-    background: rgba(17,24,39,0.95);
+    background: rgba(255,255,255,0.95);
     border-bottom: 1px solid var(--border);
     backdrop-filter: blur(20px);
     display: flex;
@@ -575,7 +575,7 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
 #schedulingTable .match-badge { padding: 1px 6px; font-size: 0.62rem; }
 
 /* Scheduled Panel */
-.scheduled-panel { padding: 0.8rem 1rem; border-top: 1px solid var(--border); background: rgba(0,0,0,0.3); }
+.scheduled-panel { padding: 0.8rem 1rem; border-top: 1px solid var(--border); background: rgba(0,0,0,0.05); }
 .panel-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
 .scheduled-panel .panel-title { font-size: 0.85rem; margin-bottom: 0; }
 
