@@ -591,16 +591,28 @@ function getMatchClasses(match) {
     if (!match) return [];
     const classes = [];
     [match.teamA, match.teamB].forEach(teamStr => {
+        if (!teamStr) return;
         const teamClean = teamStr.replace(/\s/g, '');
-        // Match ignoring spaces so '國二4' matches '國二 4'
-        const found = scheduleData.classes.find(c => teamClean.includes(c.replace(/\s/g, '')));
-        if (found) classes.push(found);
-        else {
+        // 1. Exact match ignoring spaces
+        let found = scheduleData.classes.find(c => c.replace(/\s/g, '') === teamClean);
+        
+        // 2. Contains match (longer name in schedule contains team name)
+        if (!found) found = scheduleData.classes.find(c => c.replace(/\s/g, '').includes(teamClean));
+        
+        // 3. Fallback: regex for "Grade Class" format
+        if (!found) {
             const m = teamStr.match(/(高[一二三][\u4e00-\u9fa5]+|國[一二三]\d?)/);
-            if (m) classes.push(m[1]);
+            if (m) found = m[1];
         }
+        
+        if (found) classes.push(found);
     });
-    return [...new Set(classes)];
+    const unique = [...new Set(classes)];
+    if (unique.length === 0) {
+        // Ultimate fallback to prevent selection failure
+        console.warn("Could not detect classes for match:", match.teamA, match.teamB);
+    }
+    return unique;
 }
 
 function getSportLimit(sport) {
@@ -730,17 +742,22 @@ function renderMatchList() {
             </div>
         `;
         el.onclick = () => {
-            selectedMatchId = match.id;
-            
-            // AUTO NAVIGATION: If scheduled, jump to that week
-            if (isScheduled) {
-                const matchDate = new Date(scheduledInfo.date);
-                currentMonday = getMonday(matchDate);
-                // Also update comparison table if needed, though we are in scheduling view
-                renderTable(); 
+            try {
+                selectedMatchId = match.id;
+                
+                // AUTO NAVIGATION: If scheduled, jump to that week
+                if (isScheduled) {
+                    const matchDate = new Date(scheduledInfo.date);
+                    currentMonday = getMonday(matchDate);
+                    renderTable(); 
+                }
+                
+                renderSchedulingView();
+            } catch (err) {
+                console.error("Selection error:", err);
+                selectedMatchId = match.id; // Still set it even if nav fails
+                renderSchedulingView();
             }
-            
-            renderSchedulingView();
         };
         list.appendChild(el);
     });
