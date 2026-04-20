@@ -1,258 +1,136 @@
 /* ============================================================
-   排課配課系統 — 高級旗艦版 (Premium v5)
+   排課配課系統 — 專業賽務標準版 (Standard Professional v6)
+   設計：極簡、高對比、一目了然的清新介面
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap');
-
 :root {
-    /* 高級專業配色 */
-    --brand-primary:   #4f46e5; /* Indigo */
-    --brand-secondary: #0ea5e9; /* Deep Sky Blue */
-    --brand-gradient:  linear-gradient(135deg, #6366f1 0%, #0ea5e9 100%);
-    
-    --bg-main:         #0f172a; /* Deep Slate Blue */
-    --surface-card:    rgba(30, 41, 59, 0.7);
-    --surface-glass:   rgba(30, 41, 59, 0.4);
-    --border-light:    rgba(255, 255, 255, 0.1);
-    --border-glow:     rgba(99, 102, 241, 0.3);
-    
-    --text-primary:    #f8fafc;
-    --text-secondary:  #94a3b8;
+    --bg-main:         #f1f5f9;
+    --surface:         #ffffff;
+    --border:          #e2e8f0;
+    --text-main:       #1e293b;
     --text-muted:      #64748b;
     
-    --green:           #10b981;
-    --orange:          #f59e0b;
-    --red:             #ef4444;
-    --amber:           #fbbf24;
+    /* 專業商務藍 */
+    --accent:          #2563eb;
+    --accent-light:    #dbeafe;
     
-    /* 賽程專用狀態色 */
-    --cell-pe:         rgba(245, 158, 11, 0.08); /* 橘 */
-    --cell-skill:      rgba(14, 165, 233, 0.08); /* 藍 */
-    --cell-partial:    rgba(251, 191, 36, 0.06); /* 黃 */
-    --cell-blocked:    rgba(239, 68, 68, 0.04);   /* 紅 */
-    --cell-scheduled:  rgba(16, 185, 129, 0.25); /* 綠 (已排定) */
+    /* 狀態色：高對比而不刺眼 */
+    --pe-bg:           #fff7ed; --pe-text: #c2410c; 
+    --skill-bg:        #eff6ff; --skill-text: #1d4ed8;
+    --partial-bg:      #fefce8; --partial-text: #a16207;
+    --blocked-bg:      #fdf2f2; --blocked-text: #991b1b;
+    --scheduled-bg:    #dcfce7; --scheduled-text: #166534;
     
-    --topbar-h:        44px; /* 專業窄導航欄 */
-    --sidebar-w:       240px; /* 緊湊側邊欄 */
-    --radius-lg:       12px;
-    --radius-md:       8px;
+    --radius:          6px;
+    --topbar-h:        48px;
+    --sidebar-w:       240px;
 }
 
-/* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
     background: var(--bg-main);
-    color: var(--text-primary);
+    color: var(--text-main);
     overflow: hidden;
     height: 100vh;
-    line-height: 1.5;
 }
 
-button, input { font-family: inherit; }
-button { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
-button:active { transform: scale(0.95); }
-
-/* ========== TOPBAR (旗艦導覽列) ========== */
+/* ========== TABS ========== */
 .main-tabs {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
     height: var(--topbar-h);
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-light);
-    display: flex; align-items: center; justify-content: center; gap: 2rem;
+    background: #fff; border-bottom: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
 }
-
 .tab-btn {
-    background: none; border: none;
-    color: var(--text-secondary); font-size: 0.95rem; font-weight: 600;
-    padding: 0.4rem 1.2rem; position: relative;
+    background: none; border: none; padding: 0.5rem 1.5rem;
+    font-size: 1rem; font-weight: 600; color: var(--text-muted);
 }
-.tab-btn i { margin-right: 8px; opacity: 0.7; }
-.tab-btn.active { color: var(--brand-secondary); font-weight: 800; }
-.tab-btn.active::after {
-    content: ''; position: absolute; bottom: -10px; left: 0; right: 0;
-    height: 3px; background: var(--brand-secondary); border-radius: 4px;
-    box-shadow: 0 0 12px var(--brand-secondary);
-}
+.tab-btn.active { color: var(--accent); border-bottom: 3px solid var(--accent); }
 
 /* ========== LAYOUT ========== */
-.app-layout {
-    display: flex; height: 100vh; padding-top: var(--topbar-h);
-}
+.app-layout { display: flex; height: calc(100vh - var(--topbar-h)); }
 
 .sidebar {
-    width: var(--sidebar-w); flex-shrink: 0;
-    background: rgba(15, 23, 42, 0.5);
-    border-right: 1px solid var(--border-light);
+    width: var(--sidebar-w); background: #fff; border-right: 1px solid var(--border);
     display: flex; flex-direction: column; overflow-y: auto;
 }
 
-.main-content {
-    flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden;
-    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent 60%);
-}
+.main-content { flex: 1; min-width: 0; display: flex; flex-direction: column; background: #f8fafc; }
 
-/* ========== PANELS & CARDS (玻璃面板) ========== */
-.panel {
-    padding: 0.85rem 0.75rem; border-bottom: 1px solid var(--border-light);
-}
-.panel-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.8rem; }
-.panel-icon { font-size: 1.1rem; filter: drop-shadow(0 0 8px var(--brand-secondary)); }
-.panel-title { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.5px; color: #fff; }
+.panel { padding: 1.2rem; border-bottom: 1px solid var(--border); }
+.panel-title { font-size: 1rem; font-weight: 700; color: #334155; margin-bottom: 1rem; }
 
-.action-link {
-    background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-light);
-    color: var(--text-secondary); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem;
-}
-.action-link:hover { color: #fff; border-color: var(--brand-secondary); }
+/* --- Table Controls --- */
+.table-controls { padding: 1rem; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.week-nav { display: flex; align-items: center; gap: 1.5rem; }
+.nav-btn { background: #f1f5f9; border: 1px solid var(--border); padding: 5px 12px; border-radius: var(--radius); cursor: pointer; }
+.nav-btn:hover { background: #e2e8f0; }
+#weekRange { font-size: 1.1rem; font-weight: 700; }
 
-/* --- Search Box --- */
-.search-input {
-    width: 100%; height: 36px; background: rgba(0,0,0,0.2);
-    border: 1px solid var(--border-light); border-radius: var(--radius-md);
-    padding: 0 0.8rem; color: #fff; font-size: 0.85rem;
-    transition: all 0.3s;
-}
-.search-input:focus { border-color: var(--brand-secondary); outline: none; box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2); }
+/* ========== TABLE (像 Excel 一樣專業) ========== */
+.table-wrapper { flex: 1; padding: 1rem; overflow: hidden; }
+.table-scroll { width: 100%; height: 100%; overflow: auto; background: #fff; border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
 
-/* ========== TABLE (旗艦數據表格) ========== */
-.table-controls { padding: 0.8rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.schedule-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.schedule-table th, .schedule-table td { border: 1px solid var(--border); padding: 8px; }
 
-.week-nav { display: flex; align-items: center; gap: 0.7rem; background: rgba(255, 255, 255, 0.03); padding: 6px 14px; border-radius: 50px; border: 1px solid var(--border-light); }
-.nav-btn { background: none; border: none; color: var(--text-primary); font-size: 1rem; width: 30px; height: 30px; border-radius: 50%; }
-.nav-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--brand-secondary); }
-#weekRange { font-size: 1.05rem; font-weight: 900; letter-spacing: 1px; min-width: 180px; text-align: center; }
-
-#btnToday { background: var(--brand-gradient); color: #000; font-weight: 900; border-radius: 20px; font-size: 0.75rem; padding: 2px 10px; }
-
-.table-wrapper { flex: 1; padding: 0 1rem 1rem; overflow: hidden; }
-.table-scroll { width: 100%; height: 100%; overflow: auto; border-radius: var(--radius-lg); border: 1px solid var(--border-light); background: var(--surface-card); }
-
-.schedule-table { width: 100%; border-collapse: separate; border-spacing: 0; }
 .schedule-table thead th {
-    position: sticky; top: 0; z-index: 20; background: #1e293b;
-    padding: 0.6rem; font-size: 0.85rem; font-weight: 800; color: var(--text-secondary);
-    border-bottom: 1px solid var(--border-light);
+    position: sticky; top: 0; z-index: 20; background: #f8fafc;
+    font-size: 0.9rem; color: #475569; font-weight: bold;
 }
-.schedule-table thead th.has-conflict { color: var(--red) !important; background: rgba(239, 68, 68, 0.15); }
-.date-sub { display: block; font-size: 0.7rem; font-weight: 400; margin-top: 2px; opacity: 0.6; }
+.period-cell { position: sticky; left: 0; z-index: 10; background: #f8fafc; width: 90px; text-align: center; }
+.p-name { display: block; font-size: 1rem; font-weight: 700; color: #1e293b; }
+.p-time { display: block; font-size: 0.75rem; color: var(--text-muted); }
 
-.period-cell {
-    position: sticky; left: 0; z-index: 10; background: #1e293b;
-    width: 80px; border-right: 1px solid var(--border-light); text-align: center; padding: 10px;
-}
-.p-name { display: block; font-size: 1.1rem; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
-.p-time { display: block; font-size: 0.65rem; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
+/* --- Cell Colors --- */
+td.cell-pe { background: var(--pe-bg); }
+td.cell-skill { background: var(--skill-bg); }
+td.cell-partial { background: var(--partial-bg); }
+td.cell-blocked { background: var(--blocked-bg); opacity: 0.5; }
+td.cell-scheduled { background: var(--scheduled-bg); border: 2px solid #22c55e !important; }
 
-.schedule-table td { padding: 4px; border: 1px solid rgba(255,255,255,0.02); min-height: 60px; transition: all 0.2s; }
-.schedule-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
-
-/* --- Cell Status Colors --- */
-td.cell-pe { background: var(--cell-pe); }
-td.cell-skill { background: var(--cell-skill); box-shadow: inset 0 0 15px rgba(14, 165, 233, 0.1); }
-td.cell-partial { background: var(--cell-partial); }
-td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; pointer-events: none; }
-
-/* ========== CONTENT ELEMENTS (內容元素) ========== */
-.cell-inner { display: flex; flex-direction: column; gap: 6px; }
-
+/* --- Slot Content --- */
 .class-slot {
-    display: flex; align-items: center; gap: 0.4rem;
-    padding: 4px 8px; border-radius: 6px; font-size: 0.88rem;
-    transition: transform 0.2s; background: rgba(255,255,255,0.03);
+    display: flex; align-items: center; gap: 8px; padding: 4px; border-radius: 4px; margin-bottom: 2px;
 }
-.class-slot:hover { transform: translateX(3px); background: rgba(255,255,255,0.06); }
+.slot-class-tag { font-size: 0.75rem; font-weight: bold; padding: 1px 4px; background: #e2e8f0; border-radius: 3px; min-width: 38px; text-align: center; }
+.slot-subject { font-size: 0.95rem; font-weight: 600; color: #334155; }
+.slot-teacher { font-size: 0.8rem; color: var(--text-muted); }
 
-.slot-class-tag {
-    font-size: 0.68rem; font-weight: 900; padding: 1px 5px; border-radius: 5px;
-    min-width: 32px; text-align: center;
-}
-.slot-subject { font-weight: 800; color: #fff; flex: 1; }
-.slot-teacher { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
+.match-badge { font-size: 0.7rem; font-weight: bold; background: #22c55e; color: #fff; padding: 2px 8px; border-radius: 4px; display: inline-block; }
 
-.match-badge {
-    background: var(--brand-secondary); color: #000; font-weight: 900;
-    font-size: 0.62rem; padding: 1px 8px; border-radius: 30px;
-    align-self: flex-start; margin-top: 2px;
-    box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
-}
+/* ========== SCHEDULING UNIT ========== */
+.match-item { border: 2px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 10px; background: #fff; cursor: pointer; }
+.match-item.active { border-color: var(--accent); background: var(--accent-light); }
+.match-team { font-weight: 700; color: #1e293b; }
 
-/* ========== SCHEDULING (排程儀表板專用) ========== */
-.match-item {
-    background: var(--surface-glass); border: 1px solid var(--border-light);
-    border-radius: var(--radius-md); padding: 0.8rem;
-    margin-bottom: 0.8rem; scale: 1; transition: all 0.2s;
-}
-.match-item:hover { border-color: var(--brand-secondary); scale: 1.02; }
-.match-item.active { border-color: var(--brand-secondary); background: rgba(14, 165, 233, 0.1); box-shadow: 0 0 15px rgba(14, 165, 233, 0.2); }
-
-.match-cat { font-size: 0.65rem; font-weight: 900; color: var(--brand-secondary); text-transform: uppercase; }
-.match-team { font-size: 0.95rem; font-weight: 800; color: #fff; }
-
-#schedulingTips { color: var(--amber); font-weight: 700; background: rgba(251, 191, 36, 0.1); padding: 5px 12px; border-radius: 20px; }
-
-/* ========== SCHEDULED LIST (已排定清單) ========== */
-.scheduled-panel {
-    background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
-    border-top: 1px solid var(--border-light); padding: 1.5rem;
-}
-.scheduled-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
-.scheduled-day { background: rgba(255,255,255,0.03); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border-light); }
-.scheduled-day h4 { font-size: 0.85rem; color: var(--brand-secondary); margin-bottom: 0.8rem; border-bottom: 1px solid var(--border-light); padding-bottom: 6px; }
+/* ========== SCHEDULED LIST (下方清單) ========== */
+.scheduled-panel { background: #fff; border-top: 2px solid var(--border); padding: 1.5rem; }
+.scheduled-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.scheduled-day { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+.scheduled-day h4 { font-size: 0.9rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 8px; }
 
 .scheduled-match {
-    background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--green);
-    padding: 8px 12px; border-radius: 6px; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 8px;
+    background: #fff; border: 1px solid var(--border); padding: 8px; border-radius: 6px; margin-bottom: 5px;
+    display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
-.match-time-tag { font-size: 1.2rem; font-weight: 900; color: var(--green); }
-.match-team-names { font-size: 0.9rem; font-weight: 700; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.match-time-tag { font-size: 1.1rem; font-weight: 800; color: #1e293b; }
+.match-team-names { font-size: 0.9rem; font-weight: 600; color: #475569; flex: 1; }
 
-/* --- Admin Button Style --- */
-.admin-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem; }
-.btn-action {
-    background: rgba(255,255,255,0.05); border: 1px solid var(--border-light);
-    color: var(--text-primary); font-weight: 800; font-size: 0.8rem;
-    padding: 10px 18px; border-radius: 50px;
-}
-.btn-action:hover { background: var(--brand-gradient); color: #000; border-color: transparent; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+/* --- Buttons --- */
+.btn-action { background: #fff; border: 1px solid var(--border); padding: 8px 16px; border-radius: var(--radius); font-weight: 600; cursor: pointer; }
+.btn-action:hover { background: #f8fafc; border-color: var(--accent); color: var(--accent); }
 
-/* ========== CHIP COLORS (自定義色票) ========== */
-.tag-color-0 { background: #3b82f6; color: #fff; }
-.tag-color-1 { background: #8b5cf6; color: #fff; }
-.tag-color-2 { background: #10b981; color: #fff; }
-.tag-color-3 { background: #f59e0b; color: #fff; }
-.tag-color-4 { background: #ec4899; color: #fff; }
-.tag-color-5 { background: #06b6d4; color: #fff; }
-.tag-color-6 { background: #f97316; color: #fff; }
-.tag-color-7 { background: #6366f1; color: #fff; }
-.tag-color-8 { background: #14b8a6; color: #fff; }
-.tag-color-9 { background: #d946ef; color: #fff; }
+/* --- Color Chips --- */
+.tag-color-0 { color: #1e40af; background: #dbeafe; }
+.tag-color-1 { color: #701a75; background: #fdf4ff; }
+.tag-color-2 { color: #065f46; background: #dcfce7; }
+.tag-color-3 { color: #9a3412; background: #ffedd5; }
+.tag-color-4 { color: #831843; background: #fce7f3; }
+.tag-color-5 { color: #164e63; background: #cffafe; }
 
-/* ========== SCROLLBAR ========== */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
-
-/* ========== SCREEN FOR SCHEDULING ========== */
-.table-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
-
-/* ========== MOBILE ========== */
-@media (max-width: 768px) {
-    .main-tabs { gap: 0.5rem; }
-    .app-layout { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border-light); }
-    .scheduled-grid { grid-template-columns: 1fr; }
-}
-
-/* ========== PRINT ========== */
-@media print {
-    body { background: #fff; color: #000; }
-    .main-tabs, .sidebar, .admin-actions, .nav-btn, #btnToday { display: none !important; }
-    .app-layout { display: block; padding: 0; }
-    .schedule-table { border: 2px solid #000; }
-    .schedule-table th, .schedule-table td { border: 1px solid #000; color: #000 !important; }
-}
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
