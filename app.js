@@ -1171,22 +1171,31 @@ function shiftDatesOneDay(delta) {
     }
 }
 
-function renderSchedulingView() {
-    renderMatchList();
-    renderSchedulingTable();
+function rescue502() {
+    if (!confirm('確定要把所有在 5/02 的 63 場賽程通通拉回到 4/27 (週一) 嗎？')) return;
     
-    // Ghost match detection: See if ANY match is outside the currently viewed week
-    const dates = getWeekDates().map(isoDate);
-    const hasGhost = scheduledMatches.some(sm => !dates.includes(sm.date));
-    const alertEl = document.getElementById('ghostMatchesAlert');
-    if (alertEl) {
-        alertEl.style.display = hasGhost ? 'block' : 'none';
-        if (hasGhost) {
-            const list = scheduledMatches.filter(sm => !dates.includes(sm.date))
-                        .map(sm => `${sm.date.split('-').slice(1).join('/')}(節${sm.periodIndex})`)
-                        .slice(0, 5).join(', ');
-            alertEl.innerHTML = `⚠️ 偵測到有賽程落在此週顯示範圍之外：${list}... 請點擊修正按鈕拉回或切換週次。`;
+    const repaired = scheduledMatches.map(m => {
+        if (m.date === '2026-05-02') {
+            return { ...m, date: '2026-04-27' };
         }
+        return m;
+    });
+
+    scheduledMatches = repaired;
+    saveScheduledMatches();
+    
+    if (window.db) {
+        const batch = db.batch();
+        repaired.forEach(m => {
+            const ref = db.collection('scheduledMatches').doc(m.matchId.toString());
+            batch.set(ref, { date: m.date, periodIndex: m.periodIndex });
+        });
+        batch.commit().then(() => {
+            alert('已成功將 5/02 的賽程拉回到 4/27！');
+            location.reload();
+        });
+    } else {
+        location.reload();
     }
 }
 
