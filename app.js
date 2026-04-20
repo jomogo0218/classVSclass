@@ -199,8 +199,14 @@ function updateWeekDisplay() {
     const isToday = isoDate(mon) === isoDate(today);
 
     document.getElementById('weekLabel').textContent = isToday ? '本週' : '';
-    document.getElementById('weekRange').textContent =
-        `${mon.getFullYear()}/${String(mon.getMonth()+1).padStart(2,'0')}/${String(mon.getDate()).padStart(2,'0')} – ${String(fri.getMonth()+1).padStart(2,'0')}/${String(fri.getDate()).padStart(2,'0')}`;
+    const weekRangeText = `${mon.getFullYear()}/${String(mon.getMonth()+1).padStart(2,'0')}/${String(mon.getDate()).padStart(2,'0')} – ${String(fri.getMonth()+1).padStart(2,'0')}/${String(fri.getDate()).padStart(2,'0')}`;
+    document.getElementById('weekRange').textContent = weekRangeText;
+
+    // 同步更新賽程規劃頁面的週次顯示
+    const el2 = document.getElementById('weekRange2');
+    const lb2 = document.getElementById('weekLabel2');
+    if (el2) el2.textContent = weekRangeText;
+    if (lb2) lb2.textContent = isToday ? '本週' : '';
 
     // Conflict banner
     const banner    = document.getElementById('conflictBanner');

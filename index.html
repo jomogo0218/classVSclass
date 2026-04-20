@@ -118,8 +118,20 @@
         <main class="main-content">
             <!-- 對照標題 -->
             <div class="schedule-header">
-                <h2 id="currentSchedulingMatch">請先從左側選擇賽事</h2>
-                <div id="schedulingTips" style="display:none">💡 點選推薦時段（橘色/藍色）即可排入賽程</div>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+                    <h2 id="currentSchedulingMatch" style="flex:1; min-width:160px;">請先從左側選擇賽事</h2>
+                    <!-- 週次切換：委派給課表對照頁的按鈕共用同一套 JS -->
+                    <div class="week-nav">
+                        <button class="nav-btn" onclick="document.getElementById('btnPrevWeek').click()"><i class="fas fa-chevron-left"></i></button>
+                        <div class="week-info">
+                            <span id="weekLabel2" style="font-size:11px; color:var(--blue); font-weight:700; display:block;"></span>
+                            <span id="weekRange2" style="font-size:15px; font-weight:700; color:var(--text-1);">—</span>
+                        </div>
+                        <button class="nav-btn" onclick="document.getElementById('btnNextWeek').click()"><i class="fas fa-chevron-right"></i></button>
+                        <button class="nav-btn today-btn" onclick="document.getElementById('btnToday').click()">今天</button>
+                    </div>
+                </div>
+                <div id="schedulingTips" style="display:none; margin-top:4px; font-size:12px; color:var(--orange);">💡 點選推薦時段（橘色/藍色）即可排入賽程</div>
             </div>
 
             <!-- 排程課表 -->
