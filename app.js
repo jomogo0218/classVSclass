@@ -681,13 +681,25 @@ function renderMatchList() {
     const list = document.getElementById('pendingMatchList');
     list.innerHTML = '';
     
-    // Filter by search and exclude already finished matches
+    // Normalize helper: convert full-width numbers to half-width and remove spaces
+    const normalize = (str) => {
+        return str.normalize('NFKC').replace(/\s/g, '').toLowerCase();
+    };
+
+    const searchNorm = normalize(matchSearchTerm);
+
     const filtered = matchesData.filter(m => {
         if (m.status === '✅ 已結束' || m.status.includes('已結束')) return false;
         
-        const text = (m.category + m.teamA + m.teamB).toLowerCase();
-        return text.includes(matchSearchTerm.toLowerCase());
+        const content = normalize(m.category + m.teamA + m.teamB);
+        return content.includes(searchNorm);
     });
+
+    // Add a counter header for debugging
+    const countHeader = document.createElement('div');
+    countHeader.style = 'padding: 4px 8px; font-size: 0.7rem; color: var(--text-3); font-weight: 700; border-bottom: 1px solid var(--border); margin-bottom: 4px;';
+    countHeader.textContent = `📊 載入賽事：${matchesData.length} 場 (符合：${filtered.length})`;
+    list.appendChild(countHeader);
 
     // Sort: Pending first, then by ID
     const sorted = [...filtered].sort((a, b) => {
