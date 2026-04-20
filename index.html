@@ -198,18 +198,9 @@
                         <button class="btn-action" onclick="document.getElementById('importFile').click()"><i class="fas fa-file-import"></i> 匯入檔</button>
                         <button class="btn-action" onclick="exportScheduleData()"><i class="fas fa-download"></i> 下載檔</button>
                         <button class="btn-action" onclick="location.href = location.pathname + '?v=' + Date.now();" style="background: #3b82f6; color: white; border-color: #3b82f6;"><i class="fas fa-sync"></i> 強制更新程式</button>
-                        <button class="btn-action" onclick="shiftDatesOneDay(1)" style="background: #10b981; color: white; border-color: #10b981;"><i class="fas fa-calendar-plus"></i> 修正日期 (+1天)</button>
-                        <button class="btn-action" onclick="shiftDatesOneDay(-1)" style="background: #f59e0b; color: white; border-color: #f59e0b;"><i class="fas fa-calendar-minus"></i> 修正日期 (-1天)</button>
                         <button class="btn-action" onclick="exportSchedule()"><i class="fas fa-print"></i> 列印/PDF</button>
+                        <button class="btn-action" onclick="clearAllSchedules()" style="background: #ef4444; color: white; border-color: #ef4444;"><i class="fas fa-trash"></i> 清除全部排程</button>
                     </div>
-                </div>
-                <div id="ghostMatchesAlert" style="display:none; background:#fee2e2; color:#b91c1c; padding:10px; margin-bottom:10px; border-radius:4px; font-size:0.9rem;">
-                   ⚠️ 偵測到有賽程落在此日期範圍之外。
-                   <button onclick="rescue502()" style="margin-left:10px; background:#b91c1c; color:white; border:none; padding:2px 8px; border-radius:3px; cursor:pointer;">快速拉回 5/02 的賽程</button>
-                </div>
-                <!-- 新增賽程分布統計欄位 -->
-                <div id="scheduledStatsSummary" style="background:#f3f4f6; padding:8px; margin-bottom:10px; border-radius:4px; font-size:0.8rem; line-height:1.4;">
-                   🔍 讀取賽程分布中...
                 </div>
                 <div class="scheduled-grid" id="scheduledGrid">
                     <!-- Javascript will fill this -->
