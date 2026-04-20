@@ -1177,6 +1177,28 @@ function clearAllSchedules() {
     }
 }
 
+// ===== 診斷工具 =====
+function showDiagnostics() {
+    const total = matchesData.length;
+    const idSet = new Set(matchesData.map(m => m.id));
+    const dupes = total - idSet.size;
+
+    const scheduled = scheduledMatches.length;
+    const recent = scheduledMatches.slice(-5).map(sm => {
+        const m = matchesData.find(x => x.id === sm.matchId);
+        return `• ${sm.date} 第${sm.periodIndex}節 ${m ? m.teamA + ' vs ' + m.teamB : '(未知)'}`;
+    }).join('\n');
+
+    alert(
+        `📊 系統診斷報告\n` +
+        `─────────────────\n` +
+        `賽事總數：${total} 場\n` +
+        `重複 ID 數：${dupes} 筆${dupes > 0 ? ' ⚠️ 有重複！' : ' ✅'}\n` +
+        `已排定場數：${scheduled} 場\n` +
+        `\n最近排定 (最多5筆)：\n${recent || '（尚無排程）'}`
+    );
+}
+
 // ===== 匯出功能 =====
 function exportSchedule() { window.print(); }
 
