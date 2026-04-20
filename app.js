@@ -626,9 +626,9 @@ async function loadMatches() {
         }
     }
 
-    const res = await fetch('matches.json');
+    const res = await fetch('matches.json?v=' + Date.now());
     matchesData = await res.json();
-    console.log("Loaded matches from static JSON:", matchesData.length);
+    console.log("Loaded matches from static JSON (Cache-busted):", matchesData.length);
 
     // Auto-migrate if Firestore is empty
     if (window.db && matchesData.length > 0) {
