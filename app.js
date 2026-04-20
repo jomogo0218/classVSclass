@@ -727,11 +727,15 @@ async function loadMatches() {
     const res = await fetch('matches.json?v=' + Date.now());
     const raw = await res.json();
 
-    // 依 ID 去重複，避免 matches.json 有重複條目導致同一場出現兩次
-    const seen = new Set();
+    // 雙重去重：先依 ID，再依 teamA+teamB+category 內容
+    const seenIds = new Set();
+    const seenContent = new Set();
     matchesData = raw.filter(m => {
-        if (seen.has(m.id)) return false;
-        seen.add(m.id);
+        if (seenIds.has(m.id)) return false;
+        seenIds.add(m.id);
+        const contentKey = `${m.teamA}|${m.teamB}|${m.category}`;
+        if (seenContent.has(contentKey)) return false;
+        seenContent.add(contentKey);
         return true;
     });
 
