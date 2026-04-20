@@ -930,11 +930,11 @@ function renderSchedulingTable() {
                 const actualKey = Object.keys(scheduleData.schedules).find(k => k.replace(/\s/g, '') === targetKey) || cls;
                 
                 const raw = (scheduleData.schedules[actualKey]?.[day]?.[p] || '').trim();
-                const [subj] = raw.split('|');
+                const [subj, teacher] = raw.split('|');
                 const norm = (subj || '').normalize('NFKC').replace(/\s/g,'');
                 const isSkill = !subj || subj === '---' || allowedSubjects.has(norm);
                 const isPE = (subj || '').includes('體育');
-                return { cls, subj, isSkill, isPE };
+                return { cls, subj, teacher: (teacher || '').trim(), isSkill, isPE };
             });
 
             const allSkill = (slots.length > 0) && slots.every(s => s.isSkill);
@@ -1049,7 +1049,10 @@ function renderSchedulingTable() {
             slots.forEach((s, i) => {
                 const row = document.createElement('div');
                 row.className = `class-slot slot-color-${i} ${!s.isSkill ? 'slot-core' : ''}`;
-                row.innerHTML = `<span class="slot-class-tag tag-color-${i}">${s.cls.slice(-3)}</span><span class="slot-subject">${s.subj || '—'}</span>`;
+                const teacherHtml = s.teacher
+                    ? `<span class="slot-teacher">${s.teacher}</span>`
+                    : '';
+                row.innerHTML = `<span class="slot-class-tag tag-color-${i}">${s.cls.slice(-3)}</span><span class="slot-subject">${s.subj || '—'}</span>${teacherHtml}`;
                 inner.appendChild(row);
             });
 
