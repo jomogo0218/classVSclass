@@ -634,7 +634,7 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
     letter-spacing: 0.5px;
 }
 .match-team-names { 
-    font-size: 1rem; 
+    font-size: 0.88rem; /* 調小人名，讓空間更寬裕 */
     font-weight: 700; 
     color: var(--text-2); 
     white-space: nowrap;
