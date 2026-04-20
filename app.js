@@ -457,7 +457,11 @@ function buildTableBody() {
 
             // Collect slot info for each selected class
             const slots = selectedClasses.map((cls, cidx) => {
-                const raw      = (scheduleData.schedules[cls]?.[day]?.[p] || '').trim();
+                // Fuzzy lookup: ignore spaces
+                const targetKey = cls.replace(/\s/g, '');
+                const actualKey = Object.keys(scheduleData.schedules).find(k => k.replace(/\s/g, '') === targetKey) || cls;
+                
+                const raw      = (scheduleData.schedules[actualKey]?.[day]?.[p] || '').trim();
                 const [subj, teacher] = raw.split('|');
                 const subjClean = (subj || '').normalize('NFKC').trim().replace(/\s+/g,' ');
                 const norm      = subjClean.normalize('NFKC').replace(/\s/g,'');
@@ -861,7 +865,10 @@ function renderSchedulingTable() {
             const isBlocked = (isFull || classConflictReason) && !isSelf;
 
             const slots = classes.map((cls, cidx) => {
-                const raw = (scheduleData.schedules[cls]?.[day]?.[p] || '').trim();
+                const targetKey = cls.replace(/\s/g, '');
+                const actualKey = Object.keys(scheduleData.schedules).find(k => k.replace(/\s/g, '') === targetKey) || cls;
+                
+                const raw = (scheduleData.schedules[actualKey]?.[day]?.[p] || '').trim();
                 const [subj] = raw.split('|');
                 const norm = (subj || '').normalize('NFKC').replace(/\s/g,'');
                 const isSkill = !subj || subj === '---' || allowedSubjects.has(norm);
