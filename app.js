@@ -609,6 +609,7 @@ function getSportLimit(sport) {
 }
 
 async function loadMatches() {
+    /* 暫時停用 Firestore 載入，以確保抓到最新的 matches.json 補班資料
     if (window.db) {
         try {
             const snap = await db.collection('matches').get();
@@ -625,6 +626,7 @@ async function loadMatches() {
             console.warn("Firestore matches load failed, using local JSON:", e);
         }
     }
+    */
 
     const res = await fetch('matches.json?v=' + Date.now());
     matchesData = await res.json();
