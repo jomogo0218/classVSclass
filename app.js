@@ -592,12 +592,15 @@ function getMatchClasses(match) {
     const classes = [];
     [match.teamA, match.teamB].forEach(teamStr => {
         if (!teamStr) return;
-        const teamClean = teamStr.replace(/\s/g, '');
-        // 1. Exact match ignoring spaces
-        let found = scheduleData.classes.find(c => c.replace(/\s/g, '') === teamClean);
+        // Normalize: Full-width to half-width and remove spaces
+        const norm = (s) => s.normalize('NFKC').replace(/\s/g, '');
+        const teamMatch = norm(teamStr);
         
-        // 2. Contains match (longer name in schedule contains team name)
-        if (!found) found = scheduleData.classes.find(c => c.replace(/\s/g, '').includes(teamClean));
+        // 1. Exact match ignoring spaces
+        let found = scheduleData.classes.find(c => norm(c) === teamMatch);
+        
+        // 2. Contains match
+        if (!found) found = scheduleData.classes.find(c => norm(c).includes(teamMatch));
         
         // 3. Fallback: regex for "Grade Class" format
         if (!found) {
