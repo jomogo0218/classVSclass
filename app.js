@@ -1095,10 +1095,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ===== 匯出功能 =====
-function exportSchedule() {
-    window.print();
+function exportSchedule() { window.print(); }
+
+function shiftDatesOneDay() {
+    if (!confirm('📅 確定要把所有賽程往後移 1 天嗎？\n\n這通常用於修復之前的「日期偏移」錯誤。\n例如：原本顯示在週一的賽程會移到週二。')) return;
+    
+    const repaired = scheduledMatches.map(m => {
+        let d = new Date(m.date);
+        d.setDate(d.getDate() + 1); // 往後加一天
+        const y = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        return { ...m, date: `${y}-${mm}-${dd}` };
+    });
+
+    scheduledMatches = repaired;
+    saveScheduledMatches();
+    
+    if (window.db) {
+        const batch = db.batch();
+        repaired.forEach(m => {
+            const ref = db.collection('scheduledMatches').doc(m.matchId.toString());
+            batch.set(ref, { date: m.date, periodIndex: m.periodIndex });
+        });
+        batch.commit().then(() => {
+            alert('修正完成！所有賽程已往後挪一天。');
+            location.reload();
+        });
+    } else {
+        location.reload();
+    }
 }
 
+init();
 function exportScheduleData() {
     if (scheduledMatches.length === 0) {
         alert('目前沒有排定的賽程資料可匯出！');
