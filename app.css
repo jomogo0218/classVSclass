@@ -613,9 +613,8 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
     display: grid; 
     grid-template-columns: repeat(5, 1fr); 
     gap: 0.5rem; 
-    max-height: 220px; /* 限制最大高度 */
-    overflow-y: auto;  /* 超過時內部捲動 */
     padding: 0.2rem;
+    /* 移除 max-height 與 overflow，讓它完全展開 */
 }
 .scheduled-day { background: var(--surface); border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.5rem; min-height: 80px; }
 .scheduled-day h4 { font-size: 0.72rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 3px; margin-bottom: 4px; }
