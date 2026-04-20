@@ -1097,12 +1097,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== 匯出功能 =====
 function exportSchedule() { window.print(); }
 
-function shiftDatesOneDay() {
-    if (!confirm('📅 確定要把所有賽程往後移 1 天嗎？\n\n這通常用於修復之前的「日期偏移」錯誤。\n例如：原本顯示在週一的賽程會移到週二。')) return;
+function shiftDatesOneDay(delta) {
+    const label = delta > 0 ? `往後移 ${delta}` : `往前移 ${Math.abs(delta)}`;
+    if (!confirm(`📅 確定要把所有賽程${label}天嗎？`)) return;
     
     const repaired = scheduledMatches.map(m => {
         let d = new Date(m.date);
-        d.setDate(d.getDate() + 1); // 往後加一天
+        d.setDate(d.getDate() + delta); 
         const y = d.getFullYear();
         const mm = String(d.getMonth() + 1).padStart(2, '0');
         const dd = String(d.getDate()).padStart(2, '0');
@@ -1119,11 +1120,30 @@ function shiftDatesOneDay() {
             batch.set(ref, { date: m.date, periodIndex: m.periodIndex });
         });
         batch.commit().then(() => {
-            alert('修正完成！所有賽程已往後挪一天。');
+            alert('修正完成！');
             location.reload();
         });
     } else {
         location.reload();
+    }
+}
+
+function renderSchedulingView() {
+    renderMatchList();
+    renderSchedulingTable();
+    
+    // Ghost match detection: See if ANY match is outside the currently viewed week
+    const dates = getWeekDates().map(isoDate);
+    const hasGhost = scheduledMatches.some(sm => !dates.includes(sm.date));
+    const alertEl = document.getElementById('ghostMatchesAlert');
+    if (alertEl) {
+        alertEl.style.display = hasGhost ? 'block' : 'none';
+        if (hasGhost) {
+            const list = scheduledMatches.filter(sm => !dates.includes(sm.date))
+                        .map(sm => `${sm.date.split('-').slice(1).join('/')}(節${sm.periodIndex})`)
+                        .slice(0, 5).join(', ');
+            alertEl.innerHTML = `⚠️ 偵測到有賽程落在此週顯示範圍之外：${list}... 請點擊修正按鈕拉回或切換週次。`;
+        }
     }
 }
 

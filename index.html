@@ -195,9 +195,13 @@
                         <button class="btn-action" onclick="document.getElementById('importFile').click()"><i class="fas fa-file-import"></i> 匯入檔</button>
                         <button class="btn-action" onclick="exportScheduleData()"><i class="fas fa-download"></i> 下載檔</button>
                         <button class="btn-action" onclick="location.href = location.pathname + '?v=' + Date.now();" style="background: #3b82f6; color: white; border-color: #3b82f6;"><i class="fas fa-sync"></i> 強制更新程式</button>
-                        <button class="btn-action" onclick="shiftDatesOneDay()" style="background: #10b981; color: white; border-color: #10b981;"><i class="fas fa-calendar-check"></i> 修正日期 (+1天)</button>
+                        <button class="btn-action" onclick="shiftDatesOneDay(1)" style="background: #10b981; color: white; border-color: #10b981;"><i class="fas fa-calendar-plus"></i> 修正日期 (+1天)</button>
+                        <button class="btn-action" onclick="shiftDatesOneDay(-1)" style="background: #f59e0b; color: white; border-color: #f59e0b;"><i class="fas fa-calendar-minus"></i> 修正日期 (-1天)</button>
                         <button class="btn-action" onclick="exportSchedule()"><i class="fas fa-print"></i> 列印/PDF</button>
                     </div>
+                </div>
+                <div id="ghostMatchesAlert" style="display:none; background:#fee2e2; color:#b91c1c; padding:10px; margin-bottom:10px; border-radius:4px; font-size:0.9rem;">
+                   ⚠️ 偵測到有賽程落在此日期範圍之外，請使用修正按鈕拉回或切換週次查看。
                 </div>
                 <div class="scheduled-grid" id="scheduledGrid">
                     <!-- Javascript will fill this -->
