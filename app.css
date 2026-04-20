@@ -1,136 +1,488 @@
 /* ============================================================
-   排課配課系統 — 專業賽務標準版 (Standard Professional v6)
-   設計：極簡、高對比、一目了然的清新介面
+   班際盃賽排課系統 — Google Calendar 極簡專業風格
    ============================================================ */
 
 :root {
-    --bg-main:         #f1f5f9;
-    --surface:         #ffffff;
-    --border:          #e2e8f0;
-    --text-main:       #1e293b;
-    --text-muted:      #64748b;
-    
-    /* 專業商務藍 */
-    --accent:          #2563eb;
-    --accent-light:    #dbeafe;
-    
-    /* 狀態色：高對比而不刺眼 */
-    --pe-bg:           #fff7ed; --pe-text: #c2410c; 
-    --skill-bg:        #eff6ff; --skill-text: #1d4ed8;
-    --partial-bg:      #fefce8; --partial-text: #a16207;
-    --blocked-bg:      #fdf2f2; --blocked-text: #991b1b;
-    --scheduled-bg:    #dcfce7; --scheduled-text: #166534;
-    
-    --radius:          6px;
-    --topbar-h:        48px;
-    --sidebar-w:       240px;
+    --font: 'Roboto', 'Noto Sans TC', -apple-system, sans-serif;
+
+    /* Google Calendar 標準配色 */
+    --white:        #ffffff;
+    --bg:           #f8f9fa;
+    --border:       #dadce0;
+    --border-light: #e8eaed;
+    --text-1:       #202124;
+    --text-2:       #3c4043;
+    --text-3:       #80868b;
+    --blue:         #1a73e8;
+    --blue-light:   #e8f0fe;
+    --red:          #d93025;
+    --green:        #188038;
+    --orange:       #e37400;
+
+    /* 格子狀態色 — 柔和不刺眼 */
+    --cell-pe:        #fff3e0;   /* 橘 */
+    --cell-pe-border: #ffb74d;
+    --cell-skill:     #e8f5e9;   /* 綠 */
+    --cell-skill-border: #66bb6a;
+    --cell-partial:   #fffde7;   /* 黃 */
+    --cell-partial-border: #ffd54f;
+    --cell-blocked:   #fafafa;
+    --cell-scheduled: #e8f5e9;
+    --cell-scheduled-border: #34a853;
+
+    /* 尺寸 */
+    --topbar-h:   48px;
+    --sidebar-w:  230px;
+    --radius:     4px;
 }
 
+/* ─── Reset ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+html, body { height: 100%; }
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
-    background: var(--bg-main);
-    color: var(--text-main);
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--text-1);
+    background: var(--bg);
     overflow: hidden;
-    height: 100vh;
 }
+button { cursor: pointer; font-family: var(--font); }
+input  { font-family: var(--font); }
 
-/* ========== TABS ========== */
+/* ─── Tab 頂部 ─── */
 .main-tabs {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     height: var(--topbar-h);
-    background: #fff; border-bottom: 2px solid var(--border);
-    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 4px;
+    padding: 0 16px;
 }
 .tab-btn {
-    background: none; border: none; padding: 0.5rem 1.5rem;
-    font-size: 1rem; font-weight: 600; color: var(--text-muted);
+    background: none; border: none;
+    color: var(--text-3); font-size: 14px; font-weight: 500;
+    padding: 8px 16px; border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
 }
-.tab-btn.active { color: var(--accent); border-bottom: 3px solid var(--accent); }
+.tab-btn i { margin-right: 6px; }
+.tab-btn:hover { background: var(--blue-light); color: var(--blue); }
+.tab-btn.active {
+    color: var(--blue); font-weight: 700;
+    border-bottom: 3px solid var(--blue);
+    border-radius: 0;
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-/* ========== LAYOUT ========== */
-.app-layout { display: flex; height: calc(100vh - var(--topbar-h)); }
+/* ─── 整體佈局 ─── */
+.app-layout {
+    display: flex;
+    height: calc(100vh - var(--topbar-h));
+    padding-top: var(--topbar-h);
+}
 
+/* ─── 側邊欄 ─── */
 .sidebar {
-    width: var(--sidebar-w); background: #fff; border-right: 1px solid var(--border);
-    display: flex; flex-direction: column; overflow-y: auto;
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.panel { padding: 12px 16px; border-bottom: 1px solid var(--border-light); }
+.panel-header {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 10px;
+}
+.panel-icon { font-size: 14px; }
+.panel-title { font-size: 13px; font-weight: 700; color: var(--text-2); flex: 1; }
+
+.action-link {
+    background: none; border: none;
+    color: var(--text-3); font-size: 12px; font-weight: 500;
+    padding: 2px 6px; border-radius: var(--radius);
+    transition: all 0.15s;
+}
+.action-link:hover { color: var(--blue); background: var(--blue-light); }
+.sep { color: var(--border); font-size: 11px; }
+.setting-note { color: var(--text-3); font-size: 11px; margin-top: 6px; }
+
+/* ─── 班級選取 ─── */
+.class-picker { display: flex; flex-direction: column; gap: 8px; }
+.grade-group {}
+.grade-label {
+    font-size: 11px; font-weight: 700; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin-bottom: 4px;
+}
+.grade-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+.class-btn {
+    background: var(--bg); border: 1px solid var(--border);
+    color: var(--text-2); font-size: 12px; font-weight: 500;
+    padding: 5px 2px; border-radius: var(--radius);
+    text-align: center; transition: all 0.15s;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.class-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+.class-btn.active {
+    background: var(--blue); color: var(--white);
+    border-color: var(--blue); font-weight: 700;
 }
 
-.main-content { flex: 1; min-width: 0; display: flex; flex-direction: column; background: #f8fafc; }
+/* ─── 科目設定 ─── */
+.search-input {
+    width: 100%; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 6px 10px;
+    font-size: 13px; color: var(--text-1);
+    background: var(--bg); margin-bottom: 6px; outline: none;
+    transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--blue); background: var(--white); }
+.subject-actions { display: flex; align-items: center; gap: 4px; }
+.subject-list {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; max-height: 200px; overflow-y: auto;
+    margin-bottom: 4px;
+}
+.subject-list::-webkit-scrollbar { width: 3px; }
+.subject-list::-webkit-scrollbar-thumb { background: var(--border); }
+.subject-item {
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer; user-select: none;
+    padding: 4px 6px; border-radius: var(--radius);
+    border: 1px solid transparent; transition: background 0.1s;
+}
+.subject-item:hover { background: var(--bg); }
+.subject-item input { display: none; }
+.subject-check {
+    width: 14px; height: 14px; flex-shrink: 0;
+    border: 1.5px solid var(--text-3); border-radius: 2px;
+    display: grid; place-items: center; transition: all 0.15s;
+}
+.subject-item input:checked + .subject-check {
+    background: var(--blue); border-color: var(--blue);
+}
+.subject-item input:checked + .subject-check::after {
+    content: '✓'; font-size: 9px; color: var(--white); font-weight: 900;
+}
+.subject-name { font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.subject-item input:checked ~ .subject-name { color: var(--text-1); font-weight: 500; }
 
-.panel { padding: 1.2rem; border-bottom: 1px solid var(--border); }
-.panel-title { font-size: 1rem; font-weight: 700; color: #334155; margin-bottom: 1rem; }
+/* ─── 圖例 ─── */
+.legend-panel { display: flex; flex-direction: column; gap: 6px; }
+.legend-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-2); }
+.legend-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+.legend-dot.pe      { background: var(--cell-pe); border: 1px solid var(--cell-pe-border); }
+.legend-dot.skill   { background: var(--cell-skill); border: 1px solid var(--cell-skill-border); }
+.legend-dot.partial { background: var(--cell-partial); border: 1px solid var(--cell-partial-border); }
+.legend-dot.blocked { background: var(--cell-blocked); border: 1px solid var(--border); }
 
-/* --- Table Controls --- */
-.table-controls { padding: 1rem; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.week-nav { display: flex; align-items: center; gap: 1.5rem; }
-.nav-btn { background: #f1f5f9; border: 1px solid var(--border); padding: 5px 12px; border-radius: var(--radius); cursor: pointer; }
-.nav-btn:hover { background: #e2e8f0; }
-#weekRange { font-size: 1.1rem; font-weight: 700; }
+/* ─── 主內容區 ─── */
+.main-content {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
 
-/* ========== TABLE (像 Excel 一樣專業) ========== */
-.table-wrapper { flex: 1; padding: 1rem; overflow: hidden; }
-.table-scroll { width: 100%; height: 100%; overflow: auto; background: #fff; border: 1px solid var(--border); border-radius: 4px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+/* ─── 週控制列 ─── */
+.table-controls {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 8px 16px; display: flex; align-items: center; gap: 16px; flex-shrink: 0;
+}
+.week-nav { display: flex; align-items: center; gap: 4px; }
+.week-info { text-align: center; min-width: 180px; }
+.week-label { display: block; font-size: 11px; color: var(--blue); font-weight: 700; }
+#weekRange { font-size: 15px; font-weight: 700; color: var(--text-1); }
+.nav-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--text-2); width: 30px; height: 30px;
+    border-radius: 50%; display: grid; place-items: center;
+    font-size: 13px; transition: all 0.15s;
+}
+.nav-btn:hover { background: var(--bg); border-color: var(--text-3); }
+.today-btn {
+    width: auto; padding: 0 14px; border-radius: 4px;
+    font-size: 13px; font-weight: 500; color: var(--blue);
+    border-color: var(--blue);
+}
+.today-btn:hover { background: var(--blue-light); }
 
-.schedule-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.schedule-table th, .schedule-table td { border: 1px solid var(--border); padding: 8px; }
+.stat-bar { display: flex; gap: 16px; }
+.stat-item { font-size: 13px; color: var(--text-2); }
+.stat-item strong { color: var(--blue); font-weight: 700; }
 
+.selected-summary { flex: 1; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.no-selection-hint { font-size: 13px; color: var(--text-3); }
+.chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--blue-light); border: 1px solid #c5d9f5;
+    color: var(--blue); border-radius: 16px;
+    padding: 2px 10px; font-size: 12px; font-weight: 500;
+}
+.chip-remove {
+    background: none; border: none; color: var(--blue);
+    font-size: 14px; line-height: 1; padding: 0;
+    opacity: 0.6; transition: opacity 0.15s;
+}
+.chip-remove:hover { opacity: 1; }
+
+/* ─── 衝突橫幅 ─── */
+.conflict-banner {
+    background: #fff8e1; border-bottom: 1px solid #ffe082;
+    color: #e37400; padding: 6px 16px; font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+}
+
+/* ─── 空狀態 ─── */
+.empty-state {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    height: 100%; color: var(--text-3); text-align: center; padding: 2rem;
+}
+.empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+.empty-state p { font-size: 15px; font-weight: 500; }
+.empty-sub { font-size: 13px; margin-top: 4px; font-weight: 400; }
+
+/* ─── Table Wrapper ─── */
+.table-wrapper { flex: 1; overflow: hidden; position: relative; }
+.table-scroll {
+    width: 100%; height: 100%;
+    overflow: auto;
+}
+.table-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.table-scroll::-webkit-scrollbar-track { background: var(--bg); }
+.table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ─── 主表格 (Google Calendar 格線風格) ─── */
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 680px;
+}
+
+/* 表頭 */
 .schedule-table thead th {
-    position: sticky; top: 0; z-index: 20; background: #f8fafc;
-    font-size: 0.9rem; color: #475569; font-weight: bold;
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    border-right: 1px solid var(--border-light);
+    padding: 10px 8px;
+    font-size: 13px; font-weight: 700; color: var(--text-2);
+    text-align: center;
+    position: sticky; top: 0; z-index: 10;
 }
-.period-cell { position: sticky; left: 0; z-index: 10; background: #f8fafc; width: 90px; text-align: center; }
-.p-name { display: block; font-size: 1rem; font-weight: 700; color: #1e293b; }
-.p-time { display: block; font-size: 0.75rem; color: var(--text-muted); }
+.schedule-table thead th.period-col { width: 80px; font-weight: 500; }
+.date-sub { display: block; font-size: 12px; color: var(--text-3); font-weight: 400; margin-top: 2px; }
+.schedule-table thead th.has-conflict { color: var(--red) !important; background: #fff8f8; }
 
-/* --- Cell Colors --- */
-td.cell-pe { background: var(--pe-bg); }
-td.cell-skill { background: var(--skill-bg); }
-td.cell-partial { background: var(--partial-bg); }
-td.cell-blocked { background: var(--blocked-bg); opacity: 0.5; }
-td.cell-scheduled { background: var(--scheduled-bg); border: 2px solid #22c55e !important; }
+/* 節次欄 */
+td.period-cell {
+    background: var(--white);
+    border-right: 2px solid var(--border);
+    border-bottom: 1px solid var(--border-light);
+    text-align: center; padding: 8px 4px;
+    position: sticky; left: 0; z-index: 5;
+}
+.p-name { display: block; font-size: 13px; font-weight: 700; color: var(--text-1); }
+.p-time { display: block; font-size: 11px; color: var(--text-3); margin-top: 2px; }
 
-/* --- Slot Content --- */
+/* 資料格 */
+.schedule-table td {
+    background: var(--white);
+    border-bottom: 1px solid var(--border-light);
+    border-right: 1px solid var(--border-light);
+    padding: 4px;
+    vertical-align: top;
+    min-height: 64px;
+}
+
+/* ─── 格子狀態色 ─── */
+td.cell-pe      { background: var(--cell-pe); }
+td.cell-skill   { background: var(--cell-skill); }
+td.cell-partial { background: var(--cell-partial); }
+td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
+
+/* ─── 格子內容 ─── */
+.cell-inner { display: flex; flex-direction: column; gap: 2px; }
+
 .class-slot {
-    display: flex; align-items: center; gap: 8px; padding: 4px; border-radius: 4px; margin-bottom: 2px;
+    display: flex; align-items: center; gap: 4px;
+    padding: 3px 6px; border-radius: 3px; font-size: 12px;
 }
-.slot-class-tag { font-size: 0.75rem; font-weight: bold; padding: 1px 4px; background: #e2e8f0; border-radius: 3px; min-width: 38px; text-align: center; }
-.slot-subject { font-size: 0.95rem; font-weight: 600; color: #334155; }
-.slot-teacher { font-size: 0.8rem; color: var(--text-muted); }
+.slot-class-tag {
+    font-size: 11px; font-weight: 700; padding: 1px 5px; border-radius: 3px;
+    flex-shrink: 0; min-width: 36px; text-align: center;
+}
+.slot-subject { font-weight: 600; color: var(--text-1); flex: 1; }
+.slot-teacher { font-size: 11px; color: var(--text-3); }
+.slot-core { opacity: 0.4; }
 
-.match-badge { font-size: 0.7rem; font-weight: bold; background: #22c55e; color: #fff; padding: 2px 8px; border-radius: 4px; display: inline-block; }
+/* 標籤顏色系統 */
+.slot-color-0 { background: #e8f4fd; }
+.slot-color-1 { background: #f3e8fd; }
+.slot-color-2 { background: #e8fdf4; }
+.slot-color-3 { background: #fdf5e8; }
+.slot-color-4 { background: #fde8e8; }
+.slot-color-5 { background: #e8fdf8; }
+.slot-color-6 { background: #f5fde8; }
+.slot-color-7 { background: #fde8f5; }
+.slot-color-8 { background: #e8f0fd; }
+.slot-color-9 { background: #fdf8e8; }
 
-/* ========== SCHEDULING UNIT ========== */
-.match-item { border: 2px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 10px; background: #fff; cursor: pointer; }
-.match-item.active { border-color: var(--accent); background: var(--accent-light); }
-.match-team { font-weight: 700; color: #1e293b; }
+.tag-color-0 { background: #1a73e8; color: #fff; }
+.tag-color-1 { background: #9334e6; color: #fff; }
+.tag-color-2 { background: #188038; color: #fff; }
+.tag-color-3 { background: #e37400; color: #fff; }
+.tag-color-4 { background: #d93025; color: #fff; }
+.tag-color-5 { background: #00897b; color: #fff; }
+.tag-color-6 { background: #558b2f; color: #fff; }
+.tag-color-7 { background: #ad1457; color: #fff; }
+.tag-color-8 { background: #1565c0; color: #fff; }
+.tag-color-9 { background: #f57c00; color: #fff; }
 
-/* ========== SCHEDULED LIST (下方清單) ========== */
-.scheduled-panel { background: #fff; border-top: 2px solid var(--border); padding: 1.5rem; }
-.scheduled-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-.scheduled-day { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
-.scheduled-day h4 { font-size: 0.9rem; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 8px; }
+/* 已排定標記 */
+.match-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 3px; margin-top: 2px;
+    background: #34a853; color: var(--white);
+}
+.badge-pe    { background: var(--orange); color: var(--white); }
+.badge-skill { background: var(--blue);   color: var(--white); }
 
+/* ═══════════════ 排程規劃分頁 ═══════════════ */
+
+.match-list {
+    display: flex; flex-direction: column;
+    max-height: calc(100vh - 120px); overflow-y: auto; padding: 4px 0;
+}
+.match-list::-webkit-scrollbar { width: 4px; }
+.match-list::-webkit-scrollbar-thumb { background: var(--border); }
+
+.match-item {
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius); padding: 8px 10px; margin: 2px 0;
+    cursor: pointer; transition: all 0.15s;
+    background: var(--white);
+}
+.match-item:hover { border-color: var(--blue); background: var(--blue-light); }
+.match-item.active { border-color: var(--blue); background: var(--blue-light); }
+.match-item.scheduled { border-left: 3px solid var(--green); }
+
+.match-cat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.match-cat { font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; }
+.match-date-badge { font-size: 11px; background: var(--blue-light); color: var(--blue); padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+.match-teams { display: flex; flex-direction: column; gap: 1px; }
+.match-team { font-size: 13px; font-weight: 600; color: var(--text-1); }
+.match-vs { font-size: 11px; color: var(--text-3); font-weight: 500; }
+
+/* 排程介面頂部標題 */
+.schedule-header {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 10px 16px; flex-shrink: 0;
+}
+.schedule-header h2 { font-size: 15px; font-weight: 700; color: var(--text-1); }
+#schedulingTips { font-size: 12px; color: var(--orange); margin-top: 3px; }
+
+/* 排程格子互動 */
+.scheduling-cell { cursor: pointer; position: relative; }
+.scheduling-cell:hover {
+    outline: 2px solid var(--blue);
+    background: var(--blue-light) !important;
+}
+
+/* ─── 已排定清單面板 ─── */
+.scheduled-panel {
+    background: var(--bg); border-top: 2px solid var(--border);
+    padding: 12px 16px; flex-shrink: 0;
+}
+.panel-header-row {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+}
+.panel-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.btn-action {
+    background: var(--white); border: 1px solid var(--border);
+    color: var(--text-2); font-size: 12px; font-weight: 500;
+    padding: 6px 12px; border-radius: var(--radius);
+    display: inline-flex; align-items: center; gap: 4px; transition: all 0.15s;
+}
+.btn-action:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+.btn-action.btn-danger { color: var(--red); border-color: #fadad7; }
+.btn-action.btn-danger:hover { background: #fce8e6; border-color: var(--red); }
+
+/* 五欄格局 */
+.scheduled-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.scheduled-day {
+    background: var(--white); border: 1px solid var(--border-light);
+    border-radius: var(--radius); padding: 8px; min-height: 80px;
+}
+.scheduled-day h4 {
+    font-size: 12px; font-weight: 700; color: var(--blue);
+    border-bottom: 1px solid var(--border-light); padding-bottom: 4px; margin-bottom: 6px;
+}
 .scheduled-match {
-    background: #fff; border: 1px solid var(--border); padding: 8px; border-radius: 6px; margin-bottom: 5px;
-    display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    display: flex; align-items: center; gap: 6px;
+    background: #e6f4ea; border-left: 3px solid var(--green);
+    padding: 4px 6px; border-radius: 3px; margin-bottom: 4px;
+    position: relative;
 }
-.match-time-tag { font-size: 1.1rem; font-weight: 800; color: #1e293b; }
-.match-team-names { font-size: 0.9rem; font-weight: 600; color: #475569; flex: 1; }
+.match-time-tag { font-size: 12px; font-weight: 700; color: var(--green); white-space: nowrap; }
+.match-team-names { font-size: 12px; font-weight: 500; color: var(--text-1); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.match-remove-btn {
+    background: none; border: none; color: var(--text-3);
+    font-size: 13px; padding: 0 2px; opacity: 0.5;
+}
+.match-remove-btn:hover { color: var(--red); opacity: 1; }
 
-/* --- Buttons --- */
-.btn-action { background: #fff; border: 1px solid var(--border); padding: 8px 16px; border-radius: var(--radius); font-weight: 600; cursor: pointer; }
-.btn-action:hover { background: #f8fafc; border-color: var(--accent); color: var(--accent); }
+/* ─── 手機側欄 ─── */
+.sidebar-toggle { display: none; }
+.sidebar-overlay {
+    display: none; position: fixed; inset: 0; z-index: 150;
+    background: rgba(0,0,0,0.5);
+}
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed; top: var(--topbar-h); left: 0; bottom: 0; z-index: 160;
+        transform: translateX(-100%); transition: transform 0.25s ease;
+    }
+    .sidebar.open { transform: translateX(0); box-shadow: 4px 0 16px rgba(0,0,0,0.2); }
+    .sidebar-overlay.open { display: block; }
+    .scheduled-grid { grid-template-columns: 1fr; }
+}
 
-/* --- Color Chips --- */
-.tag-color-0 { color: #1e40af; background: #dbeafe; }
-.tag-color-1 { color: #701a75; background: #fdf4ff; }
-.tag-color-2 { color: #065f46; background: #dcfce7; }
-.tag-color-3 { color: #9a3412; background: #ffedd5; }
-.tag-color-4 { color: #831843; background: #fce7f3; }
-.tag-color-5 { color: #164e63; background: #cffafe; }
+/* ─── 錯誤視窗 ─── */
+.error-modal {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+}
+.error-box {
+    background: var(--white); border-radius: 8px; padding: 32px;
+    max-width: 560px; width: 90%; text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.error-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.error-box h3 { color: var(--red); font-size: 18px; margin-bottom: 12px; }
+.error-box pre {
+    text-align: left; background: #f8f9fa; border: 1px solid var(--border);
+    padding: 12px; border-radius: 4px; font-size: 12px; color: #d93025;
+    max-height: 200px; overflow-y: auto; white-space: pre-wrap; margin-bottom: 16px;
+}
+.error-box button {
+    background: var(--blue); color: var(--white); border: none;
+    padding: 8px 24px; border-radius: 4px; font-size: 14px; font-weight: 600;
+}
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: #f1f5f9; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+/* ─── 列印 ─── */
+@media print {
+    .main-tabs, .sidebar, .table-controls, .scheduled-panel, .panel-actions { display: none !important; }
+    body { overflow: visible; }
+    .app-layout { display: block; padding-top: 0; height: auto; }
+    .main-content { height: auto; overflow: visible; }
+    .table-wrapper { overflow: visible; height: auto; }
+    .table-scroll { overflow: visible; height: auto; }
+    .schedule-table th, .schedule-table td { border: 1px solid #000 !important; }
+}
