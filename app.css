@@ -414,8 +414,19 @@ td.period-cell {
     position: sticky; left: 0; z-index: 5;
     border-right: 1px solid var(--border);
 }
-.p-name { display: block; font-size: 1rem; font-weight: 800; color: var(--text-1); }
-.p-time { display: block; font-size: 0.78rem; color: var(--text-3); margin-top: 2px; }
+.p-name { 
+    display: block; 
+    font-size: 1.25rem; /* 大字體 */
+    font-weight: 900; 
+    color: var(--text-1); 
+}
+.p-time { 
+    display: block; 
+    font-size: 0.85rem; 
+    color: var(--text-3); 
+    margin-top: 4px; 
+    font-weight: 600;
+}
 
 /* Data Cells */
 .schedule-table td {
@@ -614,12 +625,24 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.45; }
     padding: 0.3rem 0.4rem; border-radius: 0.3rem; margin-bottom: 4px;
     font-size: 0.7rem; position: relative;
 }
-.match-time-tag { font-weight: 800; color: rgba(0,0,0,0.6); margin-bottom: 1px; display: block; font-size: 0.6rem; }
-.match-team-names { font-weight: 700; color: #000; line-height: 1.2; }
-.match-remove-btn {
-    position: absolute; top: 2px; right: 4px;
-    background: none; border: none; font-size: 1rem; color: rgba(0,0,0,0.4);
-    font-weight: 900;
+.match-time-tag { 
+    display: block; 
+    font-size: 1.1rem; /* 顯著加大 */
+    font-weight: 900; 
+    color: var(--text-1); 
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+}
+.match-team-names { 
+    font-size: 1rem; /* 對戰名字也放大 */
+    font-weight: 700; 
+    color: var(--text-2); 
+    line-height: 1.4;
+}
+.match-remove-btn { 
+    position: absolute; top: 6px; right: 8px; /* 移到右上角 */
+    background: transparent; border: none; color: var(--text-3);
+    font-size: 1.2rem; cursor: pointer; opacity: 0.6;
 }
 .match-remove-btn:hover { color: var(--red); }
 
