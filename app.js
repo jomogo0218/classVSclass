@@ -135,10 +135,13 @@ async function init() {
 // ===== 日期工具 =====
 function getMonday(d) {
     const date = new Date(d);
-    date.setHours(0,0,0,0);
-    const day  = date.getDay();
+    date.setHours(0, 0, 0, 0); // Force to local midnight
+    const day = date.getDay();
     const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(date.setDate(diff));
+    const monday = new Date(date);
+    monday.setDate(diff);
+    monday.setHours(0, 0, 0, 0);
+    return monday;
 }
 
 function isoDate(d) {
@@ -146,6 +149,12 @@ function isoDate(d) {
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const b = String(d.getDate()).padStart(2, '0');
     return `${y}-${m}-${b}`;
+}
+
+// NEW: Robust local date parser to avoid timezone offsets
+function parseISO(s) {
+    const [y, m, d] = s.split('-').map(Number);
+    return new Date(y, m - 1, d);
 }
 
 function shortDate(d) {
@@ -757,7 +766,7 @@ function renderMatchList() {
                 
                 // AUTO NAVIGATION: If scheduled, jump to that week
                 if (isScheduled) {
-                    const matchDate = new Date(scheduledInfo.date);
+                    const matchDate = parseISO(scheduledInfo.date);
                     currentMonday = getMonday(matchDate);
                     renderTable(); 
                 }
