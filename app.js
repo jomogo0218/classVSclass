@@ -727,19 +727,15 @@ async function loadMatches() {
     const res = await fetch('matches.json?v=' + Date.now());
     const raw = await res.json();
 
-    // 雙重去重：先依 ID，再依 teamA+teamB+category 內容
+    // 只依 ID 去重，保留所有 matchId 供已排程資料引用
     const seenIds = new Set();
-    const seenContent = new Set();
     matchesData = raw.filter(m => {
         if (seenIds.has(m.id)) return false;
         seenIds.add(m.id);
-        const contentKey = `${m.teamA}|${m.teamB}|${m.category}`;
-        if (seenContent.has(contentKey)) return false;
-        seenContent.add(contentKey);
         return true;
     });
 
-    console.log(`載入賽事：原始 ${raw.length} 筆，去重後 ${matchesData.length} 筆`);
+    console.log(`載入賽事：${matchesData.length} 筆`);
 
     // Auto-migrate if Firestore is empty
     if (window.db && matchesData.length > 0) {
@@ -799,21 +795,29 @@ function renderMatchList() {
 
     const filtered = matchesData.filter(m => {
         if (m.status === '✅ 已結束' || m.status.includes('已結束')) return false;
-        
         const content = normalize(m.category + m.teamA + m.teamB);
         return content.includes(searchNorm);
+    });
+
+    // 視覺去重：同 teamA+teamB+category 只顯示第一筆（不刪原始資料）
+    const seenContent = new Set();
+    const deduped = filtered.filter(m => {
+        const key = `${m.teamA}|${m.teamB}|${m.category}`;
+        if (seenContent.has(key)) return false;
+        seenContent.add(key);
+        return true;
     });
 
     // Add a counter header for debugging
     const countHeader = document.createElement('div');
     countHeader.style = 'padding: 4px 8px; font-size: 0.7rem; color: var(--text-3); font-weight: 700; border-bottom: 1px solid var(--border); margin-bottom: 4px;';
-    countHeader.textContent = `📊 載入賽事：${matchesData.length} 場 (符合：${filtered.length})`;
+    countHeader.textContent = `📊 載入賽事：${matchesData.length} 場 (顯示：${deduped.length})`;
     list.appendChild(countHeader);
 
     // Sort: Pending first, then by ID
-    const sorted = [...filtered].sort((a, b) => {
-        const isAScheduled = scheduledMatches.some(sm => sm.matchId === a.id);
-        const isBScheduled = scheduledMatches.some(sm => sm.matchId === b.id);
+    const sorted = [...deduped].sort((a, b) => {
+        const isAScheduled = scheduledMatches.some(sm => Number(sm.matchId) === Number(a.id));
+        const isBScheduled = scheduledMatches.some(sm => Number(sm.matchId) === Number(b.id));
         if (isAScheduled && !isBScheduled) return 1;
         if (!isAScheduled && isBScheduled) return -1;
         return a.id - b.id;
