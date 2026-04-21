@@ -727,15 +727,15 @@ async function loadMatches() {
     const res = await fetch('matches.json?v=' + Date.now());
     const raw = await res.json();
 
-    // 只依 ID 去重，保留所有 matchId 供已排程資料引用
-    const seenIds = new Set();
+    // 依 ID 去重複，避免 matches.json 有重複條目導致同一場出現兩次
+    const seen = new Set();
     matchesData = raw.filter(m => {
-        if (seenIds.has(m.id)) return false;
-        seenIds.add(m.id);
+        if (seen.has(m.id)) return false;
+        seen.add(m.id);
         return true;
     });
 
-    console.log(`載入賽事：${matchesData.length} 筆`);
+    console.log(`載入賽事：原始 ${raw.length} 筆，去重後 ${matchesData.length} 筆`);
 
     // Auto-migrate if Firestore is empty
     if (window.db && matchesData.length > 0) {
@@ -795,29 +795,21 @@ function renderMatchList() {
 
     const filtered = matchesData.filter(m => {
         if (m.status === '✅ 已結束' || m.status.includes('已結束')) return false;
+        
         const content = normalize(m.category + m.teamA + m.teamB);
         return content.includes(searchNorm);
-    });
-
-    // 視覺去重：同 teamA+teamB+category 只顯示第一筆（不刪原始資料）
-    const seenContent = new Set();
-    const deduped = filtered.filter(m => {
-        const key = `${m.teamA}|${m.teamB}|${m.category}`;
-        if (seenContent.has(key)) return false;
-        seenContent.add(key);
-        return true;
     });
 
     // Add a counter header for debugging
     const countHeader = document.createElement('div');
     countHeader.style = 'padding: 4px 8px; font-size: 0.7rem; color: var(--text-3); font-weight: 700; border-bottom: 1px solid var(--border); margin-bottom: 4px;';
-    countHeader.textContent = `📊 載入賽事：${matchesData.length} 場 (顯示：${deduped.length})`;
+    countHeader.textContent = `📊 載入賽事：${matchesData.length} 場 (符合：${filtered.length})`;
     list.appendChild(countHeader);
 
     // Sort: Pending first, then by ID
-    const sorted = [...deduped].sort((a, b) => {
-        const isAScheduled = scheduledMatches.some(sm => Number(sm.matchId) === Number(a.id));
-        const isBScheduled = scheduledMatches.some(sm => Number(sm.matchId) === Number(b.id));
+    const sorted = [...filtered].sort((a, b) => {
+        const isAScheduled = scheduledMatches.some(sm => sm.matchId === a.id);
+        const isBScheduled = scheduledMatches.some(sm => sm.matchId === b.id);
         if (isAScheduled && !isBScheduled) return 1;
         if (!isAScheduled && isBScheduled) return -1;
         return a.id - b.id;
@@ -900,13 +892,7 @@ function renderSchedulingTable() {
     dates.forEach((d, i) => {
         const dStr = isoDate(d);
         const confs = conflictsForDate(dStr);
-        const confLabel = confs.length ? confs.map(c => c.label).join('、') : '';
-        trH.innerHTML += `
-            <th class="${confs.length ? 'has-conflict' : ''}">
-                ${DAY_NAMES[i]}
-                <span class="date-sub">${shortDate(d)}</span>
-                ${confs.length ? `<span class="conflict-label">⚠ ${confLabel}</span>` : ''}
-            </th>`;
+        trH.innerHTML += `<th class="${confs.length ? 'has-conflict' : ''}">${DAY_NAMES[i]}<span class="date-sub">${shortDate(d)}${confs.length ? ' ⚠' : ''}</span></th>`;
     });
     tableHead.appendChild(trH);
 
@@ -922,32 +908,33 @@ function renderSchedulingTable() {
             inner.className = 'cell-inner';
             const dateStr = isoDate(dates[di]);
 
-            const matchIdNum = Number(selectedMatchId);
+            const match = matchesData.find(m => m.id === selectedMatchId);
             const thisSport  = getSportType(match.category);
             const thisGender = getGender(match.category);
             const thisClasses = getMatchClasses(match);
             const limit      = getSportLimit(thisSport);
 
-            // 1. 統計同時段、同運動的比賽數（ID 統一轉 Number 比對）
+            // 1. Check Sport Limit (All matches of same sport in slot)
             const sportOccupants = scheduledMatches.filter(sm => {
                 if (sm.date !== dateStr || sm.periodIndex !== p) return false;
-                const m = matchesData.find(md => Number(md.id) === Number(sm.matchId));
+                const m = matchesData.find(md => md.id === sm.matchId);
                 return m && getSportType(m.category) === thisSport;
             });
-
-            // 2. 班級衝突（同班同節已有賽事）
+            
+            // 2. Check Class Conflict (Identify if involved classes are in same-gender matches)
             let classConflictReason = null;
-            const scheduledInSlot = scheduledMatches.filter(sm =>
-                sm.date === dateStr && sm.periodIndex === p && Number(sm.matchId) !== matchIdNum
-            );
-
+            const scheduledInSlot = scheduledMatches.filter(sm => sm.date === dateStr && sm.periodIndex === p && sm.matchId !== selectedMatchId);
+            
             for (const sm of scheduledInSlot) {
-                const m = matchesData.find(md => Number(md.id) === Number(sm.matchId));
-                if (!m) continue;
+                const m = matchesData.find(md => md.id === sm.matchId);
+                if (!m) continue; // Skip if match data is missing (finished/removed)
                 const mClasses = getMatchClasses(m);
                 const mGender  = getGender(m.category);
+                
+                // Compare classes
                 for (const cls of thisClasses) {
                     if (mClasses.includes(cls)) {
+                        // Class matched! Check gender.
                         if (mGender === thisGender || mGender === '通用' || thisGender === '通用') {
                             classConflictReason = `${cls} 已有${mGender}子賽事`;
                             break;
@@ -957,10 +944,8 @@ function renderSchedulingTable() {
                 if (classConflictReason) break;
             }
 
-            const isSelf = scheduledMatches.some(sm =>
-                Number(sm.matchId) === matchIdNum && sm.date === dateStr && sm.periodIndex === p
-            );
-            const isFull    = sportOccupants.length >= limit && !isSelf;
+            const isSelf = scheduledMatches.some(sm => sm.matchId === selectedMatchId && sm.date === dateStr && sm.periodIndex === p);
+            const isFull = sportOccupants.length >= limit && !isSelf;
             const isBlocked = (isFull || classConflictReason) && !isSelf;
 
             const slots = classes.map((cls, cidx) => {
@@ -1120,22 +1105,23 @@ function renderScheduledGrid() {
         }
 
         dayMatches.forEach((sm, idx) => {
-            const match = matchesData.find(m => Number(m.id) === Number(sm.matchId));
+            const match = matchesData.find(m => m.id === sm.matchId);
             if (!match) return;
 
-            // 检查同天同节的班级衝突
+            // CROSS-CHECK FOR CONFLICTS WITHIN THE GRID
             let hasConflict = false;
-            const thisGender  = getGender(match.category);
+            const thisGender = getGender(match.category);
             const thisClasses = getMatchClasses(match);
-
+            
             dayMatches.forEach((otherSm, otherIdx) => {
                 if (idx === otherIdx) return;
-                if (sm.periodIndex !== otherSm.periodIndex) return;
-                const otherM = matchesData.find(m => Number(m.id) === Number(otherSm.matchId));
-                if (!otherM) return;   // null 安全檢查
-                const otherGender  = getGender(otherM.category);
+                if (sm.periodIndex !== otherSm.periodIndex) return; // only same period
+                
+                const otherM = matchesData.find(m => m.id === otherSm.matchId);
+                const otherGender = getGender(otherM.category);
                 const otherClasses = getMatchClasses(otherM);
-                for (const cls of thisClasses) {
+                
+                for(const cls of thisClasses) {
                     if (otherClasses.includes(cls)) {
                         if (thisGender === otherGender || thisGender === '通用' || otherGender === '通用') {
                             hasConflict = true;
@@ -1202,18 +1188,6 @@ function clearAllSchedules() {
         });
     } else {
         location.reload();
-    }
-}
-
-// ===== 面板收合 =====
-function toggleScheduledPanel() {
-    const panel = document.getElementById('scheduledPanel');
-    const isCollapsed = panel.classList.toggle('collapsed');
-    const btn = document.getElementById('btnToggleScheduled');
-    if (btn) {
-        btn.innerHTML = isCollapsed
-            ? '<i class="fas fa-chevron-down"></i> 展開'
-            : '<i class="fas fa-chevron-up"></i> 收合';
     }
 }
 
