@@ -583,23 +583,31 @@ function buildTableBody() {
                 }
             }
 
-            // SHOW SCHEDULED MATCH IF ANY
+            // 顯示此時段的所有已排定賽程
             const dateStr = isoDate(getWeekDates()[di]);
-            const existingMatch = scheduledMatches.find(sm => sm.date === dateStr && sm.periodIndex === p);
-            if (existingMatch) {
-                td.style.backgroundColor = 'var(--cell-scheduled)';
-                const matchInfo = matchesData.find(m => m.id === existingMatch.matchId);
-                const b = document.createElement('div');
-                b.className = 'match-badge';
-                b.style.background = 'var(--accent)';
-                b.style.color = '#000';
-                b.style.marginTop = '4px';
-                b.style.fontSize = '0.65rem';
-                b.innerHTML = matchInfo 
-                    ? `${getSportIcon(matchInfo.category)} 賽程：${matchInfo.teamA} vs ${matchInfo.teamB}`
-                    : `🏆 已結束賽事 (ID: ${existingMatch.matchId})`;
-                inner.appendChild(b);
+            const matchesInSlot = scheduledMatches.filter(sm => sm.date === dateStr && sm.periodIndex === p);
+            if (matchesInSlot.length > 0) {
+                td.style.borderLeft = '4px solid #34a853';
+                matchesInSlot.forEach(sm => {
+                    const matchInfo = matchesData.find(m => m.id === sm.matchId);
+                    const b = document.createElement('div');
+                    b.style.cssText = `
+                        background: #e6f4ea;
+                        border: 1px solid #34a853;
+                        border-radius: 4px;
+                        padding: 3px 6px;
+                        margin-top: 3px;
+                        font-size: 11px;
+                        font-weight: 600;
+                        color: #188038;
+                    `;
+                    b.innerHTML = matchInfo
+                        ? `${getSportIcon(matchInfo.category)} ${matchInfo.teamA} vs ${matchInfo.teamB}`
+                        : `🏆 已排定（ID: ${sm.matchId}）`;
+                    inner.appendChild(b);
+                });
             }
+
 
             td.appendChild(inner);
             tr.appendChild(td);
