@@ -74,10 +74,20 @@ function initFirestoreListener() {
         querySnapshot.forEach(doc => {
             matches.push({ matchId: parseInt(doc.id), ...doc.data() });
         });
-        scheduledMatches = matches;
-        console.log("Firestore updated, matches count:", matches.length);
-        
-        // Re-render if we are in the middle of viewing
+
+        // 即時清除幽靈排程：matchId 找不到對應賽事的一律刪除
+        const validIds = new Set(matchesData.map(m => m.id));
+        const ghosts = matches.filter(sm => !validIds.has(sm.matchId));
+        if (ghosts.length > 0) {
+            console.warn(`⚠️ Firestore 含 ${ghosts.length} 筆幽靈排程，清除中...`, ghosts.map(g => g.matchId));
+            ghosts.forEach(sm => {
+                db.collection('scheduledMatches').doc(sm.matchId.toString()).delete();
+            });
+        }
+
+        scheduledMatches = matches.filter(sm => validIds.has(sm.matchId));
+        console.log("Firestore updated, valid matches:", scheduledMatches.length);
+
         if (document.querySelector('.tab-btn[data-tab="scheduling"]').classList.contains('active')) {
             renderSchedulingView();
         } else {
@@ -87,6 +97,7 @@ function initFirestoreListener() {
         console.warn("Firestore error (likely missing config):", err);
     });
 }
+
 
 // ===== 初始化 =====
 async function init() {
