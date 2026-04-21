@@ -127,18 +127,20 @@ async function init() {
         renderTable();
         renderSchedulingView();
 
-        // 自動清理幽靈排程（matchId 在 matchesData 裡找不到的）
-        const validIds = new Set(matchesData.map(m => m.id));
-        const ghostMatches = scheduledMatches.filter(sm => !validIds.has(sm.matchId));
+        // 自動清理幽靈排程（統一用字串比對，避免數字/字串型別不一致）
+        const validIds = new Set(matchesData.map(m => String(m.id)));
+        const ghostMatches = scheduledMatches.filter(sm => !validIds.has(String(sm.matchId)));
         if (ghostMatches.length > 0) {
-            console.warn(`⚠️ 發現 ${ghostMatches.length} 筆幽靈排程，自動清除中...`);
-            scheduledMatches = scheduledMatches.filter(sm => validIds.has(sm.matchId));
+            console.warn(`⚠️ 發現 ${ghostMatches.length} 筆幽靈排程，自動清除中...`, ghostMatches);
+            scheduledMatches = scheduledMatches.filter(sm => validIds.has(String(sm.matchId)));
             saveScheduledMatches();
             if (window.db) {
                 ghostMatches.forEach(sm => removeScheduledMatchFromFirestore(sm.matchId));
             }
+            renderTable();
             renderSchedulingView();
         }
+
 
     } catch (e) {
         document.getElementById('errorModal').style.display = 'flex';
