@@ -648,26 +648,9 @@ function updateStats() {
     document.getElementById('statSelected').innerHTML = `已選 <strong>${selectedClasses.length}</strong> 班`;
 }
 
-// ===== 介面控制 =====
-function setupToggleScheduledPanel() {
-    const btn = document.getElementById('btnToggleScheduled');
-    if (!btn) return;
-    btn.onclick = () => {
-        const grid = document.getElementById('scheduledGrid');
-        const icon = btn.querySelector('i');
-        if (grid.style.display === 'none') {
-            grid.style.display = 'grid';
-            icon.style.transform = 'rotate(0deg)';
-        } else {
-            grid.style.display = 'none';
-            icon.style.transform = 'rotate(180deg)';
-        }
-    };
-}
 
 // ===== 頁籤控制 =====
 function setupTabSwitcher() {
-    setupToggleScheduledPanel(); // 確保收合按鈕被初始化
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.onclick = () => {
             const tabId = btn.dataset.tab;
@@ -1348,3 +1331,24 @@ function importScheduleData(event) {
     };
     reader.readAsText(file);
 }
+
+// ===== 介面收合控制 (對應 index.html 的 onclick) =====
+function toggleScheduledPanel() {
+    const grid = document.getElementById('scheduledGrid');
+    const icon = document.getElementById('scheduledToggleIcon');
+    const btn = document.querySelector('.btn-action i.fa-arrows-alt-v'); // 獲取按鈕中的圖示
+    
+    // 如果目前是 grid 分佈（或是初始狀態），就切換到隱藏
+    const isHidden = (grid.style.display === 'none');
+    
+    if (isHidden) {
+        grid.style.display = 'grid';
+        if (icon) icon.textContent = '▲ 收合';
+        if (btn) btn.style.transform = 'rotate(0deg)';
+    } else {
+        grid.style.display = 'none';
+        if (icon) icon.textContent = '▼ 展開';
+        if (btn) btn.style.transform = 'rotate(180deg)';
+    }
+}
+

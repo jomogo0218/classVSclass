@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="app.css?v=gcal">
+    <link rel="stylesheet" href="app.css?v=20260421-2">
 </head>
 <body>
 
@@ -151,8 +151,9 @@
             <!-- 已排定清單 -->
             <div class="scheduled-panel" id="scheduledPanel">
                 <div class="panel-header-row">
-                    <h3 class="panel-title">📅 本週已排定賽程</h3>
+                    <h3 class="panel-title" id="scheduledPanelTitle" onclick="toggleScheduledPanel()" style="cursor:pointer; user-select:none;">📅 本週已排定賽程 <span id="scheduledToggleIcon" style="font-size:12px; color:var(--text-3); margin-left:4px;">▲ 收合</span></h3>
                     <div class="panel-actions">
+                        <button class="btn-action" onclick="toggleScheduledPanel()" style="background:var(--blue-light); color:var(--blue); border-color:var(--blue);"><i class="fas fa-arrows-alt-v"></i> 收合/展開</button>
                         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importScheduleData(event)">
                         <button class="btn-action" onclick="document.getElementById('importFile').click()"><i class="fas fa-file-import"></i> 匯入</button>
                         <button class="btn-action" onclick="exportScheduleData()" style="background:#16a34a; color:#fff"><i class="fas fa-download"></i> ⬇️ 下載備份</button>
@@ -185,6 +186,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="firebase-config.js"></script>
-<script src="app.js?v=gcal"></script>
+<script src="app.js?v=20260421-2"></script>
 </body>
 </html>
