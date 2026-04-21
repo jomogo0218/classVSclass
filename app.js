@@ -896,7 +896,13 @@ function renderSchedulingTable() {
     dates.forEach((d, i) => {
         const dStr = isoDate(d);
         const confs = conflictsForDate(dStr);
-        trH.innerHTML += `<th class="${confs.length ? 'has-conflict' : ''}">${DAY_NAMES[i]}<span class="date-sub">${shortDate(d)}${confs.length ? ' ⚠' : ''}</span></th>`;
+        const confLabel = confs.length ? confs.map(c => c.label).join('、') : '';
+        trH.innerHTML += `
+            <th class="${confs.length ? 'has-conflict' : ''}">
+                ${DAY_NAMES[i]}
+                <span class="date-sub">${shortDate(d)}</span>
+                ${confs.length ? `<span class="conflict-label">⚠ ${confLabel}</span>` : ''}
+            </th>`;
     });
     tableHead.appendChild(trH);
 
