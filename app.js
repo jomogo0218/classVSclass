@@ -1116,23 +1116,22 @@ function renderScheduledGrid() {
         }
 
         dayMatches.forEach((sm, idx) => {
-            const match = matchesData.find(m => m.id === sm.matchId);
+            const match = matchesData.find(m => Number(m.id) === Number(sm.matchId));
             if (!match) return;
 
-            // CROSS-CHECK FOR CONFLICTS WITHIN THE GRID
+            // 检查同天同节的班级衝突
             let hasConflict = false;
-            const thisGender = getGender(match.category);
+            const thisGender  = getGender(match.category);
             const thisClasses = getMatchClasses(match);
-            
+
             dayMatches.forEach((otherSm, otherIdx) => {
                 if (idx === otherIdx) return;
-                if (sm.periodIndex !== otherSm.periodIndex) return; // only same period
-                
-                const otherM = matchesData.find(m => m.id === otherSm.matchId);
-                const otherGender = getGender(otherM.category);
+                if (sm.periodIndex !== otherSm.periodIndex) return;
+                const otherM = matchesData.find(m => Number(m.id) === Number(otherSm.matchId));
+                if (!otherM) return;   // null 安全檢查
+                const otherGender  = getGender(otherM.category);
                 const otherClasses = getMatchClasses(otherM);
-                
-                for(const cls of thisClasses) {
+                for (const cls of thisClasses) {
                     if (otherClasses.includes(cls)) {
                         if (thisGender === otherGender || thisGender === '通用' || otherGender === '通用') {
                             hasConflict = true;
