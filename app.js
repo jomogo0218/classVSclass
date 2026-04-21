@@ -88,11 +88,9 @@ function initFirestoreListener() {
         scheduledMatches = matches.filter(sm => validIds.has(sm.matchId));
         console.log("Firestore updated, valid matches:", scheduledMatches.length);
 
-        if (document.querySelector('.tab-btn[data-tab="scheduling"]').classList.contains('active')) {
-            renderSchedulingView();
-        } else {
-            renderTable();
-        }
+        // 同步更新兩個 Tab
+        renderTable();
+        renderSchedulingView();
     }, err => {
         console.warn("Firestore error (likely missing config):", err);
     });
