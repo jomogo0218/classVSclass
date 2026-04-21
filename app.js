@@ -52,18 +52,30 @@ let matchSearchTerm   = '';
 
 // Helper to get Icon
 function getSportIcon(cat) {
-    if (cat.includes('籃球') || cat.includes('籃')) return '<span style="font-size:1.1rem; vertical-align:middle; margin-right:4px;">🏀</span>';
-    if (cat.includes('排球') || cat.includes('排')) return '<span style="font-size:1.1rem; vertical-align:middle; margin-right:4px;">🏐</span>';
+    const isMale   = cat.includes('男');
+    const isFemale = cat.includes('女');
+    const genderTag = isMale
+        ? `<span style="font-size:0.75rem;color:#1a73e8;font-weight:900;vertical-align:middle;">♂</span>`
+        : isFemale
+        ? `<span style="font-size:0.75rem;color:#d93025;font-weight:900;vertical-align:middle;">♀</span>`
+        : '';
+
+    if (cat.includes('籃球') || cat.includes('籃')) {
+        return `<span style="font-size:1.1rem;vertical-align:middle;margin-right:2px;">🏀</span>${genderTag} `;
+    }
+    if (cat.includes('排球') || cat.includes('排')) {
+        return `<span style="font-size:1.1rem;vertical-align:middle;margin-right:2px;">🏐</span>${genderTag} `;
+    }
     if (cat.includes('羽球') || cat.includes('羽')) {
-        // Unmistakable Custom Shuttlecock Silhouette
-        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width:1.2rem;height:1.2rem;fill:currentColor;vertical-align:-0.125em;margin-right:4px;">
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width:1.1rem;height:1.1rem;fill:currentColor;vertical-align:-0.125em;margin-right:2px;">
             <path d="M 144 300 L 64 128 L 128 32 L 192 192 L 256 32 L 320 192 L 384 32 L 448 128 L 368 300 Z" />
             <path d="M 150 320 L 362 320 L 354 360 L 158 360 Z" />
             <path d="M 160 380 L 352 380 A 96 96 0 0 1 160 380 Z" />
-        </svg>`;
+        </svg>${genderTag} `;
     }
     return '🏆';
 }
+
 
 // NEW: Initialize Firestore Listener
 function initFirestoreListener() {
