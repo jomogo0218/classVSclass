@@ -49,6 +49,7 @@ let matchesData       = []; // all matches from JSON
 let scheduledMatches  = []; // [{ matchId, date, periodIndex }]
 let selectedMatchId   = null;
 let matchSearchTerm   = '';
+let showOnlyDupes     = false; // 重複檢查模式
 
 // Helper to get Icon
 function getSportIcon(cat) {
@@ -115,6 +116,7 @@ async function init() {
         const res = await fetch('schedules.json');
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         scheduleData = await res.json();
+        console.log("1. schedules.json 載入成功");
 
         loadSubjectSettings();
         buildClassPicker();
@@ -122,11 +124,14 @@ async function init() {
         setupWeekControls();
         setupMobileSidebar();
         setupTabSwitcher(); 
+        console.log("2. 基本介面組件初始化完成");
         
         await loadMatches(); 
+        console.log("3. matches.json 載入完成，目前賽事數:", matchesData.length);
         
         // Try to load from Firestore, otherwise fallback to LocalStorage
         if (window.db) {
+            console.log("4. 偵測到 Firestore，啟動監聽器");
             initFirestoreListener();
             // Optional: Migration from LocalStorage if Firestore is empty
             db.collection('scheduledMatches').limit(1).get().then(snap => {
@@ -137,11 +142,12 @@ async function init() {
                             const parsed = JSON.parse(localData);
                             console.log("Migrating LocalStorage data to Firestore...");
                             parsed.forEach(m => saveScheduledMatchToFirestore(m));
-                        } catch(e) {}
+                        } catch(e) { console.error("Migration error:", e); }
                     }
                 }
-            });
+            }).catch(err => console.error("Firestore get failed:", err));
         } else {
+            console.log("4. 無 Firestore，使用 LocalStorage");
             loadScheduledMatches(); 
         }
         
@@ -461,6 +467,29 @@ function renderTable() {
 
     buildTableHead();
     buildTableBody();
+
+    // --- 顯示行事曆重要事件提醒 ---
+    const banner = document.getElementById('conflictBanner');
+    if (banner) {
+        const dates = getWeekDates();
+        const weekEvents = [];
+        dates.forEach(d => {
+            const dStr = isoDate(d);
+            const confs = conflictsForDate(dStr);
+            confs.forEach(c => {
+                if (!weekEvents.includes(c.label)) weekEvents.push(c.label);
+            });
+        });
+
+        if (weekEvents.length > 0) {
+            banner.style.display = 'flex';
+            banner.style.alignItems = 'center';
+            banner.style.gap = '8px';
+            banner.innerHTML = `<i class="fas fa-exclamation-triangle"></i> <strong>本週重要事項提醒：</strong> ${weekEvents.join('、')}`;
+        } else {
+            banner.style.display = 'none';
+        }
+    }
 }
 
 function updateScheduleStats() {
@@ -507,8 +536,13 @@ function buildTableHead() {
         const dStr  = isoDate(date);
         const confs = conflictsForDate(dStr);
         const th    = document.createElement('th');
-        if (confs.length) th.classList.add('has-conflict');
-        th.innerHTML = `${DAY_NAMES[i]}<span class="date-sub">${shortDate(date)}${confs.length ? ' ⚠' : ''}</span>`;
+        if (confs.length) {
+            th.classList.add('has-conflict');
+            const eventLabels = confs.map(c => c.label).join('、');
+            th.innerHTML = `${DAY_NAMES[i]}<span class="date-sub">${shortDate(date)} <span style="color:var(--red); font-weight:bold;">⚠ ${eventLabels}</span></span>`;
+        } else {
+            th.innerHTML = `${DAY_NAMES[i]}<span class="date-sub">${shortDate(date)}</span>`;
+        }
         tr.appendChild(th);
     });
 
@@ -718,50 +752,31 @@ function getSportLimit(sport) {
     return 1;
 }
 
+// ===== 賽事載入 (純本地版) =====
 async function loadMatches() {
-    /* 暫時停用 Firestore 載入，以確保抓到最新的 matches.json 補班資料
-    if (window.db) {
-        try {
-            const snap = await db.collection('matches').get();
-            if (!snap.empty) {
-                const matches = [];
-                snap.forEach(doc => {
-                    matches.push({ id: parseInt(doc.id), ...doc.data() });
-                });
-                matchesData = matches.sort((a,b) => a.id - b.id);
-                console.log("Loaded matches from Firestore:", matchesData.length);
-                return;
-            }
-        } catch (e) {
-            console.warn("Firestore matches load failed, using local JSON:", e);
-        }
-    }
-    */
-
-    const res = await fetch('matches.json?v=' + Date.now());
-    const raw = await res.json();
-
-    // 依 ID 去重複，避免 matches.json 有重複條目導致同一場出現兩次
-    const seen = new Set();
-    matchesData = raw.filter(m => {
-        if (seen.has(m.id)) return false;
-        seen.add(m.id);
-        return true;
-    });
-
-    console.log(`載入賽事：原始 ${raw.length} 筆，去重後 ${matchesData.length} 筆`);
-
-    // Auto-migrate if Firestore is empty
-    if (window.db && matchesData.length > 0) {
-        db.collection('matches').limit(1).get().then(snap => {
-            if (snap.empty) {
-                console.log("Migrating matchesData to Firestore...");
-                matchesData.forEach(m => {
-                    const { id, ...data } = m;
-                    db.collection('matches').doc(id.toString()).set(data);
-                });
-            }
+    try {
+        console.log("正在從本地載入賽事資料 (matches.json)...");
+        const res = await fetch('matches.json?v=' + Date.now());
+        if (!res.ok) throw new Error(`無法讀取 matches.json (HTTP ${res.status})`);
+        
+        const raw = await res.json();
+        
+        // 讀取已經被「本地刪除」的賽事 ID
+        const deletedIds = JSON.parse(localStorage.getItem('classVSclass_deleted_matches') || '[]');
+        
+        // 依 ID 去重複，確保資料乾淨，同時過濾掉已經刪除的比賽
+        const seen = new Set();
+        matchesData = raw.filter(m => {
+            if (seen.has(m.id)) return false;
+            if (deletedIds.includes(String(m.id)) || deletedIds.includes(m.id)) return false;
+            seen.add(m.id);
+            return true;
         });
+
+        console.log(`✅ 成功載入賽事：目前共有 ${matchesData.length} 場。`);
+    } catch (err) {
+        console.error("載入賽事失敗:", err);
+        alert("錯誤：無法載入賽事清單，請確認 matches.json 檔案是否存在。");
     }
 }
 
@@ -810,6 +825,16 @@ function renderMatchList() {
     const filtered = matchesData.filter(m => {
         if (m.status === '✅ 已結束' || m.status.includes('已結束')) return false;
         
+        // 如果開啟了重複檢查模式
+        if (showOnlyDupes) {
+            const key = [m.category, m.teamA, m.teamB].map(s => s.trim().replace(/\s/g, '')).sort().join('|');
+            const isDupe = matchesData.filter(other => {
+                const otherKey = [other.category, other.teamA, other.teamB].map(s => s.trim().replace(/\s/g, '')).sort().join('|');
+                return key === otherKey;
+            }).length > 1;
+            if (!isDupe) return false;
+        }
+
         const content = normalize(m.category + m.teamA + m.teamB);
         return content.includes(searchNorm);
     });
@@ -838,7 +863,12 @@ function renderMatchList() {
         el.innerHTML = `
             <div class="match-cat-row">
                 <span class="match-cat">${getSportIcon(match.category)} ${match.category} ${isScheduled ? '✅' : ''}</span>
-                ${isScheduled ? `<span class="match-date-badge">${scheduledInfo.date.split('-').slice(1).join('/')} ${PERIOD_NAMES[scheduledInfo.periodIndex]}</span>` : ''}
+                <div style="display:flex; gap:8px; align-items:center;">
+                    ${isScheduled ? `<span class="match-date-badge">${scheduledInfo.date.split('-').slice(1).join('/')} ${PERIOD_NAMES[scheduledInfo.periodIndex]}</span>` : ''}
+                    <button class="match-delete-btn" onclick="event.stopPropagation(); deleteMatch(${match.id})" title="永久刪除此賽事">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
             </div>
             <div class="match-teams">
                 <span class="match-team">${match.teamA}</span>
@@ -871,6 +901,72 @@ function renderMatchList() {
         matchSearchTerm = e.target.value;
         renderMatchList();
     };
+}
+
+function toggleDupeFilter() {
+    showOnlyDupes = !showOnlyDupes;
+    const btn = document.getElementById('btnFilterDupes');
+    if (showOnlyDupes) {
+        btn.style.background = 'var(--red)';
+        btn.style.color = 'white';
+        btn.innerHTML = '<i class="fas fa-times"></i> 關閉檢查模式';
+    } else {
+        btn.style.background = 'var(--blue-light)';
+        btn.style.color = 'var(--blue)';
+        btn.innerHTML = '<i class="fas fa-clone"></i> ⚠️ 檢查重複';
+    }
+    renderMatchList();
+}
+
+async function deleteMatch(matchId) {
+    const match = matchesData.find(m => String(m.id) === String(matchId));
+    if (!match) {
+        console.error("Match not found for ID:", matchId);
+        return;
+    }
+
+    const confirmMsg = `⚠️ 確定要永久刪除此賽事嗎？\n\n盃賽：${match.category}\n對戰：${match.teamA} VS ${match.teamB}\n\n※ 注意：如果此賽事已排入賽程，排程也會一併移除！`;
+    if (!confirm(confirmMsg)) return;
+
+    // 1. 【本地優先】統一用字串比對確認刪除
+    const idStr = String(matchId);
+    matchesData = matchesData.filter(m => String(m.id) !== idStr);
+    scheduledMatches = scheduledMatches.filter(sm => String(sm.matchId) !== idStr);
+    
+    // 【修改】將刪除紀錄永久存入 LocalStorage，確保重整網頁後依然不會出現
+    const deletedIds = JSON.parse(localStorage.getItem('classVSclass_deleted_matches') || '[]');
+    if (!deletedIds.includes(idStr)) {
+        deletedIds.push(idStr);
+        localStorage.setItem('classVSclass_deleted_matches', JSON.stringify(deletedIds));
+    }
+    
+    // 儲存本地並刷新所有 UI
+    saveScheduledMatches();
+    renderMatchList();
+    if (String(selectedMatchId) === idStr) {
+        selectedMatchId = null;
+        renderSchedulingTable();
+    }
+    renderScheduledGrid();
+    renderTable();
+
+    console.log(`✅ 本地已刪除賽事 ID: ${idStr}`);
+
+    // 2. 【同步雲端】
+    if (window.db) {
+        // 嘗試從可能存在的兩個 collection 中刪除
+        try {
+            db.collection('matches').doc(idStr).delete().then(() => {
+                console.log(`☁️ 雲端 matches 同步刪除成功: ${idStr}`);
+            }).catch(e => console.warn("Firestore match delete skip:", e.message));
+
+            db.collection('scheduledMatches').doc(idStr).delete().then(() => {
+                console.log(`☁️ 雲端 scheduledMatches 同步刪除成功: ${idStr}`);
+            }).catch(e => console.warn("Firestore schedule delete skip:", e.message));
+        } catch (e) {
+            console.error("Firestore sync error:", e);
+        }
+    }
 }
 
 function renderSchedulingTable() {
@@ -906,7 +1002,12 @@ function renderSchedulingTable() {
     dates.forEach((d, i) => {
         const dStr = isoDate(d);
         const confs = conflictsForDate(dStr);
-        trH.innerHTML += `<th class="${confs.length ? 'has-conflict' : ''}">${DAY_NAMES[i]}<span class="date-sub">${shortDate(d)}${confs.length ? ' ⚠' : ''}</span></th>`;
+        if (confs.length) {
+            const eventLabels = confs.map(c => c.label).join('、');
+            trH.innerHTML += `<th class="has-conflict">${DAY_NAMES[i]}<span class="date-sub">${shortDate(d)} <span style="color:var(--red); font-weight:bold;">⚠ ${eventLabels}</span></span></th>`;
+        } else {
+            trH.innerHTML += `<th>${DAY_NAMES[i]}<span class="date-sub">${shortDate(d)}</span></th>`;
+        }
     });
     tableHead.appendChild(trH);
 
@@ -1132,6 +1233,8 @@ function renderScheduledGrid() {
                 if (sm.periodIndex !== otherSm.periodIndex) return; // only same period
                 
                 const otherM = matchesData.find(m => m.id === otherSm.matchId);
+                if (!otherM) return; // 防呆：如果找不到對照賽事資料則跳過
+                
                 const otherGender = getGender(otherM.category);
                 const otherClasses = getMatchClasses(otherM);
                 
@@ -1211,20 +1314,45 @@ function showDiagnostics() {
     const idSet = new Set(matchesData.map(m => m.id));
     const dupes = total - idSet.size;
 
+    // 取得已刪除名單
+    const deletedIds = JSON.parse(localStorage.getItem('classVSclass_deleted_matches') || '[]');
+    
     const scheduled = scheduledMatches.length;
     const recent = scheduledMatches.slice(-5).map(sm => {
         const m = matchesData.find(x => x.id === sm.matchId);
         return `• ${sm.date} 第${sm.periodIndex}節 ${m ? m.teamA + ' vs ' + m.teamB : '(未知)'}`;
     }).join('\n');
 
-    alert(
-        `📊 系統診斷報告\n` +
-        `─────────────────\n` +
-        `賽事總數：${total} 場\n` +
-        `重複 ID 數：${dupes} 筆${dupes > 0 ? ' ⚠️ 有重複！' : ' ✅'}\n` +
-        `已排定場數：${scheduled} 場\n` +
-        `\n最近排定 (最多5筆)：\n${recent || '（尚無排程）'}`
-    );
+    let msg = `📊 系統診斷與紀錄報告\n` +
+              `───────────────────\n` +
+              `✅ 目前顯示賽事：${total} 場\n` +
+              `⛔ 已手動刪除(隱藏)：${deletedIds.length} 場\n` +
+              `📌 已排入課表：${scheduled} 場\n` +
+              `───────────────────\n`;
+              
+    if (deletedIds.length > 0) {
+        msg += `\n🗑️ 被刪除的 ID 清單：\n${deletedIds.join(', ')}\n`;
+        msg += `\n(若需找回這些比賽，請使用「恢復所有隱藏賽事」功能)\n`;
+    }
+
+    msg += `\n🕒 最近排定記錄：\n${recent || '（無排程紀錄）'}`;
+
+    alert(msg);
+}
+
+// 恢復所有已刪除赛次
+function restoreDeletedMatches() {
+    const deletedIds = JSON.parse(localStorage.getItem('classVSclass_deleted_matches') || '[]');
+    if (deletedIds.length === 0) {
+        alert("目前沒有任何被隱藏的賽事。");
+        return;
+    }
+    
+    if (confirm(`確定要恢復這 ${deletedIds.length} 場被隱藏的賽事嗎？`)) {
+        localStorage.removeItem('classVSclass_deleted_matches');
+        alert("✅ 已成功恢復！網頁將重新整理載入完整資料。");
+        location.reload();
+    }
 }
 
 // ===== 匯出功能 =====

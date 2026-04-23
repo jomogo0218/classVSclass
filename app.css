@@ -394,6 +394,14 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
 .match-teams { display: flex; flex-direction: column; gap: 1px; }
 .match-team { font-size: 13px; font-weight: 600; color: var(--text-1); }
 .match-vs { font-size: 11px; color: var(--text-3); font-weight: 500; }
+.match-delete-btn {
+    background: #fee2e2; border: 1px solid #fecaca;
+    color: var(--red); font-size: 13px;
+    width: 26px; height: 26px; border-radius: 50%;
+    display: grid; place-items: center;
+    transition: all 0.15s; opacity: 1;
+}
+.match-delete-btn:hover { background: var(--red); color: #fff; border-color: var(--red); transform: scale(1.1); }
 
 /* 排程介面頂部標題 */
 .schedule-header {
