@@ -1,0 +1,650 @@
+[
+  {
+    "id": 0,
+    "category": "高二女排 循環賽",
+    "teamA": "高二仁 蘇愛甯",
+    "teamB": "高二孝 顏怡勲",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 1,
+    "category": "高二女排 循環賽",
+    "teamA": "高二仁 蘇愛甯",
+    "teamB": "高二信 菜沂潔",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 2,
+    "category": "高二女排 循環賽",
+    "teamA": "高二仁 蘇愛甯",
+    "teamB": "高二愛 方奕婷",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 3,
+    "category": "高二女排 循環賽",
+    "teamA": "高二仁 蘇愛甯",
+    "teamB": "高二忠 何品蓉",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 4,
+    "category": "高二女排 循環賽",
+    "teamA": "高二孝 顏怡勲",
+    "teamB": "高二信 菜沂潔",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 5,
+    "category": "高二女排 循環賽",
+    "teamA": "高二孝 顏怡勲",
+    "teamB": "高二愛 方奕婷",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 6,
+    "category": "高二女排 循環賽",
+    "teamA": "高二孝 顏怡勲",
+    "teamB": "高二忠 何品蓉",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 7,
+    "category": "高二女排 循環賽",
+    "teamA": "高二信 菜沂潔",
+    "teamB": "高二愛 方奕婷",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 8,
+    "category": "高二女排 循環賽",
+    "teamA": "高二信 菜沂潔",
+    "teamB": "高二忠 何品蓉",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 9,
+    "category": "高二女排 循環賽",
+    "teamA": "高二愛 方奕婷",
+    "teamB": "高二忠 何品蓉",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 20,
+    "category": "高二男排 循環賽",
+    "teamA": "高二信 方晙昊",
+    "teamB": "高二忠 吳承奕",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 21,
+    "category": "高二男排 循環賽",
+    "teamA": "高二信 方晙昊",
+    "teamB": "高二仁 馮宥鑫",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 22,
+    "category": "高二男排 循環賽",
+    "teamA": "高二信 方晙昊",
+    "teamB": "高二愛 胡廷安",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 23,
+    "category": "高二男排 循環賽",
+    "teamA": "高二信 方晙昊",
+    "teamB": "高二孝 鄧文淮",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 24,
+    "category": "高二男排 循環賽",
+    "teamA": "高二忠 吳承奕",
+    "teamB": "高二仁 馮宥鑫",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 25,
+    "category": "高二男排 循環賽",
+    "teamA": "高二忠 吳承奕",
+    "teamB": "高二愛 胡廷安",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 26,
+    "category": "高二男排 循環賽",
+    "teamA": "高二忠 吳承奕",
+    "teamB": "高二孝 鄧文淮",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 27,
+    "category": "高二男排 循環賽",
+    "teamA": "高二仁 馮宥鑫",
+    "teamB": "高二愛 胡廷安",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 28,
+    "category": "高二男排 循環賽",
+    "teamA": "高二仁 馮宥鑫",
+    "teamB": "高二孝 鄧文淮",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 29,
+    "category": "高二男排 循環賽",
+    "teamA": "高二愛 胡廷安",
+    "teamB": "高二孝 鄧文淮",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 40,
+    "category": "高三女籃 循環賽",
+    "teamA": "高三仁 黃暄婷",
+    "teamB": "高三信 歐品妤",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 41,
+    "category": "高三女籃 循環賽",
+    "teamA": "高三仁 黃暄婷",
+    "teamB": "高三愛 蔣瑋珈",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 42,
+    "category": "高三女籃 循環賽",
+    "teamA": "高三信 歐品妤",
+    "teamB": "高三愛 蔣瑋珈",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 43,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三孝 簡敬宬",
+    "teamB": "高三忠 簡敏宇",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 44,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三孝 簡敬宬",
+    "teamB": "高三信 陳家畯",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 45,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三孝 簡敬宬",
+    "teamB": "高三仁 張允誠",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 46,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三孝 簡敬宬",
+    "teamB": "高三愛 汪錦瑞",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 47,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三忠 簡敏宇",
+    "teamB": "高三信 陳家畯",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 48,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三忠 簡敏宇",
+    "teamB": "高三仁 張允誠",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 49,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三忠 簡敏宇",
+    "teamB": "高三愛 汪錦瑞",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 50,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三信 陳家畯",
+    "teamB": "高三仁 張允誠",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 51,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三信 陳家畯",
+    "teamB": "高三愛 汪錦瑞",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 52,
+    "category": "高三男籃 循環賽",
+    "teamA": "高三仁 張允誠",
+    "teamB": "高三愛 汪錦瑞",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 53,
+    "category": "高中羽球團體 決賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 54,
+    "category": "高中羽球團體 季軍賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 55,
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "高三孝 李宇恩",
+    "teamB": "高二信 蘇宥嘉",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 56,
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "高二仁 侯㝢悊",
+    "teamB": "高一孝 許哲瑋",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 57,
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "高二愛 蔡矅宇",
+    "teamB": "高一忠 郭育綸",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 58,
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "高一愛",
+    "teamB": "高二忠 陳冠志",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 63,
+    "category": "高中羽球團體 第 2 輪",
+    "teamA": "待定",
+    "teamB": "待定",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 65,
+    "category": "高中羽球團體 第 2 輪",
+    "teamA": "高一仁",
+    "teamB": "高三仁 沈祐丞",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 66,
+    "category": "高中羽球團體 第 2 輪",
+    "teamA": "高三愛 王宏益",
+    "teamB": "高三信 王威喆",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 67,
+    "category": "高中羽球團體 準決賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 69,
+    "category": "國二女排 循環賽",
+    "teamA": "國二4 陳一汝",
+    "teamB": "國二5 李和恩",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 70,
+    "category": "國二女排 循環賽",
+    "teamA": "國二4 陳一汝",
+    "teamB": "國二3 方沄沄",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 71,
+    "category": "國二女排 循環賽",
+    "teamA": "國二4 陳一汝",
+    "teamB": "國二2 方倚喬",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 72,
+    "category": "國二女排 循環賽",
+    "teamA": "國二4 陳一汝",
+    "teamB": "國二1 徐嘉儀",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 73,
+    "category": "國二女排 循環賽",
+    "teamA": "國二5 李和恩",
+    "teamB": "國二3 方沄沄",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 74,
+    "category": "國二女排 循環賽",
+    "teamA": "國二5 李和恩",
+    "teamB": "國二2 方倚喬",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 75,
+    "category": "國二女排 循環賽",
+    "teamA": "國二5 李和恩",
+    "teamB": "國二1 徐嘉儀",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 76,
+    "category": "國二女排 循環賽",
+    "teamA": "國二3 方沄沄",
+    "teamB": "國二2 方倚喬",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 77,
+    "category": "國二女排 循環賽",
+    "teamA": "國二3 方沄沄",
+    "teamB": "國二1 徐嘉儀",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 78,
+    "category": "國二女排 循環賽",
+    "teamA": "國二2 方倚喬",
+    "teamB": "國二1 徐嘉儀",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 80,
+    "category": "國二男排 循環賽",
+    "teamA": "國二5 方騰毅",
+    "teamB": "國二1 莊明燊",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 82,
+    "category": "國二男排 循環賽",
+    "teamA": "國二5 方騰毅",
+    "teamB": "國二4 沈鈺哲",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 83,
+    "category": "國二男排 循環賽",
+    "teamA": "國二2 安立生",
+    "teamB": "國二1 莊明燊",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 84,
+    "category": "國二男排 循環賽",
+    "teamA": "國二2 安立生",
+    "teamB": "國二3 陳冠文",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 87,
+    "category": "國二男排 循環賽",
+    "teamA": "國二1 莊明燊",
+    "teamB": "國二4 沈鈺哲",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 88,
+    "category": "國二男排 循環賽",
+    "teamA": "國二3 陳冠文",
+    "teamB": "國二4 沈鈺哲",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 89,
+    "category": "國三女籃 循環賽",
+    "teamA": "國三2 林優秦",
+    "teamB": "國三3 黃佳佳",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 90,
+    "category": "國三女籃 循環賽",
+    "teamA": "國三2 林優秦",
+    "teamB": "國三4 楊于萱",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 91,
+    "category": "國三女籃 循環賽",
+    "teamA": "國三2 林優秦",
+    "teamB": "國三5 龔品諭",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 92,
+    "category": "國三女籃 循環賽",
+    "teamA": "國三3 黃佳佳",
+    "teamB": "國三4 楊于萱",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 93,
+    "category": "國三女籃 循環賽",
+    "teamA": "國三3 黃佳佳",
+    "teamB": "國三5 龔品諭",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 94,
+    "category": "國三女籃 循環賽",
+    "teamA": "國三4 楊于萱",
+    "teamB": "國三5 龔品諭",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 97,
+    "category": "國三男籃 循環賽",
+    "teamA": "國三5 劉得名",
+    "teamB": "國三2 張嵩豪",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 98,
+    "category": "國三男籃 循環賽",
+    "teamA": "國三4 張育瑞",
+    "teamB": "國三3 林暄恒",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 100,
+    "category": "國三男籃 循環賽",
+    "teamA": "國三3 林暄恒",
+    "teamB": "國三2 張嵩豪",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 101,
+    "category": "國中羽球團體 決賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 102,
+    "category": "國中羽球團體 季軍賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 105,
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國二1 蘇品乂",
+    "teamB": "國二5",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 106,
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國二2 李宥穎",
+    "teamB": "國一6 劉恩宇",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 107,
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國三5 楊長勳",
+    "teamB": "國三2 黃采瑜",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 109,
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國一2",
+    "teamB": "國一4 蔡定謙",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 110,
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國一3 男單：劉凡語",
+    "teamB": "國二3 10 李培輔",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 111,
+    "category": "國中羽球團體 第 2 輪",
+    "teamA": "待定",
+    "teamB": "待定",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 113,
+    "category": "國中羽球團體 第 2 輪",
+    "teamA": "待定",
+    "teamB": "國三4 蕭逸傑",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 115,
+    "category": "國中羽球團體 準決賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 117,
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國二4 張釉棠",
+    "teamB": "國三3",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 118,
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國一1",
+    "teamB": "國一5 蔡嘉澤",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  },
+  {
+    "id": 119,
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "高二孝",
+    "teamB": "高一信 黃信錩",
+    "status": "⏳ 待打",
+    "location": "待定場地"
+  }
+]
