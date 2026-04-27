@@ -1,850 +1,1058 @@
 [
   {
-    "id": 0,
+    "id": "高二女排 循環賽_0",
     "category": "高二女排 循環賽",
     "teamA": "高二仁 蘇愛甯",
     "teamB": "高二孝 顏怡勲",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "25:21",
+    "scoreA": 25,
+    "scoreB": 21,
+    "winner": "高二仁 蘇愛甯",
+    "status": "✅ 已結束"
   },
   {
-    "id": 1,
+    "id": "高二女排 循環賽_1",
     "category": "高二女排 循環賽",
     "teamA": "高二仁 蘇愛甯",
     "teamB": "高二信 菜沂潔",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 2,
+    "id": "高二女排 循環賽_2",
     "category": "高二女排 循環賽",
     "teamA": "高二仁 蘇愛甯",
     "teamB": "高二愛 方奕婷",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 3,
+    "id": "高二女排 循環賽_3",
     "category": "高二女排 循環賽",
     "teamA": "高二仁 蘇愛甯",
     "teamB": "高二忠 何品蓉",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 4,
+    "id": "高二女排 循環賽_4",
+    "category": "高二女排 循環賽",
+    "teamA": "高二孝 顏怡勲",
+    "teamB": "高二忠 何品蓉",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高二女排 循環賽_5",
     "category": "高二女排 循環賽",
     "teamA": "高二孝 顏怡勲",
     "teamB": "高二信 菜沂潔",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "25:16",
+    "scoreA": 25,
+    "scoreB": 16,
+    "winner": "高二孝 顏怡勲",
+    "status": "✅ 已結束"
   },
   {
-    "id": 5,
+    "id": "高二女排 循環賽_6",
     "category": "高二女排 循環賽",
     "teamA": "高二孝 顏怡勲",
     "teamB": "高二愛 方奕婷",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 6,
-    "category": "高二女排 循環賽",
-    "teamA": "高二孝 顏怡勲",
-    "teamB": "高二忠 何品蓉",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 7,
+    "id": "高二女排 循環賽_7",
     "category": "高二女排 循環賽",
     "teamA": "高二信 菜沂潔",
     "teamB": "高二愛 方奕婷",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "15:25",
+    "scoreA": 15,
+    "scoreB": 25,
+    "winner": "高二愛 方奕婷",
+    "status": "✅ 已結束"
   },
   {
-    "id": 8,
+    "id": "高二女排 循環賽_8",
     "category": "高二女排 循環賽",
     "teamA": "高二信 菜沂潔",
     "teamB": "高二忠 何品蓉",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 9,
+    "id": "高二女排 循環賽_9",
     "category": "高二女排 循環賽",
     "teamA": "高二愛 方奕婷",
     "teamB": "高二忠 何品蓉",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 10,
-    "category": "高二女排 循環賽",
-    "teamA": "高二仁 蘇愛甯",
-    "teamB": "高二孝 顏怡勲",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "id": "高二男排 循環賽_10",
+    "category": "高二男排 循環賽",
+    "teamA": "高二仁 馮宥鑫",
+    "teamB": "高二愛 胡廷安",
+    "score": "21:25",
+    "scoreA": 21,
+    "scoreB": 25,
+    "winner": "高二愛 胡廷安",
+    "status": "✅ 已結束"
   },
   {
-    "id": 11,
-    "category": "高二女排 循環賽",
-    "teamA": "高二仁 蘇愛甯",
-    "teamB": "高二信 菜沂潔",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "id": "高二男排 循環賽_11",
+    "category": "高二男排 循環賽",
+    "teamA": "高二仁 馮宥鑫",
+    "teamB": "高二孝 鄧文淮",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 12,
-    "category": "高二女排 循環賽",
-    "teamA": "高二仁 蘇愛甯",
-    "teamB": "高二愛 方奕婷",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "id": "高二男排 循環賽_12",
+    "category": "高二男排 循環賽",
+    "teamA": "高二忠 吳承奕",
+    "teamB": "高二仁 馮宥鑫",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 13,
-    "category": "高二女排 循環賽",
-    "teamA": "高二仁 蘇愛甯",
-    "teamB": "高二忠 何品蓉",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "id": "高二男排 循環賽_13",
+    "category": "高二男排 循環賽",
+    "teamA": "高二忠 吳承奕",
+    "teamB": "高二愛 胡廷安",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 14,
-    "category": "高二女排 循環賽",
-    "teamA": "高二孝 顏怡勲",
-    "teamB": "高二信 菜沂潔",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "id": "高二男排 循環賽_14",
+    "category": "高二男排 循環賽",
+    "teamA": "高二忠 吳承奕",
+    "teamB": "高二孝 鄧文淮",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 15,
-    "category": "高二女排 循環賽",
-    "teamA": "高二孝 顏怡勲",
-    "teamB": "高二愛 方奕婷",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 16,
-    "category": "高二女排 循環賽",
-    "teamA": "高二孝 顏怡勲",
-    "teamB": "高二忠 何品蓉",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 17,
-    "category": "高二女排 循環賽",
-    "teamA": "高二信 菜沂潔",
-    "teamB": "高二愛 方奕婷",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 18,
-    "category": "高二女排 循環賽",
-    "teamA": "高二信 菜沂潔",
-    "teamB": "高二忠 何品蓉",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 19,
-    "category": "高二女排 循環賽",
-    "teamA": "高二愛 方奕婷",
-    "teamB": "高二忠 何品蓉",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 20,
+    "id": "高二男排 循環賽_15",
     "category": "高二男排 循環賽",
     "teamA": "高二信 方晙昊",
     "teamB": "高二忠 吳承奕",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 21,
+    "id": "高二男排 循環賽_16",
     "category": "高二男排 循環賽",
     "teamA": "高二信 方晙昊",
     "teamB": "高二仁 馮宥鑫",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 22,
+    "id": "高二男排 循環賽_17",
     "category": "高二男排 循環賽",
     "teamA": "高二信 方晙昊",
     "teamB": "高二愛 胡廷安",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "19:25",
+    "scoreA": 19,
+    "scoreB": 25,
+    "winner": "高二愛 胡廷安",
+    "status": "✅ 已結束"
   },
   {
-    "id": 23,
+    "id": "高二男排 循環賽_18",
     "category": "高二男排 循環賽",
     "teamA": "高二信 方晙昊",
     "teamB": "高二孝 鄧文淮",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 24,
-    "category": "高二男排 循環賽",
-    "teamA": "高二忠 吳承奕",
-    "teamB": "高二仁 馮宥鑫",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 25,
-    "category": "高二男排 循環賽",
-    "teamA": "高二忠 吳承奕",
-    "teamB": "高二愛 胡廷安",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 26,
-    "category": "高二男排 循環賽",
-    "teamA": "高二忠 吳承奕",
-    "teamB": "高二孝 鄧文淮",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 27,
-    "category": "高二男排 循環賽",
-    "teamA": "高二仁 馮宥鑫",
-    "teamB": "高二愛 胡廷安",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 28,
-    "category": "高二男排 循環賽",
-    "teamA": "高二仁 馮宥鑫",
-    "teamB": "高二孝 鄧文淮",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 29,
+    "id": "高二男排 循環賽_19",
     "category": "高二男排 循環賽",
     "teamA": "高二愛 胡廷安",
     "teamB": "高二孝 鄧文淮",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 30,
-    "category": "高二男排 循環賽",
-    "teamA": "高二信 方晙昊",
-    "teamB": "高二忠 吳承奕",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 31,
-    "category": "高二男排 循環賽",
-    "teamA": "高二信 方晙昊",
-    "teamB": "高二仁 馮宥鑫",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 32,
-    "category": "高二男排 循環賽",
-    "teamA": "高二信 方晙昊",
-    "teamB": "高二愛 胡廷安",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 33,
-    "category": "高二男排 循環賽",
-    "teamA": "高二信 方晙昊",
-    "teamB": "高二孝 鄧文淮",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 34,
-    "category": "高二男排 循環賽",
-    "teamA": "高二忠 吳承奕",
-    "teamB": "高二仁 馮宥鑫",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 35,
-    "category": "高二男排 循環賽",
-    "teamA": "高二忠 吳承奕",
-    "teamB": "高二愛 胡廷安",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 36,
-    "category": "高二男排 循環賽",
-    "teamA": "高二忠 吳承奕",
-    "teamB": "高二孝 鄧文淮",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 37,
-    "category": "高二男排 循環賽",
-    "teamA": "高二仁 馮宥鑫",
-    "teamB": "高二愛 胡廷安",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 38,
-    "category": "高二男排 循環賽",
-    "teamA": "高二仁 馮宥鑫",
-    "teamB": "高二孝 鄧文淮",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 39,
-    "category": "高二男排 循環賽",
-    "teamA": "高二愛 胡廷安",
-    "teamB": "高二孝 鄧文淮",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 40,
+    "id": "高三女籃 循環賽_20",
     "category": "高三女籃 循環賽",
     "teamA": "高三仁 黃暄婷",
     "teamB": "高三信 歐品妤",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 41,
+    "id": "高三女籃 循環賽_21",
     "category": "高三女籃 循環賽",
     "teamA": "高三仁 黃暄婷",
     "teamB": "高三愛 蔣瑋珈",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 42,
+    "id": "高三女籃 循環賽_22",
     "category": "高三女籃 循環賽",
     "teamA": "高三信 歐品妤",
     "teamB": "高三愛 蔣瑋珈",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 43,
-    "category": "高三男籃 循環賽",
-    "teamA": "高三孝 簡敬宬",
-    "teamB": "高三忠 簡敏宇",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 44,
-    "category": "高三男籃 循環賽",
-    "teamA": "高三孝 簡敬宬",
-    "teamB": "高三信 陳家畯",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 45,
-    "category": "高三男籃 循環賽",
-    "teamA": "高三孝 簡敬宬",
-    "teamB": "高三仁 張允誠",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 46,
-    "category": "高三男籃 循環賽",
-    "teamA": "高三孝 簡敬宬",
-    "teamB": "高三愛 汪錦瑞",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 47,
-    "category": "高三男籃 循環賽",
-    "teamA": "高三忠 簡敏宇",
-    "teamB": "高三信 陳家畯",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 48,
-    "category": "高三男籃 循環賽",
-    "teamA": "高三忠 簡敏宇",
-    "teamB": "高三仁 張允誠",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 49,
-    "category": "高三男籃 循環賽",
-    "teamA": "高三忠 簡敏宇",
-    "teamB": "高三愛 汪錦瑞",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 50,
-    "category": "高三男籃 循環賽",
-    "teamA": "高三信 陳家畯",
-    "teamB": "高三仁 張允誠",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 51,
-    "category": "高三男籃 循環賽",
-    "teamA": "高三信 陳家畯",
-    "teamB": "高三愛 汪錦瑞",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 52,
+    "id": "高三男籃 循環賽_23",
     "category": "高三男籃 循環賽",
     "teamA": "高三仁 張允誠",
     "teamB": "高三愛 汪錦瑞",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 53,
+    "id": "高三男籃 循環賽_24",
+    "category": "高三男籃 循環賽",
+    "teamA": "高三孝 簡敬宬",
+    "teamB": "高三忠 簡敏宇",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三男籃 循環賽_25",
+    "category": "高三男籃 循環賽",
+    "teamA": "高三孝 簡敬宬",
+    "teamB": "高三信 陳家畯",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三男籃 循環賽_26",
+    "category": "高三男籃 循環賽",
+    "teamA": "高三孝 簡敬宬",
+    "teamB": "高三仁 張允誠",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三男籃 循環賽_27",
+    "category": "高三男籃 循環賽",
+    "teamA": "高三孝 簡敬宬",
+    "teamB": "高三愛 汪錦瑞",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三男籃 循環賽_28",
+    "category": "高三男籃 循環賽",
+    "teamA": "高三忠 簡敏宇",
+    "teamB": "高三信 陳家畯",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三男籃 循環賽_29",
+    "category": "高三男籃 循環賽",
+    "teamA": "高三忠 簡敏宇",
+    "teamB": "高三仁 張允誠",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三男籃 循環賽_30",
+    "category": "高三男籃 循環賽",
+    "teamA": "高三忠 簡敏宇",
+    "teamB": "高三愛 汪錦瑞",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三男籃 循環賽_31",
+    "category": "高三男籃 循環賽",
+    "teamA": "高三信 陳家畯",
+    "teamB": "高三仁 張允誠",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三男籃 循環賽_32",
+    "category": "高三男籃 循環賽",
+    "teamA": "高三信 陳家畯",
+    "teamB": "高三愛 汪錦瑞",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高中羽球團體 決賽_33",
     "category": "高中羽球團體 決賽",
     "teamA": "待定",
     "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 54,
+    "id": "高中羽球團體 季軍賽_34",
     "category": "高中羽球團體 季軍賽",
     "teamA": "待定",
     "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 55,
-    "category": "高中羽球團體 第 1 輪",
-    "teamA": "高三孝 李宇恩",
-    "teamB": "高二信 蘇宥嘉",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 56,
-    "category": "高中羽球團體 第 1 輪",
-    "teamA": "高二仁 侯㝢悊",
-    "teamB": "高一孝 許哲瑋",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 57,
-    "category": "高中羽球團體 第 1 輪",
-    "teamA": "高二愛 蔡矅宇",
-    "teamB": "高一忠 郭育綸",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 58,
+    "id": "高中羽球團體 第 1 輪_35",
     "category": "高中羽球團體 第 1 輪",
     "teamA": "高一愛",
     "teamB": "高二忠 陳冠志",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "3:2",
+    "scoreA": 3,
+    "scoreB": 2,
+    "winner": "高一愛",
+    "status": "✅ 已結束"
   },
   {
-    "id": 63,
-    "category": "高中羽球團體 第 2 輪",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "id": "高中羽球團體 第 1 輪_36",
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "高二仁 侯㝢悊",
+    "teamB": "高一孝 許哲瑋",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   },
   {
-    "id": 64,
-    "category": "高中羽球團體 第 2 輪",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 65,
-    "category": "高中羽球團體 第 2 輪",
-    "teamA": "高一仁",
-    "teamB": "高三仁 沈祐丞",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 66,
-    "category": "高中羽球團體 第 2 輪",
-    "teamA": "高三愛 王宏益",
-    "teamB": "高三信 王威喆",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 67,
-    "category": "高中羽球團體 準決賽",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 68,
-    "category": "高中羽球團體 準決賽",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 69,
-    "category": "國二女排 循環賽",
-    "teamA": "國二4 陳一汝",
-    "teamB": "國二5 李和恩",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 70,
-    "category": "國二女排 循環賽",
-    "teamA": "國二4 陳一汝",
-    "teamB": "國二3 方沄沄",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 71,
-    "category": "國二女排 循環賽",
-    "teamA": "國二4 陳一汝",
-    "teamB": "國二2 方倚喬",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 72,
-    "category": "國二女排 循環賽",
-    "teamA": "國二4 陳一汝",
-    "teamB": "國二1 徐嘉儀",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 73,
-    "category": "國二女排 循環賽",
-    "teamA": "國二5 李和恩",
-    "teamB": "國二3 方沄沄",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 74,
-    "category": "國二女排 循環賽",
-    "teamA": "國二5 李和恩",
-    "teamB": "國二2 方倚喬",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 75,
-    "category": "國二女排 循環賽",
-    "teamA": "國二5 李和恩",
-    "teamB": "國二1 徐嘉儀",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 76,
-    "category": "國二女排 循環賽",
-    "teamA": "國二3 方沄沄",
-    "teamB": "國二2 方倚喬",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 77,
-    "category": "國二女排 循環賽",
-    "teamA": "國二3 方沄沄",
-    "teamB": "國二1 徐嘉儀",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 78,
-    "category": "國二女排 循環賽",
-    "teamA": "國二2 方倚喬",
-    "teamB": "國二1 徐嘉儀",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 80,
-    "category": "國二男排 循環賽",
-    "teamA": "國二5 方騰毅",
-    "teamB": "國二1 莊明燊",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 82,
-    "category": "國二男排 循環賽",
-    "teamA": "國二5 方騰毅",
-    "teamB": "國二4 沈鈺哲",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 83,
-    "category": "國二男排 循環賽",
-    "teamA": "國二2 安立生",
-    "teamB": "國二1 莊明燊",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 84,
-    "category": "國二男排 循環賽",
-    "teamA": "國二2 安立生",
-    "teamB": "國二3 陳冠文",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 87,
-    "category": "國二男排 循環賽",
-    "teamA": "國二1 莊明燊",
-    "teamB": "國二4 沈鈺哲",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 88,
-    "category": "國二男排 循環賽",
-    "teamA": "國二3 陳冠文",
-    "teamB": "國二4 沈鈺哲",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 89,
-    "category": "國三女籃 循環賽",
-    "teamA": "國三2 林優秦",
-    "teamB": "國三3 黃佳佳",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 90,
-    "category": "國三女籃 循環賽",
-    "teamA": "國三2 林優秦",
-    "teamB": "國三4 楊于萱",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 91,
-    "category": "國三女籃 循環賽",
-    "teamA": "國三2 林優秦",
-    "teamB": "國三5 龔品諭",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 92,
-    "category": "國三女籃 循環賽",
-    "teamA": "國三3 黃佳佳",
-    "teamB": "國三4 楊于萱",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 93,
-    "category": "國三女籃 循環賽",
-    "teamA": "國三3 黃佳佳",
-    "teamB": "國三5 龔品諭",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 94,
-    "category": "國三女籃 循環賽",
-    "teamA": "國三4 楊于萱",
-    "teamB": "國三5 龔品諭",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 97,
-    "category": "國三男籃 循環賽",
-    "teamA": "國三5 劉得名",
-    "teamB": "國三2 張嵩豪",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 98,
-    "category": "國三男籃 循環賽",
-    "teamA": "國三4 張育瑞",
-    "teamB": "國三3 林暄恒",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 100,
-    "category": "國三男籃 循環賽",
-    "teamA": "國三3 林暄恒",
-    "teamB": "國三2 張嵩豪",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 101,
-    "category": "國中羽球團體 決賽",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 102,
-    "category": "國中羽球團體 季軍賽",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 105,
-    "category": "國中羽球團體 第 1 輪",
-    "teamA": "國二1 蘇品乂",
-    "teamB": "國二5",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 106,
-    "category": "國中羽球團體 第 1 輪",
-    "teamA": "國二2 李宥穎",
-    "teamB": "國一6 劉恩宇",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 107,
-    "category": "國中羽球團體 第 1 輪",
-    "teamA": "國三5 楊長勳",
-    "teamB": "國三2 黃采瑜",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 109,
-    "category": "國中羽球團體 第 1 輪",
-    "teamA": "國一2",
-    "teamB": "國一4 蔡定謙",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 110,
-    "category": "國中羽球團體 第 1 輪",
-    "teamA": "國一3 男單：劉凡語",
-    "teamB": "國二3 10 李培輔",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 111,
-    "category": "國中羽球團體 第 2 輪",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 112,
-    "category": "國中羽球團體 第 2 輪",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 113,
-    "category": "國中羽球團體 第 2 輪",
-    "teamA": "待定",
-    "teamB": "國三4 蕭逸傑",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 114,
-    "category": "國中羽球團體 第 2 輪",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 115,
-    "category": "國中羽球團體 準決賽",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 116,
-    "category": "國中羽球團體 準決賽",
-    "teamA": "待定",
-    "teamB": "待定",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 117,
-    "category": "國中羽球團體 第 1 輪",
-    "teamA": "國二4 張釉棠",
-    "teamB": "國三3",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 118,
-    "category": "國中羽球團體 第 1 輪",
-    "teamA": "國一1",
-    "teamB": "國一5 蔡嘉澤",
-    "status": "⏳ 待打",
-    "location": "待定場地"
-  },
-  {
-    "id": 119,
+    "id": "高中羽球團體 第 1 輪_37",
     "category": "高中羽球團體 第 1 輪",
     "teamA": "高二孝",
     "teamB": "高一信 黃信錩",
-    "status": "⏳ 待打",
-    "location": "待定場地"
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高中羽球團體 第 1 輪_38",
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "高二愛 蔡矅宇",
+    "teamB": "高一忠 郭育綸",
+    "score": "5:0",
+    "scoreA": 5,
+    "scoreB": 0,
+    "winner": "高二愛 蔡矅宇",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "高中羽球團體 第 1 輪_39",
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "高三仁 沈祐丞",
+    "teamB": "高一仁",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高中羽球團體 第 1 輪_40",
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "高三孝 李宇恩",
+    "teamB": "高二信 蘇宥嘉",
+    "score": "3:1",
+    "scoreA": 3,
+    "scoreB": 1,
+    "winner": "高三孝 李宇恩",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "高中羽球團體 第 1 輪_41",
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "輪空",
+    "teamB": "高三愛 王宏益",
+    "score": "0:21",
+    "scoreA": 0,
+    "scoreB": 21,
+    "winner": "高三愛 王宏益",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "高中羽球團體 第 1 輪_42",
+    "category": "高中羽球團體 第 1 輪",
+    "teamA": "輪空",
+    "teamB": "高三信 王威喆",
+    "score": "0:21",
+    "scoreA": 0,
+    "scoreB": 21,
+    "winner": "高三信 王威喆",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "高中羽球團體 第 2 輪_43",
+    "category": "高中羽球團體 第 2 輪",
+    "teamA": "待定",
+    "teamB": "待定",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高中羽球團體 第 2 輪_44",
+    "category": "高中羽球團體 第 2 輪",
+    "teamA": "高二愛 蔡矅宇",
+    "teamB": "高一愛",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高中羽球團體 第 2 輪_45",
+    "category": "高中羽球團體 第 2 輪",
+    "teamA": "高三孝 李宇恩",
+    "teamB": "待定",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高中羽球團體 第 2 輪_46",
+    "category": "高中羽球團體 第 2 輪",
+    "teamA": "高三愛 王宏益",
+    "teamB": "高三信 王威喆",
+    "score": "4:1",
+    "scoreA": 4,
+    "scoreB": 1,
+    "winner": "高三愛 王宏益",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "高中羽球團體 準決賽_47",
+    "category": "高中羽球團體 準決賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高中羽球團體 準決賽_48",
+    "category": "高中羽球團體 準決賽",
+    "teamA": "待定",
+    "teamB": "高三愛 王宏益",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二女排 循環賽_49",
+    "category": "國二女排 循環賽",
+    "teamA": "國二2 方倚喬",
+    "teamB": "國二1 徐嘉儀",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二女排 循環賽_50",
+    "category": "國二女排 循環賽",
+    "teamA": "國二3 方沄沄",
+    "teamB": "國二2 方倚喬",
+    "score": "5:25",
+    "scoreA": 5,
+    "scoreB": 25,
+    "winner": "國二2 方倚喬",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國二女排 循環賽_51",
+    "category": "國二女排 循環賽",
+    "teamA": "國二3 方沄沄",
+    "teamB": "國二1 徐嘉儀",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二女排 循環賽_52",
+    "category": "國二女排 循環賽",
+    "teamA": "國二4 陳一汝",
+    "teamB": "國二5 李和恩",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二女排 循環賽_53",
+    "category": "國二女排 循環賽",
+    "teamA": "國二4 陳一汝",
+    "teamB": "國二3 方沄沄",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二女排 循環賽_54",
+    "category": "國二女排 循環賽",
+    "teamA": "國二4 陳一汝",
+    "teamB": "國二2 方倚喬",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二女排 循環賽_55",
+    "category": "國二女排 循環賽",
+    "teamA": "國二4 陳一汝",
+    "teamB": "國二1 徐嘉儀",
+    "score": "23:25",
+    "scoreA": 23,
+    "scoreB": 25,
+    "winner": "國二1 徐嘉儀",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國二女排 循環賽_56",
+    "category": "國二女排 循環賽",
+    "teamA": "國二5 李和恩",
+    "teamB": "國二3 方沄沄",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二女排 循環賽_57",
+    "category": "國二女排 循環賽",
+    "teamA": "國二5 李和恩",
+    "teamB": "國二2 方倚喬",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二女排 循環賽_58",
+    "category": "國二女排 循環賽",
+    "teamA": "國二5 李和恩",
+    "teamB": "國二1 徐嘉儀",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二男排 循環賽_59",
+    "category": "國二男排 循環賽",
+    "teamA": "國二1 莊明燊",
+    "teamB": "國二3 陳冠文",
+    "score": "18:25",
+    "scoreA": 18,
+    "scoreB": 25,
+    "winner": "國二3 陳冠文",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國二男排 循環賽_60",
+    "category": "國二男排 循環賽",
+    "teamA": "國二1 莊明燊",
+    "teamB": "國二4 沈鈺哲",
+    "score": "22:25",
+    "scoreA": 22,
+    "scoreB": 25,
+    "winner": "國二4 沈鈺哲",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國二男排 循環賽_61",
+    "category": "國二男排 循環賽",
+    "teamA": "國二2 安立生",
+    "teamB": "國二1 莊明燊",
+    "score": "25:18",
+    "scoreA": 25,
+    "scoreB": 18,
+    "winner": "國二2 安立生",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國二男排 循環賽_62",
+    "category": "國二男排 循環賽",
+    "teamA": "國二2 安立生",
+    "teamB": "國二3 陳冠文",
+    "score": "25:15",
+    "scoreA": 25,
+    "scoreB": 15,
+    "winner": "國二2 安立生",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國二男排 循環賽_63",
+    "category": "國二男排 循環賽",
+    "teamA": "國二2 安立生",
+    "teamB": "國二4 沈鈺哲",
+    "score": "25:19",
+    "scoreA": 25,
+    "scoreB": 19,
+    "winner": "國二2 安立生",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國二男排 循環賽_64",
+    "category": "國二男排 循環賽",
+    "teamA": "國二3 陳冠文",
+    "teamB": "國二4 沈鈺哲",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二男排 循環賽_65",
+    "category": "國二男排 循環賽",
+    "teamA": "國二5 方騰毅",
+    "teamB": "國二2 安立生",
+    "score": "21:25",
+    "scoreA": 21,
+    "scoreB": 25,
+    "winner": "國二2 安立生",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國二男排 循環賽_66",
+    "category": "國二男排 循環賽",
+    "teamA": "國二5 方騰毅",
+    "teamB": "國二1 莊明燊",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國二男排 循環賽_67",
+    "category": "國二男排 循環賽",
+    "teamA": "國二5 方騰毅",
+    "teamB": "國二3 陳冠文",
+    "score": "25:21",
+    "scoreA": 25,
+    "scoreB": 21,
+    "winner": "國二5 方騰毅",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國二男排 循環賽_68",
+    "category": "國二男排 循環賽",
+    "teamA": "國二5 方騰毅",
+    "teamB": "國二4 沈鈺哲",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_69",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三2 林優秦",
+    "teamB": "國三3 黃佳佳",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_70",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三2 林優秦",
+    "teamB": "國三4 楊于萱",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_71",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三2 林優秦",
+    "teamB": "國三5 龔品諭",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_72",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三3 黃佳佳",
+    "teamB": "國三4 楊于萱",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_73",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三3 黃佳佳",
+    "teamB": "國三5 龔品諭",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_74",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三4 楊于萱",
+    "teamB": "國三5 龔品諭",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三男籃 循環賽_75",
+    "category": "國三男籃 循環賽",
+    "teamA": "國三3 林暄恒",
+    "teamB": "國三2 張嵩豪",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三男籃 循環賽_76",
+    "category": "國三男籃 循環賽",
+    "teamA": "國三4 張育瑞",
+    "teamB": "國三3 林暄恒",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三男籃 循環賽_77",
+    "category": "國三男籃 循環賽",
+    "teamA": "國三4 張育瑞",
+    "teamB": "國三2 張嵩豪",
+    "score": "25:12",
+    "scoreA": 25,
+    "scoreB": 12,
+    "winner": "國三4 張育瑞",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國三男籃 循環賽_78",
+    "category": "國三男籃 循環賽",
+    "teamA": "國三5 劉得名",
+    "teamB": "國三4 張育瑞",
+    "score": "18:15",
+    "scoreA": 18,
+    "scoreB": 15,
+    "winner": "國三5 劉得名",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國三男籃 循環賽_79",
+    "category": "國三男籃 循環賽",
+    "teamA": "國三5 劉得名",
+    "teamB": "國三3 林暄恒",
+    "score": "42:12",
+    "scoreA": 42,
+    "scoreB": 12,
+    "winner": "國三5 劉得名",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國三男籃 循環賽_80",
+    "category": "國三男籃 循環賽",
+    "teamA": "國三5 劉得名",
+    "teamB": "國三2 張嵩豪",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 決賽_81",
+    "category": "國中羽球團體 決賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 季軍賽_82",
+    "category": "國中羽球團體 季軍賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 第 1 輪_83",
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國一1",
+    "teamB": "國一5",
+    "score": "2:3",
+    "scoreA": 2,
+    "scoreB": 3,
+    "winner": "國一5",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國中羽球團體 第 1 輪_84",
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國一2",
+    "teamB": "國一4",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 第 1 輪_85",
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國一3",
+    "teamB": "國二3",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 第 1 輪_86",
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國二1",
+    "teamB": "國二5",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 第 1 輪_87",
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國二2",
+    "teamB": "國一6",
+    "score": "4:1",
+    "scoreA": 4,
+    "scoreB": 1,
+    "winner": "國二2",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國中羽球團體 第 1 輪_88",
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國二4",
+    "teamB": "國三3",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 第 1 輪_89",
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "國三5",
+    "teamB": "國三2",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 第 1 輪_90",
+    "category": "國中羽球團體 第 1 輪",
+    "teamA": "輪空",
+    "teamB": "國三4",
+    "score": "0:21",
+    "scoreA": 0,
+    "scoreB": 21,
+    "winner": "國三4",
+    "status": "✅ 已結束"
+  },
+  {
+    "id": "國中羽球團體 第 2 輪_91",
+    "category": "國中羽球團體 第 2 輪",
+    "teamA": "待定",
+    "teamB": "國一5",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 第 2 輪_92",
+    "category": "國中羽球團體 第 2 輪",
+    "teamA": "待定",
+    "teamB": "國二2",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 第 2 輪_93",
+    "category": "國中羽球團體 第 2 輪",
+    "teamA": "待定",
+    "teamB": "國三4",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 第 2 輪_94",
+    "category": "國中羽球團體 第 2 輪",
+    "teamA": "待定",
+    "teamB": "待定",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國中羽球團體 準決賽_95",
+    "category": "國中羽球團體 準決賽",
+    "teamA": "待定",
+    "teamB": "待定",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   }
 ]
