@@ -14,6 +14,8 @@
 - [ ] 我不會截斷任何檔案（不能只寫前半段）
 - [ ] 我知道這個函數是否在 HTML 裡有被呼叫
 - [ ] 我沒有重複呼叫 `init()`
+- [ ] **我確認不使用 PowerShell 來處理含中文的 JS 檔案**（見錯誤 #10）
+- [ ] **修改完成後，我會用 `python scratch/guaranteed_build.py` 重新打包，不手動改 `index_local.html`**
 
 ---
 
@@ -81,6 +83,11 @@ init(); // 刪掉這行！
 - `#matchList`
 - `#weekDisplay`
 - `#currentWeek`
+- `#btnSnapshot`（列印通知單按鈕，位於成績編輯 Modal 內）
+- `#matchModal`
+- `#modalTeamA` / `#modalTeamB`
+- `#inputScoreA` / `#inputScoreB`
+- `#modalStatus`
 
 ---
 
@@ -106,6 +113,70 @@ const subject = raw.split('|')[0]; // 老師不見了
 - **規則**：
   1. `init()` 啟動時必須自動掃描並刪除幽靈排程
   2. 每次新增排程前，先驗證 matchId 是否存在
+
+---
+
+### 【錯誤 #10】⚠️ 使用 PowerShell 操作含中文的 JS 檔案導致永久亂碼
+- **發生情況（2026-04-27）**：使用 `Get-Content` 合併 `app.js`，PowerShell 預設以 CP950 (Big5) 讀取 UTF-8 中文字元
+- **後果**：整個 `app.js` 的中文字元全部變成亂碼（`蝛拙??扯??脩戌?` 等），且無法逆轉。所有 Git commits 也因此受污染。最終必須從 Git 還原基底再用 Python 重新注入功能。
+- **規則**：
+  - ❌ **絕對禁止**使用 PowerShell 的 `Get-Content` / `Out-File` / `>>` 來讀寫 `app.js`
+  - ❌ **絕對禁止**使用 PowerShell pipe（`|`）傳遞含中文的 JS 內容
+  - ✅ **所有對 `app.js` 的批次操作，必須用 Python 腳本，並明確指定 `encoding='utf-8'`**
+
+```powershell
+# ❌ 致命錯誤 — 會永久破壞中文字元
+Get-Content app.js | ... | Set-Content app_new.js
+git show HEAD:app.js | Out-File app.js -Encoding utf8
+
+# ✅ 正確做法
+python scratch/patch_appjs.py
+```
+
+---
+
+### 【錯誤 #11】用 `replace_file_content` 替換含有模板字串 (`${}`) 的大段程式碼
+- **發生情況（2026-04-27）**：嘗試用工具替換整個 `printMatchSlipById` 函數，目標字串對不上（因有特殊字元），導致多次失敗，且每次失敗都部分破壞了檔案
+- **後果**：函數內出現孤立的語法片段，`app.js` 無法執行
+- **規則**：
+  - 整個大函數的替換（>30 行），應改用 **Python 腳本操作**，而非工具的文字替換
+  - 替換前必須先 `view_file` 確認目標內容**一字不差**地存在
+
+---
+
+### 【錯誤 #12】`guaranteed_build.py` 的過濾邏輯誤刪外部 CDN 連結
+- **發生情況**：構建腳本的 `rel="stylesheet"` 過濾條件把 FontAwesome CDN 的 `<link>` 也一起刪掉
+- **後果**：`index_local.html` 載入後找不到圖示，所有 `<i class="fas fa-*">` 變成空白
+- **規則**：`guaranteed_build.py` 的過濾只能針對本地 `app.css`，不能用 `rel="stylesheet"` 作為通用篩選條件
+
+```python
+# ❌ 錯誤 — 會連 CDN 連結都刪掉
+if 'rel="stylesheet"' in line:
+    continue
+
+# ✅ 正確 — 只刪本地 css
+if 'href="app.css' in line:
+    continue
+```
+
+---
+
+### 【錯誤 #13】賽事班級名稱帶有選手名稱，導致課表比對失敗
+- **發生情況**：比賽資料的 `teamA` 是 `"高二仁 蘇愛甯"`，但課表 key 是 `"高二仁"`，精確比對失敗
+- **後果**：`getOriginalTeacher()` 永遠回傳 `"無課"`，借課通知單無法顯示原任課老師
+- **規則**：`getOriginalTeacher()` 必須使用**模糊前綴比對**，而非精確比對
+
+```javascript
+// ✅ 正確 — 模糊比對
+const actualKey = Object.keys(scheduleData.schedules).find(k => {
+    const kClean = k.replace(/\s/g, '');
+    return targetKey.startsWith(kClean) || kClean.startsWith(targetKey);
+}) || className;
+
+// ❌ 錯誤 — 精確比對會找不到
+const actualKey = Object.keys(scheduleData.schedules)
+    .find(k => k.replace(/\s/g, '') === targetKey);
+```
 
 ---
 
@@ -135,43 +206,98 @@ const subject = raw.split('|')[0]; // 老師不見了
 
 ---
 
-## 🟢 檔案結構
+## 🟢 檔案結構與修改流程
 
 ```
 d:\classVSclass\
-├── index.html          ← CSS link 必須指向 app.css
-├── app.css             ← 唯一有效的 CSS 檔
-├── app.js              ← init 只呼叫一次
-├── firebase-config.js  ← 不要動
-├── matches.json        ← ID 不可重複
-├── schedule_data.json  ← 課表資料
-└── CHANGELOG.md        ← 每次改動都要記錄
+├── index.html              ← CSS link 必須指向 app.css
+├── app.css                 ← 唯一有效的 CSS 檔
+├── app.js                  ← 唯一合法的修改對象（用 Python 操作）
+├── schedules.json          ← 課表資料（格式：班級 > 星期 > 節次 > 科目|老師）
+├── matches.json            ← 比賽資料（ID 不可重複）
+├── scratch/
+│   ├── guaranteed_build.py ← 唯一合法的打包方式
+│   └── patch_appjs.py      ← 安全注入新函數的範本腳本
+└── index_local.html        ← ⛔ 禁止直接修改！由 guaranteed_build.py 自動生成
 ```
 
-> **`style_v4.css` 和 `app_v4.js`** 是舊版備份，不要載入，不要當作範本。
+### 正確的修改流程（三步驟，缺一不可）：
+
+```
+1. 修改 app.js（或 app.css / index.html）
+         ↓
+2. python scratch/guaranteed_build.py
+         ↓
+3. 開啟 index_local.html 驗證（按 F5 強制重整）
+```
+
+---
+
+## 🔵 借課通知單系統規範
+
+### 函數說明：
+- `printMatchSlipById(matchId)` — 從比賽 ID 查詢所有資訊並列印 A5 橫式通知單
+- `printMatchSlip()` — 從 Modal 的 `currentEditingMatchId` 呼叫上面的函數
+- `getOriginalTeacher(className, dayIdx, periodIdx)` — 返回格式 `"科目 / 老師姓名"`
+
+### 通知單規格：
+- 紙張：**A5 橫式（landscape）**
+- 包含：比賽項目、對戰班級（含原任課資訊）、時間（日期+星期+節次+精確時間）
+- **兩個任課老師簽名欄**，格式：`課程名稱 — 老師姓名 老師：____`
+- 行政簽核：承辦人、體衛組長、學務主任
+
+### 關鍵限制：
+- 列印按鈕（`#btnSnapshot`）只在比賽**已排程**後才顯示（`display: block`）
+- 所有字串常數必須使用 Unicode escape（`\uXXXX`）寫入 Python 腳本，避免編碼問題
 
 ---
 
 ## 📋 修改後檢查清單
 
-- [ ] 介面正常顯示（不是全白、不是報錯）
-- [ ] Console 無 `ReferenceError` 或 `TypeError`
+- [ ] `node --check app.js` 語法驗證通過（無報錯）
+- [ ] `python scratch/guaranteed_build.py` 成功執行（輸出 "Success!"）
+- [ ] 瀏覽器開啟 `index_local.html`，Console 無 `ReferenceError` / `TypeError`
 - [ ] 所有 Tab 能正常切換
 - [ ] 比賽清單能正常載入
 - [ ] 課表格子顯示「科目 + 老師」
-- [ ] 在 `CHANGELOG.md` 記錄這次改了什麼
+- [ ] 列印按鈕對已排程比賽正常運作
 
 ---
 
-## 📌 版本狀態（最後更新：2026-04-21）
+## 📌 版本狀態（最後更新：2026-04-27）
 
 | 項目 | 數量 |
 |------|------|
-| 總賽事數 | 106 場 |
-| 已排定 | 57 場 |
-| 幽靈排程 | 0 筆（已清除）|
+| 總賽事數 | 91 場（依實際資料為準）|
+| 已排定 | 依 Firestore 即時同步 |
+| 幽靈排程 | 0 筆（init 自動清除）|
 | 重複 ID | 0 筆 |
+| 已記錄錯誤 | 13 種 |
 
 ---
 
-*每次新增錯誤，請更新本文件並在底部的版本狀態更新日期。*
+## ⚡ 快速恢復程序（當 app.js 損壞時）
+
+```bash
+# 步驟 1：從 git 還原基底（必須用 git，不能用 PowerShell 複製）
+git checkout f133361 -- app.js
+
+# 步驟 2：用 Python 安全注入新功能（範本在 scratch/patch_appjs.py）
+python scratch/patch_appjs.py
+
+# 步驟 3：語法檢查
+node --check app.js
+
+# 步驟 4：重新打包
+python scratch/guaranteed_build.py
+```
+
+> ⚠️ **如果 git 版本也是亂碼**（Big5 儲存問題），從 `index_local.html` 萃取：
+> ```python
+> # 用 scratch/extract_app.py 從 HTML 中萃取 JS 邏輯區塊
+> python scratch/extract_app.py
+> ```
+
+---
+
+*每次新增錯誤，請在對應位置補充說明並更新底部版本狀態日期。*
