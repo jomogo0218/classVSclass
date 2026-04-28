@@ -1,0 +1,3 @@
+﻿蝚砌?蝑???瑽?
+['id', 'category', 'teamA', 'teamB', 'score', 'scoreA', 'scoreB', 'winner', 'status']
+Keys: ['id', 'category', 'teamA', 'teamB', 'score', 'scoreA', 'scoreB', 'winner', 'status']

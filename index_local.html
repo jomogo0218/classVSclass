@@ -4361,31 +4361,71 @@ const SKILL_KEYWORDS = ['體育','音樂','美術','視覺藝術','表演藝術'
 
 const CONFLICTS = [
 
-    { start:'2026-03-25', end:'2026-03-26', label:'全校第一次段考',           type:'exam'    },
+    // ── 1月 ──
+    { start:'2026-01-01', end:'2026-01-01', label:'元旦（放假）',                          type:'holiday' },
+    { start:'2026-01-06', end:'2026-01-07', label:'高三第三次段考',                        type:'exam'    },
+    { start:'2026-01-16', end:'2026-01-20', label:'全校第三次段考',                        type:'exam'    },
+    { start:'2026-01-17', end:'2026-01-19', label:'學測',                                  type:'exam'    },
+    { start:'2026-01-20', end:'2026-01-20', label:'課程結束/成績繳交截止/放寒假',           type:'event'   },
+    { start:'2026-01-21', end:'2026-01-23', label:'第二學期第一次教師研習',                 type:'event'   },
+    { start:'2026-01-26', end:'2026-01-30', label:'寒假輔導',                              type:'event'   },
 
-    { start:'2026-04-15', end:'2026-04-17', label:'高二畢旅/高一公訓/國二隔宿', type:'event'   },
+    // ── 2月 ──
+    { start:'2026-02-02', end:'2026-02-10', label:'寒假',                                  type:'holiday' },
+    { start:'2026-02-11', end:'2026-02-13', label:'調整放假',                              type:'holiday' },
+    { start:'2026-02-14', end:'2026-02-22', label:'農曆春節連假',                           type:'holiday' },
+    { start:'2026-02-23', end:'2026-02-23', label:'第二學期開學日',                         type:'event'   },
+    { start:'2026-02-24', end:'2026-02-24', label:'高三模擬考（第一次）',                   type:'exam'    },
+    { start:'2026-02-25', end:'2026-02-26', label:'高二複習考（第一次）',                   type:'exam'    },
+    { start:'2026-02-27', end:'2026-03-01', label:'228和平紀念日連假',                      type:'holiday' },
 
-    { start:'2026-04-21', end:'2026-04-22', label:'國三模擬考',               type:'exam'    },
+    // ── 3月 ──
+    { start:'2026-03-03', end:'2026-03-04', label:'國三模擬考',                            type:'exam'    },
+    { start:'2026-03-07', end:'2026-03-07', label:'園遊會',                                type:'event'   },
+    { start:'2026-03-09', end:'2026-03-09', label:'園遊會補假',                            type:'holiday' },
+    { start:'2026-03-16', end:'2026-03-20', label:'高一年度計畫上傳',                       type:'event'   },
+    { start:'2026-03-18', end:'2026-04-02', label:'嘉義市學生運動會',                       type:'event'   },
+    { start:'2026-03-25', end:'2026-03-26', label:'全校第一次段考',                        type:'exam'    },
+    { start:'2026-03-27', end:'2026-03-27', label:'嘉義市運動會出發',                       type:'event'   },
+    { start:'2026-03-30', end:'2026-03-30', label:'入學測驗（五年級）起始',                  type:'event'   },
 
-    { start:'2026-04-23', end:'2026-04-24', label:'高三畢業考',               type:'exam'    },
+    // ── 4月 ──
+    { start:'2026-04-03', end:'2026-04-06', label:'兒童節/清明節連假',                      type:'holiday' },
+    { start:'2026-04-09', end:'2026-04-09', label:'高三三模',                              type:'exam'    },
+    { start:'2026-04-10', end:'2026-04-10', label:'高二、高一定期評量範圍確認',              type:'event'   },
+    { start:'2026-04-15', end:'2026-04-17', label:'高二畢旅／高一公訓／國二隔宿',           type:'event'   },
+    { start:'2026-04-18', end:'2026-04-23', label:'全國中等學校運動會',                     type:'event'   },
+    { start:'2026-04-21', end:'2026-04-22', label:'國三模擬考',                            type:'exam'    },
+    { start:'2026-04-23', end:'2026-04-24', label:'高三畢業考',                            type:'exam'    },
+    { start:'2026-04-24', end:'2026-04-24', label:'學習歷程審查上傳截止',                   type:'event'   },
 
-    { start:'2026-05-01', end:'2026-05-01', label:'勞動節（全校放假）',        type:'holiday' },
+    // ── 5月 ──
+    { start:'2026-05-01', end:'2026-05-01', label:'勞動節（全校放假）',                    type:'holiday' },
+    { start:'2026-05-05', end:'2026-05-06', label:'國三第二次段考',                        type:'exam'    },
+    { start:'2026-05-06', end:'2026-05-06', label:'高三第三次模擬考',                      type:'exam'    },
+    { start:'2026-05-08', end:'2026-05-08', label:'母親節／合唱比賽',                      type:'event'   },
+    { start:'2026-05-14', end:'2026-05-15', label:'全校第二次段考',                        type:'exam'    },
+    { start:'2026-05-16', end:'2026-05-17', label:'國中教育會考',                          type:'exam'    },
+    { start:'2026-05-20', end:'2026-05-20', label:'校務會議',                              type:'event'   },
+    { start:'2026-05-22', end:'2026-05-22', label:'國三生涯發展講座',                      type:'event'   },
 
-    { start:'2026-05-05', end:'2026-05-06', label:'國三第二次段考',            type:'exam'    },
+    // ── 6月 ──
+    { start:'2026-06-03', end:'2026-06-03', label:'大學考試入學第八梯次加選',               type:'event'   },
+    { start:'2026-06-05', end:'2026-06-05', label:'高中畢業典禮',                          type:'event'   },
+    { start:'2026-06-12', end:'2026-06-12', label:'教師節補假',                            type:'holiday' },
+    { start:'2026-06-19', end:'2026-06-19', label:'端午節（放假）',                        type:'holiday' },
+    { start:'2026-06-26', end:'2026-06-26', label:'生涯發展講座／國中部家長日',             type:'event'   },
+    { start:'2026-06-26', end:'2026-06-30', label:'全校期末考',                            type:'exam'    },
+    { start:'2026-06-29', end:'2026-06-29', label:'技術工藝展前準備',                      type:'event'   },
+    { start:'2026-06-30', end:'2026-06-30', label:'課程結束／成績繳交截止／放暑假',         type:'event'   },
 
-    { start:'2026-05-08', end:'2026-05-08', label:'母親節合唱比賽',            type:'event'   },
-
-    { start:'2026-05-14', end:'2026-05-15', label:'全校第二次段考',            type:'exam'    },
-
-    { start:'2026-05-16', end:'2026-05-17', label:'國中教育會考',              type:'exam'    },
-
-    { start:'2026-05-22', end:'2026-05-22', label:'國三生涯發展講座',          type:'event'   },
-
-    { start:'2026-06-05', end:'2026-06-05', label:'畢業典禮',                 type:'event'   },
-
-    { start:'2026-06-19', end:'2026-06-19', label:'端午節（放假）',            type:'holiday' },
-
-    { start:'2026-06-26', end:'2026-06-30', label:'全校期末考',               type:'exam'    },
+    // ── 7-8月 ──
+    { start:'2026-07-13', end:'2026-08-07', label:'暑期輔導',                              type:'event'   },
+    { start:'2026-07-13', end:'2026-07-13', label:'班會暨教師研習',                        type:'event'   },
+    { start:'2026-07-29', end:'2026-08-04', label:'高三複習考（暑期）',                    type:'exam'    },
+    { start:'2026-08-27', end:'2026-08-28', label:'返校準備/成績繳交/教師研習',             type:'event'   },
+    { start:'2026-08-28', end:'2026-08-28', label:'課程結束/家長日',                       type:'event'   },
+    { start:'2026-09-01', end:'2026-09-01', label:'開學日（115學年度第一學期）',            type:'event'   },
 
 ];
 
