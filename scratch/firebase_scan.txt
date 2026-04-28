@@ -1,0 +1,46 @@
+163: // NEW: Initialize Firestore Listener
+165: function initFirestoreListener() {
+169: console.log("Initializing Firestore Listener...");
+171: db.collection('scheduledMatches').onSnapshot(querySnapshot => {
+191: console.warn(`⚠️ Firestore 含 ${ghosts.length} 筆幽靈排程，清除中...`, ghosts.map(g => g.matchId));
+195: db.collection('scheduledMatches').doc(sm.matchId.toString()).delete();
+205: console.log("Firestore updated, valid matches:", scheduledMatches.length);
+217: console.warn("Firestore error (likely missing config):", err);
+267: // Try to load from Firestore, otherwise fallback to LocalStorage
+271: console.log("4. 偵測到 Firestore，啟動監聽器");
+273: initFirestoreListener();
+275: // Optional: Migration from LocalStorage if Firestore is empty
+277: db.collection('scheduledMatches').limit(1).get().then(snap => {
+289: console.log("Migrating LocalStorage data to Firestore...");
+291: parsed.forEach(m => saveScheduledMatchToFirestore(m));
+299: }).catch(err => console.error("Firestore get failed:", err));
+303: console.log("4. 無 Firestore，使用 LocalStorage");
+329: saveScheduledMatches();
+333: ghostMatches.forEach(sm => removeScheduledMatchFromFirestore(sm.matchId));
+1584: function saveScheduledMatches() {
+1590: // Also update Firestore if available
+1604: function saveScheduledMatchToFirestore(match) {
+1610: db.collection('scheduledMatches').doc(matchId.toString()).set({
+1622: function removeScheduledMatchFromFirestore(matchId) {
+1626: db.collection('scheduledMatches').doc(matchId.toString()).delete()
+1906: saveScheduledMatches();
+1936: db.collection('matches').doc(idStr).delete().then(() => {
+1940: }).catch(e => console.warn("Firestore match delete skip:", e.message));
+1944: db.collection('scheduledMatches').doc(idStr).delete().then(() => {
+1948: }).catch(e => console.warn("Firestore schedule delete skip:", e.message));
+1952: console.error("Firestore sync error:", e);
+2332: saveScheduledMatches();
+2334: removeScheduledMatchFromFirestore(targetId);
+2376: saveScheduledMatches();
+2378: saveScheduledMatchToFirestore(newMatch);
+2567: saveScheduledMatches();
+2569: removeScheduledMatchFromFirestore(targetId);
+2619: saveScheduledMatches();
+2625: db.collection('scheduledMatches').get().then(snap => {
+2779: saveScheduledMatches();
+2789: const ref = db.collection('scheduledMatches').doc(m.matchId.toString());
+2835: saveScheduledMatches();
+2845: const ref = db.collection('scheduledMatches').doc(m.matchId.toString());
+2917: saveScheduledMatches(); // Save to localStorage
+2919: // Bulk sync to Firestore if available
+2923: data.forEach(m => saveScheduledMatchToFirestore(m));

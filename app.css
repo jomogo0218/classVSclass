@@ -636,3 +636,308 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
 .rr-matrix-label { background: #f8fafc; font-weight: 800; color: var(--text-1); text-align: left !important; border-right: 2px solid #e2e8f0; }
 .rr-has-score { color: #f5750a; font-weight: 900; background: #fffaf5; }
 .rr-void { color: #e2e8f0; font-weight: 400; }
+
+
+/* ═══════════════════════════════════════════════════════════
+   Tournament Overview v2 - 專業對戰表樣式
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+    --ov-accent: #f5750a;
+    --ov-accent-light: #fff3e8;
+    --ov-win: #16a34a;
+    --ov-lose: #dc2626;
+    --ov-card-bg: #ffffff;
+    --ov-border: #e5e7eb;
+    --ov-text: #111827;
+    --ov-text2: #6b7280;
+    --ov-radius: 10px;
+    --ov-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* ─── 側欄 ─────────────────────────────────────────────────── */
+.ov-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px 8px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--ov-text2);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--ov-border);
+    margin-bottom: 4px;
+}
+.ov-add-btn {
+    background: var(--ov-accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 26px; height: 26px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.15s, opacity 0.15s;
+}
+.ov-add-btn:hover { opacity: 0.85; transform: scale(1.08); }
+
+.ov-sidebar-item {
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 2px 6px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.ov-sidebar-item:hover { background: var(--ov-accent-light); }
+.ov-active { background: var(--ov-accent-light) !important; border-left: 3px solid var(--ov-accent); }
+
+.ov-item-main { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.ov-item-icon { font-size: 1.1rem; }
+.ov-item-name { font-size: 0.88rem; font-weight: 600; color: var(--ov-text); }
+.ov-item-meta { display: flex; align-items: center; gap: 6px; padding-left: 26px; }
+.ov-progress { font-size: 0.72rem; color: var(--ov-text2); }
+
+/* ─── 徽章 ─────────────────────────────────────────────────── */
+.ov-badge {
+    font-size: 0.65rem; font-weight: 700; padding: 2px 8px;
+    border-radius: 99px; white-space: nowrap;
+}
+.badge-rr   { background: #dbeafe; color: #1d4ed8; }
+.badge-elim { background: #fef3c7; color: #92400e; }
+
+/* ─── 主內容區 ─────────────────────────────────────────────── */
+.ov-content-wrap { display: flex; flex-direction: column; height: 100%; gap: 0; }
+
+.ov-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--ov-border);
+    background: linear-gradient(135deg, #fff 0%, var(--ov-accent-light) 100%);
+}
+.ov-title { font-size: 1.4rem; font-weight: 900; color: var(--ov-text); margin: 0 0 8px; }
+.ov-subtitle { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ov-stat-chip {
+    font-size: 0.75rem; padding: 3px 10px;
+    border-radius: 99px; background: white;
+    border: 1px solid var(--ov-border); color: var(--ov-text2);
+}
+
+/* 進度環 */
+.ov-ring-wrap { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
+.ov-ring { width: 64px; height: 64px; transform: rotate(-90deg); }
+.ov-ring-pct {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 800; color: var(--ov-accent);
+}
+
+/* ─── 視圖切換 ─────────────────────────────────────────────── */
+.ov-view-tabs {
+    display: flex; gap: 4px; padding: 12px 20px 0;
+    border-bottom: 1px solid var(--ov-border);
+    background: white;
+}
+.ov-tab {
+    padding: 7px 16px; font-size: 0.82rem; font-weight: 600;
+    border: none; border-radius: 8px 8px 0 0; cursor: pointer;
+    background: transparent; color: var(--ov-text2);
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+}
+.ov-tab:hover { background: var(--ov-accent-light); color: var(--ov-accent); }
+.ov-tab-active { color: var(--ov-accent) !important; border-bottom-color: var(--ov-accent) !important; background: var(--ov-accent-light) !important; }
+
+.ov-view-body { flex: 1; overflow: auto; padding: 20px 24px; background: #f9fafb; }
+
+/* ════════════════════════════════════════════════════════════
+   積分榜 Standings
+   ════════════════════════════════════════════════════════════ */
+.ov-standings { display: flex; flex-direction: column; gap: 0; border-radius: var(--ov-radius); overflow: hidden; box-shadow: var(--ov-shadow); }
+.ov-standings-head {
+    display: grid; grid-template-columns: 56px 1fr 60px 52px 52px 80px 72px 64px;
+    background: var(--ov-text); color: white;
+    padding: 10px 16px; font-size: 0.75rem; font-weight: 700; gap: 8px;
+    align-items: center;
+}
+.ov-standings-row {
+    display: grid; grid-template-columns: 56px 1fr 60px 52px 52px 80px 72px 64px;
+    padding: 12px 16px; font-size: 0.85rem; gap: 8px;
+    background: white; border-bottom: 1px solid var(--ov-border);
+    align-items: center; transition: background 0.15s;
+}
+.ov-standings-row:hover { background: #f3f4f6; }
+.rank-1 { background: linear-gradient(90deg, #fefce8, white) !important; }
+.rank-2 { background: linear-gradient(90deg, #f1f5f9, white) !important; }
+.rank-3 { background: linear-gradient(90deg, #fff7ed, white) !important; }
+.ov-rank { font-size: 1.3rem; text-align: center; }
+.ov-team-name { font-weight: 700; }
+.ov-win  { color: var(--ov-win); font-weight: 700; }
+.ov-lose { color: var(--ov-lose); font-weight: 700; }
+.ov-pos  { color: var(--ov-win); }
+.ov-neg  { color: var(--ov-lose); }
+.ov-pts  { font-weight: 900; font-size: 1rem; color: var(--ov-accent); }
+
+/* ════════════════════════════════════════════════════════════
+   對戰矩陣 Matrix
+   ════════════════════════════════════════════════════════════ */
+.ov-matrix-wrap { overflow: auto; }
+.ov-matrix { border-collapse: collapse; width: 100%; background: white; border-radius: var(--ov-radius); overflow: hidden; box-shadow: var(--ov-shadow); }
+.ov-matrix th {
+    background: var(--ov-text); color: white;
+    padding: 10px 14px; font-size: 0.75rem;
+    text-align: center; white-space: nowrap;
+}
+.ov-matrix-corner { background: #374151 !important; font-size: 0.68rem !important; }
+.ov-matrix td {
+    padding: 10px 14px; text-align: center;
+    border: 1px solid var(--ov-border); font-size: 0.85rem;
+    cursor: pointer; transition: background 0.15s;
+}
+.ov-matrix-label {
+    font-weight: 700; background: #f9fafb;
+    color: var(--ov-text); white-space: nowrap; cursor: default !important;
+}
+.ov-matrix-self { background: #f3f4f6; color: #9ca3af; cursor: default !important; }
+.ov-matrix-empty { color: #d1d5db; }
+.ov-matrix-pending { color: #f59e0b; font-size: 1rem; }
+.ov-matrix-pending:hover { background: #fef3c7; }
+.ov-win-cell  { background: #dcfce7; color: var(--ov-win); font-weight: 700; }
+.ov-win-cell:hover  { background: #bbf7d0; }
+.ov-lose-cell { background: #fee2e2; color: var(--ov-lose); }
+.ov-lose-cell:hover { background: #fecaca; }
+.ov-win-dot { margin-left: 4px; font-size: 0.6rem; }
+
+/* ════════════════════════════════════════════════════════════
+   淘汰賽 Bracket
+   ════════════════════════════════════════════════════════════ */
+.ov-bracket {
+    display: flex; gap: 24px; align-items: flex-start;
+    overflow-x: auto; padding-bottom: 12px; min-height: 300px;
+}
+.ov-bracket-round { display: flex; flex-direction: column; gap: 8px; min-width: 200px; }
+.ov-round-label {
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--ov-accent);
+    padding: 6px 10px; background: var(--ov-accent-light);
+    border-radius: 6px; text-align: center; margin-bottom: 4px;
+}
+.ov-round-matches { display: flex; flex-direction: column; gap: 10px; }
+.ov-match-card {
+    background: white; border-radius: var(--ov-radius);
+    border: 1px solid var(--ov-border);
+    box-shadow: var(--ov-shadow); cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    overflow: hidden;
+}
+.ov-match-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+.ov-match-done { border-left: 3px solid var(--ov-win); }
+
+.ov-match-team {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 12px; font-size: 0.83rem; font-weight: 600;
+}
+.ov-winner { color: var(--ov-win); background: #f0fdf4; }
+.ov-winner .ov-team-label { font-weight: 800; }
+.ov-team-score { font-weight: 800; font-size: 1rem; }
+.ov-match-divider { height: 1px; background: var(--ov-border); }
+.ov-match-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 5px 10px; background: #f9fafb; border-top: 1px solid var(--ov-border);
+    font-size: 0.72rem;
+}
+.ov-match-id { color: #9ca3af; }
+.ov-match-actions { display: flex; align-items: center; gap: 4px; }
+.ov-sched-tag { color: #3b82f6; font-size: 0.7rem; }
+.ov-unsched-tag { color: #f59e0b; font-size: 0.7rem; }
+.ov-print-btn, .ov-del-btn {
+    border: none; background: none; cursor: pointer;
+    font-size: 0.85rem; padding: 2px 4px; border-radius: 4px;
+    transition: background 0.15s;
+}
+.ov-print-btn:hover { background: #dbeafe; }
+.ov-del-btn:hover   { background: #fee2e2; }
+
+/* ════════════════════════════════════════════════════════════
+   場次列表 List
+   ════════════════════════════════════════════════════════════ */
+.ov-list { display: flex; flex-direction: column; gap: 16px; }
+.ov-list-group { background: white; border-radius: var(--ov-radius); overflow: hidden; box-shadow: var(--ov-shadow); }
+.ov-list-group-header {
+    padding: 11px 16px; font-size: 0.82rem; font-weight: 800;
+    background: linear-gradient(90deg, var(--ov-text), #374151);
+    color: white; display: flex; align-items: center; justify-content: space-between;
+}
+.ov-group-count { font-size: 0.72rem; opacity: 0.7; }
+.ov-list-row {
+    display: flex; align-items: center; padding: 10px 16px; gap: 12px;
+    border-bottom: 1px solid var(--ov-border); font-size: 0.83rem;
+    transition: background 0.15s;
+}
+.ov-list-row:hover { background: #f9fafb; }
+.ov-list-row:last-child { border-bottom: none; }
+.ov-list-done { opacity: 0.75; }
+.ov-list-status { font-size: 1rem; flex-shrink: 0; }
+.ov-list-teams { flex: 1; display: flex; align-items: center; gap: 8px; }
+.ov-list-winner { font-weight: 800; color: var(--ov-win); }
+.ov-vs { font-size: 0.7rem; color: #9ca3af; font-weight: 700; }
+.ov-list-score { width: 120px; text-align: right; font-weight: 700; color: var(--ov-accent); font-size: 0.82rem; }
+.ov-list-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.ov-list-btn {
+    border: 1px solid var(--ov-border); background: white;
+    border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 0.8rem;
+    transition: background 0.15s;
+}
+.ov-list-btn:hover { background: var(--ov-accent-light); }
+.ov-list-del:hover { background: #fee2e2 !important; border-color: #fca5a5; }
+
+/* ════════════════════════════════════════════════════════════
+   新增比賽 Modal
+   ════════════════════════════════════════════════════════════ */
+.ov-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999; backdrop-filter: blur(3px);
+    animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:scale(0.97); } to { opacity:1; transform:scale(1); } }
+.ov-modal {
+    background: white; border-radius: 14px; width: 440px; max-width: 95vw;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25); overflow: hidden;
+}
+.ov-modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border-bottom: 1px solid var(--ov-border);
+    background: linear-gradient(135deg, var(--ov-accent-light), white);
+}
+.ov-modal-header h3 { margin: 0; font-size: 1rem; font-weight: 800; }
+.ov-modal-close {
+    border: none; background: #f3f4f6; border-radius: 50%;
+    width: 28px; height: 28px; cursor: pointer; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+}
+.ov-modal-body { padding: 20px; display: flex; flex-direction: column; gap: 4px; }
+.ov-modal-body label { font-size: 0.78rem; font-weight: 700; color: var(--ov-text2); }
+.ov-modal-body input, .ov-modal-body select {
+    padding: 9px 12px; border: 1.5px solid var(--ov-border);
+    border-radius: 8px; font-size: 0.88rem; outline: none;
+    transition: border-color 0.15s;
+}
+.ov-modal-body input:focus, .ov-modal-body select:focus { border-color: var(--ov-accent); }
+.ov-modal-footer {
+    display: flex; gap: 10px; justify-content: flex-end;
+    padding: 14px 20px; border-top: 1px solid var(--ov-border); background: #f9fafb;
+}
+.ov-btn-cancel {
+    padding: 9px 20px; border: 1px solid var(--ov-border);
+    border-radius: 8px; background: white; cursor: pointer; font-size: 0.88rem;
+}
+.ov-btn-confirm {
+    padding: 9px 24px; background: var(--ov-accent);
+    color: white; border: none; border-radius: 8px;
+    cursor: pointer; font-weight: 700; font-size: 0.88rem;
+    transition: opacity 0.15s;
+}
+.ov-btn-confirm:hover { opacity: 0.88; }
+
+.ov-empty { text-align: center; color: var(--ov-text2); padding: 40px; font-size: 1rem; }

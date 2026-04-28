@@ -1,0 +1,18 @@
+
+Input: className='高二信 菜沂潔', dayIdx=2, periodIdx=1
+targetKey='高二信菜沂潔'
+Candidates: ['高二信']
+actualKey: '高二信'
+dayKey=Wed, total periods=10
+P1 = '美術|彭舒渝'
+  科目='美術'
+  老師='彭舒渝'
+
+Input: className='高二忠 何品蓉', dayIdx=2, periodIdx=1
+targetKey='高二忠何品蓉'
+Candidates: ['高二忠']
+actualKey: '高二忠'
+dayKey=Wed, total periods=10
+P1 = '地理|黃佩綾'
+  科目='地理'
+  老師='黃佩綾'
