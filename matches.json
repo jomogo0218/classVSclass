@@ -1054,5 +1054,126 @@
     "scoreB": 0,
     "winner": null,
     "status": "⏳ 待打"
+  },
+  {
+    "id": "高三女籃 循環賽_96",
+    "category": "高三女籃 循環賽",
+    "teamA": "高三仁 黃暄婷",
+    "teamB": "高三忠",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三女籃 循環賽_97",
+    "category": "高三女籃 循環賽",
+    "teamA": "高三仁 黃暄婷",
+    "teamB": "高三孝",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三女籃 循環賽_98",
+    "category": "高三女籃 循環賽",
+    "teamA": "高三信 歐品妤",
+    "teamB": "高三忠",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三女籃 循環賽_99",
+    "category": "高三女籃 循環賽",
+    "teamA": "高三信 歐品妤",
+    "teamB": "高三孝",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三女籃 循環賽_100",
+    "category": "高三女籃 循環賽",
+    "teamA": "高三愛 蔣瑋珈",
+    "teamB": "高三忠",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三女籃 循環賽_101",
+    "category": "高三女籃 循環賽",
+    "teamA": "高三愛 蔣瑋珈",
+    "teamB": "高三孝",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "高三女籃 循環賽_102",
+    "category": "高三女籃 循環賽",
+    "teamA": "高三忠",
+    "teamB": "高三孝",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_103",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三2 林優秦",
+    "teamB": "國三1",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_104",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三3 黃佳佳",
+    "teamB": "國三1",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_105",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三4 楊于萱",
+    "teamB": "國三1",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
+  },
+  {
+    "id": "國三女籃 循環賽_106",
+    "category": "國三女籃 循環賽",
+    "teamA": "國三5 龔品諭",
+    "teamB": "國三1",
+    "score": "0:0",
+    "scoreA": 0,
+    "scoreB": 0,
+    "winner": null,
+    "status": "⏳ 待打"
   }
 ]
