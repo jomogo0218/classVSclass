@@ -2996,21 +2996,46 @@ function toggleScheduledPanel() {
 let currentEditingMatchId = null;
 
 function getOriginalTeacher(className, dayIdx, periodIdx) {
-    if (!scheduleData || !scheduleData.schedules) return '資料缺失';
+    // Use scheduleData if loaded, otherwise fall back to EMBEDDED_SCHEDULES (offline mode)
+    const sd = (scheduleData && scheduleData.schedules)
+        ? scheduleData
+        : (typeof EMBEDDED_SCHEDULES !== 'undefined' ? EMBEDDED_SCHEDULES : null);
+    if (!sd || !sd.schedules) return '資料未載入';
+
     const targetKey = className.replace(/\s/g, '');
-    const actualKey = Object.keys(scheduleData.schedules).find(k => {
+    const actualKey = Object.keys(sd.schedules).find(k => {
         const kClean = k.replace(/\s/g, '');
         return targetKey.startsWith(kClean) || kClean.startsWith(targetKey);
     }) || className;
+
     const dayKey = ['Mon','Tue','Wed','Thu','Fri'][dayIdx];
     if (!dayKey) return '日期錯誤';
-    const classSched = scheduleData.schedules[actualKey];
-    if (!classSched || !classSched[dayKey]) return '無課';
+    const classSched = sd.schedules[actualKey];
+    if (!classSched || !classSched[dayKey]) return '無課表資料';
     const raw = (classSched[dayKey][periodIdx] || '').trim();
     if (!raw || raw === '---') return '無課';
+
     const parts = raw.split('|');
-    return (parts[0] || '未命名').trim() + ' / ' + (parts[1] || '未知老師').trim();
+    const subj = (parts[0] || '未命名').trim();
+    const teacherRaw = (parts[1] || '').trim();
+
+    // These are course-type descriptions stored in the teacher field, NOT real teacher names
+    const NOT_TEACHER = [
+        '學習時間', '活動時間', '議題', '探究', '學習時 間', '習時間',
+        '教育', '設計', '寫作', '研究', '製作', '檔案製作',
+        '與傷害防護', '與法律', '與生涯進路', '生涯進路',
+        '與藝術的歷史', '科技應用專題', '與傳播應用', '無人機應用',
+        '創客工坊', '程式設計', '簡報力',
+        '物質構造與', '力學二與熱學', '電磁現象一', '電磁現象二',
+        '化學反應與平衡二', '有機化學與', '生命的起源與植物', '生態、演化及',
+        '與文化賞析', '跨域雙語導', '尋寶圖',
+        '專題研究', '專題評析', '科技應用', '技術應用',
+    ];
+    const isFakeTeacher = teacherRaw === '' || NOT_TEACHER.some(kw => teacherRaw.includes(kw));
+    const teacher = isFakeTeacher ? '（班導師）' : teacherRaw;
+    return subj + ' / ' + teacher;
 }
+
 
 function printMatchSlip() {
     if (currentEditingMatchId) printMatchSlipById(currentEditingMatchId);
