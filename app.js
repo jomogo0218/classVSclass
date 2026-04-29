@@ -174,7 +174,7 @@ function initFirestoreListener() {
 
         querySnapshot.forEach(doc => {
 
-            matches.push({ matchId: parseInt(doc.id), ...doc.data() });
+            matches.push({ matchId: String(doc.id), ...doc.data() });
 
         });
 
