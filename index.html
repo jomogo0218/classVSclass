@@ -7,6 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK (compat v10) — 雲端即時同步 -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
 <style>
 /* ============================================================
    班際盃賽排課系統 — Google Calendar 極簡專業風格
@@ -4531,7 +4535,7 @@ function initFirestoreListener() {
 
         querySnapshot.forEach(doc => {
 
-            matches.push({ matchId: parseInt(doc.id), ...doc.data() });
+            matches.push({ matchId: String(doc.id), ...doc.data() });
 
         });
 
