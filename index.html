@@ -1261,6 +1261,50 @@ window.db = db;
 
 </script>
 <script>
+// ===== 管理權限系統 =====
+let isAdmin = false;
+const ADMIN_PHONE = "0921213348"; 
+
+function checkAdmin() {
+    if (isAdmin) return true;
+    const input = prompt("🔐 此功能僅限管理員使用。\n請輸入您的手機號碼以解鎖存取權限：");
+    if (input === ADMIN_PHONE) {
+        isAdmin = true;
+        updateAdminUI();
+        alert("✅ 權限已解鎖！現在您可以進行排程與編輯。");
+        return true;
+    }
+    if (input !== null) alert("❌ 密碼錯誤，存取權限不足。");
+    return false;
+}
+
+function toggleAdminLock() {
+    if (isAdmin) {
+        if (confirm("是否要登出管理員模式並重新鎖定系統？")) {
+            isAdmin = false;
+            updateAdminUI();
+        }
+    } else {
+        checkAdmin();
+    }
+}
+
+function updateAdminUI() {
+    const btn = document.getElementById('adminLockBtn');
+    if (isAdmin) {
+        document.body.classList.remove('admin-locked');
+        if (btn) {
+            btn.classList.replace('locked', 'unlocked');
+            btn.innerHTML = '<i class="fas fa-unlock"></i> <span>管理員模式</span>';
+        }
+    } else {
+        document.body.classList.add('admin-locked');
+        if (btn) {
+            btn.classList.replace('unlocked', 'locked');
+            btn.innerHTML = '<i class="fas fa-lock"></i> <span>管理員鎖定中</span>';
+        }
+    }
+}
 const EMBEDDED_MATCHES = [
   {
     "id": "高二女排 循環賽_0",
@@ -4612,6 +4656,8 @@ function initFirestoreListener() {
 // ===== 初始化 =====
 
 async function init() {
+    updateAdminUI(); // 初始化管理員介面狀態
+
 
     try {
 
@@ -6261,6 +6307,8 @@ function toggleDupeFilter() {
 
 
 async function deleteMatch(matchId) {
+    if (!checkAdmin()) return;
+
 
     const match = matchesData.find(m => String(m.id) === String(matchId));
 
@@ -6737,6 +6785,8 @@ function renderSchedulingTable() {
             // Click to Schedule (Admin Override mode: Allow everything but warn)
 
             td.onclick = () => {
+                if (!checkAdmin()) return;
+
 
                 const hasWarning = isBlocked || (!allSkill && !allPE);
 
@@ -7030,6 +7080,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== 賽事清除工具 =====
 
 function clearAllSchedules() {
+    if (!checkAdmin()) return;
+
 
     if (!confirm('⚠️ 警告：這將徹底清除雲端與本機的所有排程資料！\n此動作不可復原，確定要執行嗎？')) return;
 
@@ -7320,6 +7372,8 @@ function exportScheduleData() {
 
 
 function importScheduleData(event) {
+    if (!checkAdmin()) return;
+
 
     const file = event.target.files[0];
 
@@ -7656,6 +7710,8 @@ window.onload = function() {
 }
 
 function openEditScoreModal(matchId) {
+    if (!checkAdmin()) return;
+
     const m = matchesData.find(match => String(match.id) === String(matchId));
     if (!m) return;
     currentEditingMatchId = matchId;
@@ -7673,6 +7729,8 @@ function openEditScoreModal(matchId) {
 function closeMatchModal() { document.getElementById('matchModal').style.display = 'none'; }
 
 function saveMatchResult() {
+    if (!checkAdmin()) return;
+
     const m = matchesData.find(match => String(match.id) === String(currentEditingMatchId));
     if (!m) return;
     m.scoreA = parseInt(document.getElementById('inputScoreA').value);
@@ -8102,6 +8160,8 @@ function renderOvList(matches, el) {
 // 刪除比賽確認
 // ══════════════════════════════════════════════════════════════
 function confirmDeleteMatch(matchId) {
+    if (!checkAdmin()) return;
+
     const m = matchesData.find(x => String(x.id) === String(matchId));
     if (!m) return;
     if (!confirm(`確定要刪除此場次？\n\n【${m.category}】\n${m.teamA} VS ${m.teamB}\n\n此操作無法復原。`)) return;
@@ -8134,6 +8194,8 @@ function confirmDeleteMatch(matchId) {
 // 新增比賽 Modal
 // ══════════════════════════════════════════════════════════════
 function openAddMatchModal() {
+    if (!checkAdmin()) return;
+
     const cats = Array.from(new Set(matchesData.map(m => m.category))).sort();
     const catOpts = cats.map(c => `<option value="${c}">${c}</option>`).join('');
 
@@ -8181,6 +8243,8 @@ function openAddMatchModal() {
 }
 
 function submitAddMatch() {
+    if (!checkAdmin()) return;
+
     const catSel = document.getElementById('am-cat').value;
     const cat = catSel === '__new__' ? document.getElementById('am-newcat').value.trim() : catSel;
     const teamA = document.getElementById('am-teamA').value.trim();
@@ -8212,6 +8276,5 @@ function submitAddMatch() {
 }
 
 </script>
-<script src="app.js"></script>
 </body>
 </html>
