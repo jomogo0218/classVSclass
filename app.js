@@ -3287,10 +3287,7 @@ body {
 
 </body>
 <script>
-window.onload = function() {
-  window.print();
-  setTimeout(function(){ window.close(); }, 800);
-};
+// 移除原有的 window.close 邏輯，確保系統穩定運行
 <\/script>
 </html>`);
     printWin.document.close();
@@ -3367,9 +3364,7 @@ function loadClassSelection() {
     } catch (e) { selectedClasses = []; }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    init().then(() => { setupSubjectSearch(); });
-});
+// 移除重複的初始化監聽器，統一由上方的啟動區塊負責
 
 
 // ===== Tournament Overview =====
