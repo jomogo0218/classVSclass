@@ -6922,7 +6922,7 @@ function loadScheduledMatches() {
 }
 
 function saveScheduledMatches() {
-    if (!checkAdmin()) return;
+    if (!isAdmin) return; // 僅檢查狀態，不主動彈出 prompt，避免干擾自動儲存流程
 
 
     localStorage.setItem('classVSclass_scheduled_matches', JSON.stringify(scheduledMatches));
