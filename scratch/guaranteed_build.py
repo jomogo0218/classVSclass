@@ -26,17 +26,19 @@ def generate_final_html():
     if "function loadScheduledMatches" not in js:
         js += "\nfunction loadScheduledMatches(){ console.log('Using embedded data'); }\n"
 
-    # --- 3. 組合 HTML ---
+    # --- 3. 組合 HTML (過濾掉既有的內嵌 Script) ---
+    import re
+    # 移除所有 <script>...</script> 區塊，但保留 Firebase CDN 的引用
+    # 我們只移除包含內置邏輯的腳本（通常比較長或不含 src）
+    cleaned_html = re.sub(r'<script\b[^>]*>(?:(?!src=).)*?</script>', '', html, flags=re.DOTALL)
+    
     new_html_lines = []
-    for line in html.splitlines():
-        # 移除本地 CSS、app.js、firebase-config.js（改成內嵌）
-        if 'href="app.css' in line:
-            continue
-        if 'src="app.js' in line:
-            continue
-        if 'src="firebase-config.js' in line:
-            continue
-        # Firebase CDN script 保留（不移除）
+    for line in cleaned_html.splitlines():
+        # 移除本地 CSS 引用
+        if 'href="app.css' in line: continue
+        # 移除可能殘留的 src 引用
+        if 'src="app.js' in line: continue
+        if 'src="firebase-config.js' in line: continue
         new_html_lines.append(line)
     
     final_html = "\n".join(new_html_lines)
@@ -44,16 +46,19 @@ def generate_final_html():
     # 注入 Style
     style_block = f"<style>\n{css}\n</style>"
     
-    # firebase-config.js 內嵌（緊接在 Firebase CDN 之後）
+    # firebase-config.js 內嵌
     firebase_inline = f"<script>\n{firebase_config}\n</script>"
     
     # app.js 和資料嵌入
     script_block = f"<script>\n{js_data}\n{js}\n</script>"
     
-    final_html = final_html.replace('</head>', f'{style_block}\n</head>')
+    # 確保注入在正確位置
+    if '</head>' in final_html:
+        final_html = final_html.replace('</head>', f'{style_block}\n</head>')
     
-    # 在 </body> 前插入：先 firebase-config，再 app script
-    final_html = final_html.replace('</body>', f'{firebase_inline}\n{script_block}\n</body>')
+    # 在 </body> 前插入
+    if '</body>' in final_html:
+        final_html = final_html.replace('</body>', f'{firebase_inline}\n{script_block}\n</body>')
 
     with open('index_local.html', 'w', encoding='utf-8') as f:
         f.write(final_html)
