@@ -1,0 +1,2 @@
+﻿index_local.html size: 250708 bytes
+index.html size: 15888 bytes

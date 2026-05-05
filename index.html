@@ -63,6 +63,23 @@ body {
 button { cursor: pointer; font-family: var(--font); }
 input  { font-family: var(--font); }
 
+/* 管理員鎖定系統 */
+.lock-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border-radius: 20px;
+    border: 1.5px solid var(--border); background: var(--white);
+    font-size: 13px; font-weight: 700; color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.lock-btn i { font-size: 14px; }
+.lock-btn.locked { color: var(--text-3); background: #f1f5f9; border-color: #cbd5e1; }
+.lock-btn.unlocked { color: #fff; background: var(--orange); border-color: var(--orange); box-shadow: 0 4px 12px rgba(245, 117, 10, 0.2); }
+.lock-btn:hover { transform: translateY(-1px); }
+
+/* 隱藏需要權限的按鈕 (當處於鎖定狀態時) */
+body.admin-locked .admin-only { display: none !important; }
+
 /* ─── Tab 頂部 ─── */
 .main-tabs {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -964,7 +981,7 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
 <nav class="main-tabs">
     <div class="nav-left">
         <button class="tab-btn active" data-tab="comparison"><i class="fas fa-table"></i> 課表對照</button>
-        <button class="tab-btn" data-tab="scheduling"><i class="fas fa-calendar-check"></i> 賽程規畫</button>
+        <button class="tab-btn admin-only" data-tab="scheduling"><i class="fas fa-calendar-check"></i> 賽程規畫</button>
         <button class="tab-btn" data-tab="overview"><i class="fas fa-sitemap"></i> 對戰表</button>
     </div>
     <div class="nav-right">
@@ -986,7 +1003,7 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
                 <div class="panel-header">
                     <span class="panel-icon">🏫</span>
                     <h2 class="panel-title">班級選取</h2>
-                    <button class="action-link" id="btnClearClasses">清空</button>
+                    <button class="action-link admin-only" id="btnClearClasses">清空</button>
                 </div>
                 <div class="class-picker" id="classPicker"></div>
             </section>
@@ -997,9 +1014,9 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
                     <span class="panel-icon">⚙️</span>
                     <h2 class="panel-title">可排科目</h2>
                     <div class="subject-actions">
-                        <button class="action-link" id="btnSelectAll">全選</button>
-                        <span class="sep">|</span>
-                        <button class="action-link" id="btnDeselectAll">全不選</button>
+                        <button class="action-link admin-only" id="btnSelectAll">全選</button>
+                        <span class="sep admin-only">|</span>
+                        <button class="action-link admin-only" id="btnDeselectAll">全不選</button>
                     </div>
                 </div>
                 <input type="search" id="subjectSearch" class="search-input" placeholder="🔍 搜尋科目...">
@@ -1070,10 +1087,13 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
                 <div class="panel-header">
                     <span class="panel-icon">📝</span>
                     <h2 class="panel-title">待排賽事</h2>
+                    <button class="action-link admin-only" id="btnAddMatch" onclick="openAddMatchModal()" title="新增比賽" style="background:var(--blue); color:#fff; padding:3px 10px; border-radius:6px; font-size:12px; font-weight:700;">
+                        <i class="fas fa-plus"></i> 新增
+                    </button>
                 </div>
                 <input type="search" id="matchSearch" class="search-input" placeholder="🔍 搜尋盃賽/班級...">
                 <div style="margin-bottom: 8px;">
-                    <button class="btn-action" id="btnFilterDupes" onclick="toggleDupeFilter()" style="width:100%; background: var(--blue-light); color: var(--blue); border-color: var(--blue);">
+                    <button class="btn-action admin-only" id="btnFilterDupes" onclick="toggleDupeFilter()" style="width:100%; background: var(--blue-light); color: var(--blue); border-color: var(--blue);">
                         <i class="fas fa-clone"></i> ⚠️ 檢查重複
                     </button>
                 </div>
@@ -1118,7 +1138,7 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
             <div class="scheduled-panel" id="scheduledPanel">
                 <div class="panel-header-row">
                     <h3 class="panel-title" id="scheduledPanelTitle" onclick="toggleScheduledPanel()" style="cursor:pointer; user-select:none;">📅 本週已排定賽程 <span id="scheduledToggleIcon" style="font-size:12px; color:var(--text-3); margin-left:4px;">▲ 收合</span></h3>
-                    <div class="panel-actions">
+                    <div class="panel-actions admin-only">
                         <button class="btn-action" onclick="toggleScheduledPanel()" style="background:var(--blue-light); color:var(--blue); border-color:var(--blue);"><i class="fas fa-arrows-alt-v"></i> 收合/展開</button>
                         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importScheduleData(event)">
                         <button class="btn-action" onclick="document.getElementById('importFile').click()"><i class="fas fa-file-import"></i> 匯入</button>
@@ -1170,6 +1190,7 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
     </div>
 </div>
 
+
 <!-- 移除雲端連線，改為完全本地使用 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -1205,7 +1226,7 @@ td.cell-blocked { background: var(--cell-blocked); opacity: 0.6; }
             </div>
             
             <div style="display:flex; gap:10px; margin-top:15px;">
-                <button onclick="saveMatchResult()" style="flex:2; padding:14px; background:#f5750a; color:#fff; border:none; border-radius:12px; font-weight:900; font-size:16px; cursor:pointer; box-shadow:0 4px 12px rgba(245, 117, 10, 0.3);">確認儲存</button>
+                <button onclick="saveMatchResult()" class="admin-only" style="flex:2; padding:14px; background:#f5750a; color:#fff; border:none; border-radius:12px; font-weight:900; font-size:16px; cursor:pointer; box-shadow:0 4px 12px rgba(245, 117, 10, 0.3);">確認儲存</button>
                 <button onclick="printMatchSlip()" id="btnSnapshot" style="flex:1; padding:14px; background:#2563eb; color:#fff; border:none; border-radius:12px; font-weight:900; font-size:14px; cursor:pointer; display:none;">
                     🖨️ 列印單據
                 </button>
@@ -5661,7 +5682,7 @@ function buildTableBody() {
 
                 matchesInSlot.forEach(sm => {
 
-                    const matchInfo = matchesData.find(m => m.id === sm.matchId);
+                    const matchInfo = matchesData.find(m => String(m.id) === String(sm.matchId));
 
                     const b = document.createElement('div');
 
@@ -5917,7 +5938,25 @@ async function loadMatches() {
 
 
 
-        console.log(`✅ 成功載入賽事：目前共有 ${matchesData.length} 場。`);
+        // ===== 合併「手動新增」的自訂比賽 =====
+
+        const customMatches = JSON.parse(localStorage.getItem('classVSclass_custom_matches') || '[]');
+
+        const filteredCustom = customMatches.filter(m => !deletedIds.includes(String(m.id)));
+
+        filteredCustom.forEach(m => {
+
+            if (!seen.has(m.id)) {
+
+                seen.add(m.id);
+
+                matchesData.push(m);
+
+            }
+
+        });
+
+        console.log(`✅ 成功載入賽事：目前共有 ${matchesData.length} 場（含 ${filteredCustom.length} 場自訂）。`);
 
     } catch (err) {
 
@@ -6076,9 +6115,9 @@ function renderMatchList() {
 
     const sorted = [...filtered].sort((a, b) => {
 
-        const isAScheduled = scheduledMatches.some(sm => sm.matchId === a.id);
+        const isAScheduled = scheduledMatches.some(sm => String(sm.matchId) === String(a.id));
 
-        const isBScheduled = scheduledMatches.some(sm => sm.matchId === b.id);
+        const isBScheduled = scheduledMatches.some(sm => String(sm.matchId) === String(b.id));
 
         if (isAScheduled && !isBScheduled) return 1;
 
@@ -6092,7 +6131,7 @@ function renderMatchList() {
 
     sorted.forEach(match => {
 
-        const scheduledInfo = scheduledMatches.find(sm => sm.matchId === match.id);
+        const scheduledInfo = scheduledMatches.find(sm => String(sm.matchId) === String(match.id));
 
         const isScheduled = !!scheduledInfo;
 
@@ -6112,7 +6151,7 @@ function renderMatchList() {
 
                     ${isScheduled ? `<span class="match-date-badge">${scheduledInfo.date.split('-').slice(1).join('/')} ${PERIOD_NAMES[scheduledInfo.periodIndex]}</span>` : ''}
 
-                    <button class="match-delete-btn" onclick="event.stopPropagation(); deleteMatch(${match.id})" title="永久刪除此賽事">
+                    <button class="match-delete-btn" onclick="event.stopPropagation(); deleteMatch('${match.id}')" title="永久刪除此賽事">
 
                         <i class="fas fa-trash-alt"></i>
 
@@ -6260,6 +6299,24 @@ async function deleteMatch(matchId) {
 
     }
 
+    // 如果是自訂比賽（custom_ 前綴），一併從 custom_matches 清單移除
+
+    if (idStr.startsWith('custom_')) {
+
+        const customList = JSON.parse(localStorage.getItem('classVSclass_custom_matches') || '[]');
+
+        const updatedList = customList.filter(m => String(m.id) !== idStr);
+
+        localStorage.setItem('classVSclass_custom_matches', JSON.stringify(updatedList));
+
+        if (window.db) {
+
+            db.collection('customMatches').doc(idStr).delete().catch(e => console.warn('Firestore customMatches delete skip:', e.message));
+
+        }
+
+    }
+
     
 
     // 儲存本地並刷新所有 UI
@@ -6320,6 +6377,8 @@ async function deleteMatch(matchId) {
 
 
 
+
+
 function renderSchedulingTable() {
 
     const tableHead = document.getElementById('schedulingTableHead');
@@ -6352,7 +6411,7 @@ function renderSchedulingTable() {
 
 
 
-    const match = matchesData.find(m => m.id === selectedMatchId);
+    const match = matchesData.find(m => String(m.id) === String(selectedMatchId));
 
     title.textContent = `對照：${match.teamA} vs ${match.teamB}`;
 
@@ -6428,7 +6487,7 @@ function renderSchedulingTable() {
 
 
 
-            const match = matchesData.find(m => m.id === selectedMatchId);
+            const match = matchesData.find(m => String(m.id) === String(selectedMatchId));
 
             const thisSport  = getSportType(match.category);
 
@@ -6458,7 +6517,7 @@ function renderSchedulingTable() {
 
             let classConflictReason = null;
 
-            const scheduledInSlot = scheduledMatches.filter(sm => sm.date === dateStr && sm.periodIndex === p && sm.matchId !== selectedMatchId);
+            const scheduledInSlot = scheduledMatches.filter(sm => sm.date === dateStr && sm.periodIndex === p && String(sm.matchId) !== String(selectedMatchId));
 
             
 
@@ -6500,7 +6559,7 @@ function renderSchedulingTable() {
 
 
 
-            const isSelf = scheduledMatches.some(sm => sm.matchId === selectedMatchId && sm.date === dateStr && sm.periodIndex === p);
+            const isSelf = scheduledMatches.some(sm => String(sm.matchId) === String(selectedMatchId) && sm.date === dateStr && sm.periodIndex === p);
 
             const isFull = sportOccupants.length >= limit && !isSelf;
 
@@ -6688,7 +6747,7 @@ function renderSchedulingTable() {
 
                         const targetId = selectedMatchId;
 
-                        scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== targetId);
+                        scheduledMatches = scheduledMatches.filter(sm => String(sm.matchId) !== String(targetId));
 
                         saveScheduledMatches();
 
@@ -6730,7 +6789,7 @@ function renderSchedulingTable() {
 
                 // Clear any existing schedule for this specific match first
 
-                scheduledMatches = scheduledMatches.filter(sm => sm.matchId !== selectedMatchId);
+                scheduledMatches = scheduledMatches.filter(sm => String(sm.matchId) !== String(selectedMatchId));
 
                 scheduledMatches.push(newMatch);
 
@@ -6846,7 +6905,7 @@ function renderScheduledGrid() {
 
                 
 
-                const otherM = matchesData.find(m => m.id === otherSm.matchId);
+                const otherM = matchesData.find(m => String(m.id) === String(otherSm.matchId));
 
                 if (!otherM) return; // 防呆：如果找不到對照賽事資料則跳過
 
@@ -8132,18 +8191,24 @@ function submitAddMatch() {
     const newMatch = { id: newId, category: cat, teamA, teamB, status, score: '', scoreA: 0, scoreB: 0, winner: '' };
     matchesData.push(newMatch);
 
+    // 儲存到 localStorage（確保重整後仍存在）
+    const customList = JSON.parse(localStorage.getItem('classVSclass_custom_matches') || '[]');
+    customList.push(newMatch);
+    localStorage.setItem('classVSclass_custom_matches', JSON.stringify(customList));
+
     // Firestore 同步
     if (typeof db !== 'undefined' && db) {
-        db.collection('matches').doc(newId).set(newMatch).catch(e => console.warn('Add match sync:', e.message));
+        db.collection('customMatches').doc(newId).set(newMatch).catch(e => console.warn('Add match sync:', e.message));
     }
 
     document.getElementById('addMatchModal')?.remove();
     currentOverviewCategory = cat.replace(/第\s*\d+\s*輪|準決賽|決賽|季軍賽|循環賽|預賽/g,'').trim() || cat;
     renderTournamentOverview();
     renderMatchList && renderMatchList();
-    alert(`✅ 已新增：${teamA} VS ${teamB}`);
+    alert(`✅ 已新增：${teamA} VS ${teamB}（已永久儲存）`);
 }
 
 </script>
+<script src="app.js"></script>
 </body>
 </html>

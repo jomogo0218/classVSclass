@@ -10,65 +10,111 @@
 
 'use strict';
 
+// ===== 管理權限系統 =====
+let isAdmin = false;
+const ADMIN_PHONE = "0921213348"; // <--- 您可以在此填入手機號碼作為密碼
+
+function checkAdmin() {
+    if (isAdmin) return true;
+    const input = prompt("🔐 此功能僅限管理員使用。\n請輸入您的手機號碼以解鎖存取權限：");
+    if (input === ADMIN_PHONE) {
+        isAdmin = true;
+        updateAdminUI();
+        alert("✅ 權限已解鎖！現在您可以進行排程與編輯。");
+        return true;
+    }
+    if (input !== null) alert("❌ 密碼錯誤，存取權限不足。");
+    return false;
+}
+
+function toggleAdminLock() {
+    if (isAdmin) {
+        if (confirm("是否要登出管理員模式並重新鎖定系統？")) {
+            isAdmin = false;
+            updateAdminUI();
+        }
+    } else {
+        checkAdmin();
+    }
+}
+
+function updateAdminUI() {
+    const btn = document.getElementById('adminLockBtn');
+    if (isAdmin) {
+        document.body.classList.remove('admin-locked');
+        if (btn) {
+            btn.classList.replace('locked', 'unlocked');
+            btn.innerHTML = '<i class="fas fa-unlock"></i> <span>管理員模式</span>';
+        }
+    } else {
+        document.body.classList.add('admin-locked');
+        if (btn) {
+            btn.classList.replace('unlocked', 'locked');
+            btn.innerHTML = '<i class="fas fa-lock"></i> <span>管理員鎖定中</span>';
+        }
+    }
+}
+
+
 
 
 // ===== 常數 =====
 
-const PERIOD_NAMES = ['早自習','第1節','第2節','第3節','第4節','第5節','第6節','第7節','課業輔導','精進學習'];
+const PERIOD_NAMES = ['早自習', '第1節', '第2節', '第3節', '第4節', '第5節', '第6節', '第7節', '課業輔導', '精進學習'];
 
-const DAY_NAMES    = ['週一','週二','週三','週四','週五'];
+const DAY_NAMES = ['週一', '週二', '週三', '週四', '週五'];
 
-const DAYS         = ['Mon','Tue','Wed','Thu','Fri'];
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
-const COLORS       = 10; // 固定為 10 班配色
+const COLORS = 10; // 固定為 10 班配色
 
-const PERIOD_TIMES = ['07:40-08:00','08:05-08:50','09:00-09:45','10:00-10:45','11:00-11:45','13:00-13:45','14:00-14:45','15:00-15:45','15:55-16:40','16:45-17:30'];
+const PERIOD_TIMES = ['07:40-08:00', '08:05-08:50', '09:00-09:45', '10:00-10:45', '11:00-11:45', '13:00-13:45', '14:00-14:45', '15:00-15:45', '15:55-16:40', '16:45-17:30'];
 
 
 
-const SKILL_KEYWORDS = ['體育','音樂','美術','視覺藝術','表演藝術','童軍','家政','生活科技',
+const SKILL_KEYWORDS = ['體育', '音樂', '美術', '視覺藝術', '表演藝術', '童軍', '家政', '生活科技',
 
-    '資訊科技','機器人','社團','班週會','輔導','健康教育','軍訓','生命教育','藝術','創客','Maker','自習','空堂',
+    '資訊科技', '機器人', '社團', '班週會', '輔導', '健康教育', '軍訓', '生命教育', '藝術', '創客', 'Maker', '自習', '空堂',
 
     // 彈性/探究/多元課程
 
-    '彈性','多元','選修','探究','實作','科技','環境','生命科學','地球科學',
+    '彈性', '多元', '選修', '探究', '實作', '科技', '環境', '生命科學', '地球科學',
 
-    '生涯','週會','本土語','閱讀','識字','晨讀','科學',
+    '生涯', '週會', '本土語', '閱讀', '識字', '晨讀', '科學',
 
     // 精進學習
 
-    '精進','精進學習'];
+    '精進', '精進學習'];
 
 
 
 const CONFLICTS = [
 
-    { start:'2026-03-25', end:'2026-03-26', label:'全校第一次段考',           type:'exam'    },
+    { start: '2026-03-25', end: '2026-03-26', label: '全校第一次段考', type: 'exam' },
 
-    { start:'2026-04-15', end:'2026-04-17', label:'高二畢旅/高一公訓/國二隔宿', type:'event'   },
+    { start: '2026-04-15', end: '2026-04-17', label: '高二畢旅/高一公訓/國二隔宿', type: 'event' },
 
-    { start:'2026-04-21', end:'2026-04-22', label:'國三模擬考',               type:'exam'    },
+    { start: '2026-04-21', end: '2026-04-22', label: '國三模擬考', type: 'exam' },
 
-    { start:'2026-04-23', end:'2026-04-24', label:'高三畢業考',               type:'exam'    },
+    { start: '2026-04-23', end: '2026-04-24', label: '高三畢業考', type: 'exam' },
 
-    { start:'2026-05-01', end:'2026-05-01', label:'勞動節（全校放假）',        type:'holiday' },
+    { start: '2026-05-01', end: '2026-05-01', label: '勞動節（全校放假）', type: 'holiday' },
 
-    { start:'2026-05-05', end:'2026-05-06', label:'國三第二次段考',            type:'exam'    },
+    { start: '2026-05-05', end: '2026-05-06', label: '國三第二次段考', type: 'exam' },
 
-    { start:'2026-05-08', end:'2026-05-08', label:'母親節合唱比賽',            type:'event'   },
+    { start: '2026-05-08', end: '2026-05-08', label: '母親節合唱比賽', type: 'event' },
 
-    { start:'2026-05-14', end:'2026-05-15', label:'全校第二次段考',            type:'exam'    },
+    { start: '2026-05-14', end: '2026-05-15', label: '全校第二次段考', type: 'exam' },
 
-    { start:'2026-05-16', end:'2026-05-17', label:'國中教育會考',              type:'exam'    },
+    { start: '2026-05-16', end: '2026-05-17', label: '國中教育會考', type: 'exam' },
 
-    { start:'2026-05-22', end:'2026-05-22', label:'國三生涯發展講座',          type:'event'   },
+    { start: '2026-05-22', end: '2026-05-22', label: '國三生涯發展講座', type: 'event' },
 
-    { start:'2026-06-05', end:'2026-06-05', label:'畢業典禮',                 type:'event'   },
+    { start: '2026-06-05', end: '2026-06-05', label: '畢業典禮', type: 'event' },
 
-    { start:'2026-06-19', end:'2026-06-19', label:'端午節（放假）',            type:'holiday' },
+    { start: '2026-06-19', end: '2026-06-19', label: '端午節（放假）', type: 'holiday' },
 
-    { start:'2026-06-26', end:'2026-06-30', label:'全校期末考',               type:'exam'    },
+    { start: '2026-06-26', end: '2026-06-30', label: '全校期末考', type: 'exam' },
 
 ];
 
@@ -81,27 +127,27 @@ const STORAGE_KEY_CLASSES = 'classVSclass_selected_classes_v2';
 
 // ===== 狀態 =====
 
-let scheduleData    = null;
+let scheduleData = null;
 
 let selectedClasses = [];       // array of class names
 
 let allowedSubjects = new Set();
 
-let currentMonday   = getMonday(new Date());
+let currentMonday = getMonday(new Date());
 
 
 
 // ===== 賽程相關狀態 =====
 
-let matchesData       = []; // all matches from JSON
+let matchesData = []; // all matches from JSON
 
-let scheduledMatches  = []; // [{ matchId, date, periodIndex }]
+let scheduledMatches = []; // [{ matchId, date, periodIndex }]
 
-let selectedMatchId   = null;
+let selectedMatchId = null;
 
-let matchSearchTerm   = '';
+let matchSearchTerm = '';
 
-let showOnlyDupes     = false; // 重複檢查模式
+let showOnlyDupes = false; // 重複檢查模式
 let currentOverviewCategory = null;
 
 
@@ -110,7 +156,7 @@ let currentOverviewCategory = null;
 
 function getSportIcon(cat) {
 
-    const isMale   = cat.includes('男');
+    const isMale = cat.includes('男');
 
     const isFemale = cat.includes('女');
 
@@ -120,9 +166,9 @@ function getSportIcon(cat) {
 
         : isFemale
 
-        ? `<span style="font-size:0.75rem;color:#d93025;font-weight:900;vertical-align:middle;">♀</span>`
+            ? `<span style="font-size:0.75rem;color:#d93025;font-weight:900;vertical-align:middle;">♀</span>`
 
-        : '';
+            : '';
 
 
 
@@ -227,6 +273,8 @@ function initFirestoreListener() {
 // ===== 初始化 =====
 
 async function init() {
+    updateAdminUI(); // 初始化鎖定狀態
+
 
     try {
 
@@ -252,17 +300,17 @@ async function init() {
 
         setupMobileSidebar();
 
-        setupTabSwitcher(); 
+        setupTabSwitcher();
 
         console.log("2. 基本介面組件初始化完成");
 
-        
 
-        await loadMatches(); 
+
+        await loadMatches();
 
         console.log("3. matches.json 載入完成，目前賽事數:", matchesData.length);
 
-        
+
 
         // Try to load from Firestore, otherwise fallback to LocalStorage
 
@@ -290,7 +338,7 @@ async function init() {
 
                             parsed.forEach(m => saveScheduledMatchToFirestore(m));
 
-                        } catch(e) { console.error("Migration error:", e); }
+                        } catch (e) { console.error("Migration error:", e); }
 
                     }
 
@@ -302,11 +350,11 @@ async function init() {
 
             console.log("4. 無 Firestore，使用 LocalStorage");
 
-            loadScheduledMatches(); 
+            loadScheduledMatches();
 
         }
 
-        
+
 
         renderTable();
 
@@ -408,7 +456,7 @@ function parseISO(s) {
 
 function shortDate(d) {
 
-    return `${d.getMonth()+1}/${d.getDate()}`;
+    return `${d.getMonth() + 1}/${d.getDate()}`;
 
 }
 
@@ -442,33 +490,33 @@ function conflictsForDate(dStr) {
 
 function setupWeekControls() {
 
-    document.getElementById('btnPrevWeek').onclick = () => { 
+    document.getElementById('btnPrevWeek').onclick = () => {
 
-        currentMonday.setDate(currentMonday.getDate()-7); 
+        currentMonday.setDate(currentMonday.getDate() - 7);
 
-        renderTable(); 
+        renderTable();
 
-        renderSchedulingView(); 
-
-    };
-
-    document.getElementById('btnNextWeek').onclick = () => { 
-
-        currentMonday.setDate(currentMonday.getDate()+7); 
-
-        renderTable(); 
-
-        renderSchedulingView(); 
+        renderSchedulingView();
 
     };
 
-    document.getElementById('btnToday').onclick = () => { 
+    document.getElementById('btnNextWeek').onclick = () => {
 
-        currentMonday = getMonday(new Date()); 
+        currentMonday.setDate(currentMonday.getDate() + 7);
 
-        renderTable(); 
+        renderTable();
 
-        renderSchedulingView(); 
+        renderSchedulingView();
+
+    };
+
+    document.getElementById('btnToday').onclick = () => {
+
+        currentMonday = getMonday(new Date());
+
+        renderTable();
+
+        renderSchedulingView();
 
     };
 
@@ -478,11 +526,11 @@ function setupWeekControls() {
 
 function updateWeekDisplay() {
 
-    const dates   = getWeekDates();
+    const dates = getWeekDates();
 
-    const mon     = dates[0], fri = dates[4];
+    const mon = dates[0], fri = dates[4];
 
-    const today   = getMonday(new Date());
+    const today = getMonday(new Date());
 
     const isToday = isoDate(mon) === isoDate(today);
 
@@ -490,7 +538,7 @@ function updateWeekDisplay() {
 
     document.getElementById('weekLabel').textContent = isToday ? '本週' : '';
 
-    const weekRangeText = `${mon.getFullYear()}/${String(mon.getMonth()+1).padStart(2,'0')}/${String(mon.getDate()).padStart(2,'0')} – ${String(fri.getMonth()+1).padStart(2,'0')}/${String(fri.getDate()).padStart(2,'0')}`;
+    const weekRangeText = `${mon.getFullYear()}/${String(mon.getMonth() + 1).padStart(2, '0')}/${String(mon.getDate()).padStart(2, '0')} – ${String(fri.getMonth() + 1).padStart(2, '0')}/${String(fri.getDate()).padStart(2, '0')}`;
 
     document.getElementById('weekRange').textContent = weekRangeText;
 
@@ -510,11 +558,11 @@ function updateWeekDisplay() {
 
     // Conflict banner
 
-    const banner    = document.getElementById('conflictBanner');
+    const banner = document.getElementById('conflictBanner');
 
-    const weekStr   = dates.map(isoDate);
+    const weekStr = dates.map(isoDate);
 
-    const weekConf  = [];
+    const weekConf = [];
 
     CONFLICTS.forEach(c => {
 
@@ -526,7 +574,7 @@ function updateWeekDisplay() {
 
         banner.style.display = 'flex';
 
-        banner.textContent   = '⚠️ 本週：' + weekConf.join(' · ');
+        banner.textContent = '⚠️ 本週：' + weekConf.join(' · ');
 
     } else {
 
@@ -550,7 +598,7 @@ function buildClassPicker() {
 
     // 明確定義年級分組順序
 
-    const GRADE_ORDER = ['國一','國二','國三','高一','高二','高三','其他'];
+    const GRADE_ORDER = ['國一', '國二', '國三', '高一', '高二', '高三', '其他'];
 
 
 
@@ -610,7 +658,7 @@ function buildClassPicker() {
 
             const btn = document.createElement('button');
 
-            btn.className   = 'class-btn';
+            btn.className = 'class-btn';
 
             // 顯示文字：取出年級後的部分（班號或班名）
 
@@ -618,11 +666,11 @@ function buildClassPicker() {
 
             btn.textContent = suffix || cls;
 
-            btn.title       = cls;   // hover 顯示完整名稱
+            btn.title = cls;   // hover 顯示完整名稱
 
             btn.dataset.cls = cls;
 
-            btn.onclick     = () => toggleClass(cls);
+            btn.onclick = () => toggleClass(cls);
 
             btnsEl.appendChild(btn);
 
@@ -650,7 +698,7 @@ function toggleClass(cls) {
 
     if (idx === -1) selectedClasses.push(cls);
 
-    else            selectedClasses.splice(idx, 1);
+    else selectedClasses.splice(idx, 1);
 
     updateClassUI();
     saveClassSelection();
@@ -726,7 +774,7 @@ function loadSubjectSettings() {
 
     if (saved) {
 
-        try { allowedSubjects = new Set(JSON.parse(saved)); return; } catch(e) {}
+        try { allowedSubjects = new Set(JSON.parse(saved)); return; } catch (e) { }
 
     }
 
@@ -770,9 +818,9 @@ function extractAllSubjects() {
 
                 const [subj] = raw.split('|');
 
-                const norm   = (subj || '').normalize('NFKC').replace(/\s/g,'');
+                const norm = (subj || '').normalize('NFKC').replace(/\s/g, '');
 
-                const disp   = (subj || '').normalize('NFKC').trim().replace(/\s+/g,' ');
+                const disp = (subj || '').normalize('NFKC').trim().replace(/\s+/g, ' ');
 
                 if (norm && !map.has(norm)) map.set(norm, disp);
 
@@ -798,9 +846,9 @@ function buildSubjectList(searchTerm = '') {
 
 
 
-    const map     = extractAllSubjects();
+    const map = extractAllSubjects();
 
-    const entries = [...map.entries()].sort((a,b) => a[1].localeCompare(b[1], 'zh-TW'));
+    const entries = [...map.entries()].sort((a, b) => a[1].localeCompare(b[1], 'zh-TW'));
 
 
 
@@ -830,7 +878,7 @@ function buildSubjectList(searchTerm = '') {
 
             if (e.target.checked) allowedSubjects.add(norm);
 
-            else                  allowedSubjects.delete(norm);
+            else allowedSubjects.delete(norm);
 
             saveSubjectSettings();
 
@@ -890,7 +938,7 @@ function setupSubjectSearch() {
 
 function setupMobileSidebar() {
 
-    const toggle  = document.getElementById('sidebarToggle');
+    const toggle = document.getElementById('sidebarToggle');
 
     const sidebar = document.getElementById('sidebar');
 
@@ -898,13 +946,13 @@ function setupMobileSidebar() {
 
 
 
-    function open()  { sidebar.classList.add('open'); overlay.classList.add('open'); }
+    function open() { sidebar.classList.add('open'); overlay.classList.add('open'); }
 
     function close() { sidebar.classList.remove('open'); overlay.classList.remove('open'); }
 
 
 
-    toggle.onclick  = open;
+    toggle.onclick = open;
 
     overlay.onclick = close;
 
@@ -924,7 +972,7 @@ function renderTable() {
 
 
 
-    const emptyState  = document.getElementById('emptyState');
+    const emptyState = document.getElementById('emptyState');
 
     const tableScroll = document.getElementById('tableScroll');
 
@@ -932,7 +980,7 @@ function renderTable() {
 
     // 即使沒選班級也顯示表格，讓使用者看全週賽程
 
-    emptyState.style.display  = 'none';
+    emptyState.style.display = 'none';
 
     tableScroll.style.display = '';
 
@@ -998,7 +1046,7 @@ function updateScheduleStats() {
 
     if (!summary) return;
 
-    
+
 
     if (scheduledMatches.length === 0) {
 
@@ -1024,7 +1072,7 @@ function updateScheduleStats() {
 
     const sortedDates = Object.keys(counts).sort();
 
-    
+
 
     let html = `<strong>📅 全局賽程分布概覽：</strong><br>`;
 
@@ -1062,7 +1110,7 @@ function buildTableHead() {
 
     const th0 = document.createElement('th');
 
-    th0.className   = 'period-col';
+    th0.className = 'period-col';
 
     th0.textContent = '節次';
 
@@ -1074,11 +1122,11 @@ function buildTableHead() {
 
     dates.forEach((date, i) => {
 
-        const dStr  = isoDate(date);
+        const dStr = isoDate(date);
 
         const confs = conflictsForDate(dStr);
 
-        const th    = document.createElement('th');
+        const th = document.createElement('th');
 
         if (confs.length) {
 
@@ -1138,7 +1186,7 @@ function buildTableBody() {
 
         DAYS.forEach((day, di) => {
 
-            const td   = document.createElement('td');
+            const td = document.createElement('td');
 
             const inner = document.createElement('div');
 
@@ -1156,21 +1204,21 @@ function buildTableBody() {
 
                 const actualKey = Object.keys(scheduleData.schedules).find(k => k.replace(/\s/g, '') === targetKey) || cls;
 
-                
 
-                const raw      = (scheduleData.schedules[actualKey]?.[day]?.[p] || '').trim();
+
+                const raw = (scheduleData.schedules[actualKey]?.[day]?.[p] || '').trim();
 
                 const [subj, teacher] = raw.split('|');
 
-                const subjClean = (subj || '').normalize('NFKC').trim().replace(/\s+/g,' ');
+                const subjClean = (subj || '').normalize('NFKC').trim().replace(/\s+/g, ' ');
 
-                const norm      = subjClean.normalize('NFKC').replace(/\s/g,'');
+                const norm = subjClean.normalize('NFKC').replace(/\s/g, '');
 
-                const isEmpty   = !subjClean || subjClean === '---';
+                const isEmpty = !subjClean || subjClean === '---';
 
-                const isSkill   = isEmpty || allowedSubjects.has(norm);
+                const isSkill = isEmpty || allowedSubjects.has(norm);
 
-                return { cls, cidx, subjClean, teacher: (teacher||'').trim(), norm, isEmpty, isSkill };
+                return { cls, cidx, subjClean, teacher: (teacher || '').trim(), norm, isEmpty, isSkill };
 
             });
 
@@ -1178,13 +1226,13 @@ function buildTableBody() {
 
             // Determine cell status
 
-            const allSkill  = slots.every(s => s.isSkill);
+            const allSkill = slots.every(s => s.isSkill);
 
             const someSkill = slots.some(s => s.isSkill);
 
-            const allPE     = slots.every(s => s.subjClean.replace(/\s/g,'').includes('體育'));
+            const allPE = slots.every(s => s.subjClean.replace(/\s/g, '').includes('體育'));
 
-            const hasAny    = slots.some(s => !s.isEmpty);
+            const hasAny = slots.some(s => !s.isEmpty);
 
 
 
@@ -1214,31 +1262,31 @@ function buildTableBody() {
 
                 if (selectedClasses.length === 1 || !isEmpty) {
 
-                    const row   = document.createElement('div');
+                    const row = document.createElement('div');
 
                     row.className = `class-slot slot-color-${cidx % 10} ${!isSkill ? 'slot-core' : ''}`;
 
 
 
-                    const tag   = document.createElement('span');
+                    const tag = document.createElement('span');
 
-                    tag.className   = `slot-class-tag tag-color-${cidx % 10}`;
+                    tag.className = `slot-class-tag tag-color-${cidx % 10}`;
 
-                    tag.textContent = cls.replace(/[^\d\u4e00-\u9fa5]/g,'').slice(-3); // short label
+                    tag.textContent = cls.replace(/[^\d\u4e00-\u9fa5]/g, '').slice(-3); // short label
 
 
 
-                    const sub   = document.createElement('span');
+                    const sub = document.createElement('span');
 
-                    sub.className   = 'slot-subject';
+                    sub.className = 'slot-subject';
 
                     sub.textContent = isEmpty ? '—' : subjClean;
 
 
 
-                    const tea   = document.createElement('span');
+                    const tea = document.createElement('span');
 
-                    tea.className   = 'slot-teacher';
+                    tea.className = 'slot-teacher';
 
                     tea.textContent = teacher;
 
@@ -1356,7 +1404,7 @@ function buildTableBody() {
 
     // Update skill count (excludes PE)
 
-    document.getElementById('statPE').innerHTML    = `體育時段 <strong>${peCount}</strong> 個`;
+    document.getElementById('statPE').innerHTML = `體育時段 <strong>${peCount}</strong> 個`;
 
     document.getElementById('statMatch').innerHTML = `推薦時段 <strong>${skillCount}</strong> 個`;
 
@@ -1388,13 +1436,13 @@ function setupTabSwitcher() {
 
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-            
+
 
             btn.classList.add('active');
 
             document.getElementById(`tab-${tabId}`).classList.add('active');
 
-            
+
 
             if (tabId === 'scheduling') renderSchedulingView();
 
@@ -1454,19 +1502,19 @@ function getMatchClasses(match) {
 
         const teamMatch = norm(teamStr);
 
-        
+
 
         // 1. Exact match ignoring spaces
 
         let found = scheduleData.classes.find(c => norm(c) === teamMatch);
 
-        
+
 
         // 2. Contains match
 
         if (!found) found = scheduleData.classes.find(c => norm(c).includes(teamMatch));
 
-        
+
 
         // 3. Fallback: regex for "Grade Class" format
 
@@ -1478,7 +1526,7 @@ function getMatchClasses(match) {
 
         }
 
-        
+
 
         if (found) classes.push(found);
 
@@ -1526,17 +1574,17 @@ async function loadMatches() {
 
         if (!res.ok) throw new Error(`無法讀取 matches.json (HTTP ${res.status})`);
 
-        
+
 
         const raw = await res.json();
 
-        
+
 
         // 讀取已經被「本地刪除」的賽事 ID
 
         const deletedIds = JSON.parse(localStorage.getItem('classVSclass_deleted_matches') || '[]');
 
-        
+
 
         // 依 ID 去重複，確保資料乾淨，同時過濾掉已經刪除的比賽
 
@@ -1573,7 +1621,7 @@ async function loadMatches() {
 function loadScheduledMatches() {
     const saved = localStorage.getItem('classVSclass_scheduled_matches');
     if (saved) {
-        try { scheduledMatches = JSON.parse(saved); } catch(e) { scheduledMatches = []; }
+        try { scheduledMatches = JSON.parse(saved); } catch (e) { scheduledMatches = []; }
     } else if (typeof EMBEDDED_SCHEDULED_DATA !== 'undefined') {
         scheduledMatches = EMBEDDED_SCHEDULED_DATA;
     } else {
@@ -1582,10 +1630,12 @@ function loadScheduledMatches() {
 }
 
 function saveScheduledMatches() {
+    if (!checkAdmin()) return;
+
 
     localStorage.setItem('classVSclass_scheduled_matches', JSON.stringify(scheduledMatches));
 
-    
+
 
     // Also update Firestore if available
 
@@ -1602,6 +1652,8 @@ function saveScheduledMatches() {
 
 
 function saveScheduledMatchToFirestore(match) {
+    if (!isAdmin) return; // 這個是內部同步用，不彈出 prompt，只檢查狀態
+
 
     if (!window.db) return;
 
@@ -1620,6 +1672,8 @@ function saveScheduledMatchToFirestore(match) {
 
 
 function removeScheduledMatchFromFirestore(matchId) {
+    if (!isAdmin) return; // 內部同步用
+
 
     if (!window.db) return;
 
@@ -1649,7 +1703,7 @@ function renderMatchList() {
 
     list.innerHTML = '';
 
-    
+
 
     // Normalize helper: convert full-width numbers to half-width and remove spaces
 
@@ -1669,7 +1723,7 @@ function renderMatchList() {
 
         if (m.status === '✅ 已結束' || m.status.includes('已結束')) return false;
 
-        
+
 
         // 如果開啟了重複檢查模式
 
@@ -1735,7 +1789,7 @@ function renderMatchList() {
 
         const isScheduled = !!scheduledInfo;
 
-        
+
 
         const el = document.createElement('div');
 
@@ -1779,7 +1833,7 @@ function renderMatchList() {
 
                 selectedMatchId = match.id;
 
-                
+
 
                 // AUTO NAVIGATION: If scheduled, jump to that week
 
@@ -1789,11 +1843,11 @@ function renderMatchList() {
 
                     currentMonday = getMonday(matchDate);
 
-                    renderTable(); 
+                    renderTable();
 
                 }
 
-                
+
 
                 renderSchedulingView();
 
@@ -1858,6 +1912,8 @@ function toggleDupeFilter() {
 
 
 async function deleteMatch(matchId) {
+    if (!checkAdmin()) return;
+
 
     const match = matchesData.find(m => String(m.id) === String(matchId));
 
@@ -1885,7 +1941,7 @@ async function deleteMatch(matchId) {
 
     scheduledMatches = scheduledMatches.filter(sm => String(sm.matchId) !== idStr);
 
-    
+
 
     // 【修改】將刪除紀錄永久存入 LocalStorage，確保重整網頁後依然不會出現
 
@@ -1899,7 +1955,7 @@ async function deleteMatch(matchId) {
 
     }
 
-    
+
 
     // 儲存本地並刷新所有 UI
 
@@ -1965,13 +2021,13 @@ function renderSchedulingTable() {
 
     const tableBody = document.getElementById('schedulingTableBody');
 
-    const empty     = document.getElementById('schedulingEmpty');
+    const empty = document.getElementById('schedulingEmpty');
 
-    const scroll    = document.getElementById('schedulingTableScroll');
+    const scroll = document.getElementById('schedulingTableScroll');
 
-    const title     = document.getElementById('currentSchedulingMatch');
+    const title = document.getElementById('currentSchedulingMatch');
 
-    const tips      = document.getElementById('schedulingTips');
+    const tips = document.getElementById('schedulingTips');
 
 
 
@@ -2069,13 +2125,13 @@ function renderSchedulingTable() {
 
             const match = matchesData.find(m => m.id === selectedMatchId);
 
-            const thisSport  = getSportType(match.category);
+            const thisSport = getSportType(match.category);
 
             const thisGender = getGender(match.category);
 
             const thisClasses = getMatchClasses(match);
 
-            const limit      = getSportLimit(thisSport);
+            const limit = getSportLimit(thisSport);
 
 
 
@@ -2091,7 +2147,7 @@ function renderSchedulingTable() {
 
             });
 
-            
+
 
             // 2. Check Class Conflict (Identify if involved classes are in same-gender matches)
 
@@ -2099,7 +2155,7 @@ function renderSchedulingTable() {
 
             const scheduledInSlot = scheduledMatches.filter(sm => sm.date === dateStr && sm.periodIndex === p && sm.matchId !== selectedMatchId);
 
-            
+
 
             for (const sm of scheduledInSlot) {
 
@@ -2109,9 +2165,9 @@ function renderSchedulingTable() {
 
                 const mClasses = getMatchClasses(m);
 
-                const mGender  = getGender(m.category);
+                const mGender = getGender(m.category);
 
-                
+
 
                 // Compare classes
 
@@ -2153,13 +2209,13 @@ function renderSchedulingTable() {
 
                 const actualKey = Object.keys(scheduleData.schedules).find(k => k.replace(/\s/g, '') === targetKey) || cls;
 
-                
+
 
                 const raw = (scheduleData.schedules[actualKey]?.[day]?.[p] || '').trim();
 
                 const [subj, teacher] = raw.split('|');
 
-                const norm = (subj || '').normalize('NFKC').replace(/\s/g,'');
+                const norm = (subj || '').normalize('NFKC').replace(/\s/g, '');
 
                 const isSkill = !subj || subj === '---' || allowedSubjects.has(norm);
 
@@ -2173,7 +2229,7 @@ function renderSchedulingTable() {
 
             const allSkill = (slots.length > 0) && slots.every(s => s.isSkill);
 
-            const allPE    = (slots.length > 0) && slots.every(s => s.isPE);
+            const allPE = (slots.length > 0) && slots.every(s => s.isPE);
 
 
 
@@ -2197,7 +2253,7 @@ function renderSchedulingTable() {
 
                 inner.appendChild(msg);
 
-                
+
 
                 // Show the conflicting match
 
@@ -2251,7 +2307,7 @@ function renderSchedulingTable() {
 
                 inner.appendChild(msg);
 
-                
+
 
                 // Show occupants clearly
 
@@ -2314,6 +2370,8 @@ function renderSchedulingTable() {
             // Click to Schedule (Admin Override mode: Allow everything but warn)
 
             td.onclick = () => {
+                if (!checkAdmin()) return;
+
 
                 const hasWarning = isBlocked || (!allSkill && !allPE);
 
@@ -2353,7 +2411,7 @@ function renderSchedulingTable() {
 
                 }
 
-                
+
 
                 const newMatch = {
 
@@ -2365,7 +2423,7 @@ function renderSchedulingTable() {
 
                 };
 
-                
+
 
                 // Clear any existing schedule for this specific match first
 
@@ -2475,7 +2533,7 @@ function renderScheduledGrid() {
 
             const thisClasses = getMatchClasses(match);
 
-            
+
 
             dayMatches.forEach((otherSm, otherIdx) => {
 
@@ -2483,21 +2541,21 @@ function renderScheduledGrid() {
 
                 if (sm.periodIndex !== otherSm.periodIndex) return; // only same period
 
-                
+
 
                 const otherM = matchesData.find(m => m.id === otherSm.matchId);
 
                 if (!otherM) return; // 防呆：如果找不到對照賽事資料則跳過
 
-                
+
 
                 const otherGender = getGender(otherM.category);
 
                 const otherClasses = getMatchClasses(otherM);
 
-                
 
-                for(const cls of thisClasses) {
+
+                for (const cls of thisClasses) {
 
                     if (otherClasses.includes(cls)) {
 
@@ -2531,7 +2589,7 @@ function renderScheduledGrid() {
 
             }
 
-            
+
 
             div.innerHTML = `
 
@@ -2607,18 +2665,20 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== 賽事清除工具 =====
 
 function clearAllSchedules() {
+    if (!checkAdmin()) return;
+
 
     if (!confirm('⚠️ 警告：這將徹底清除雲端與本機的所有排程資料！\n此動作不可復原，確定要執行嗎？')) return;
 
     if (!confirm('請進行最後確認：資料清除後賽程將全部回到「左側待排清單」。確定？')) return;
 
-    
+
 
     scheduledMatches = [];
 
     saveScheduledMatches();
 
-    
+
 
     if (window.db) {
 
@@ -2664,7 +2724,7 @@ function showDiagnostics() {
 
     const deletedIds = JSON.parse(localStorage.getItem('classVSclass_deleted_matches') || '[]');
 
-    
+
 
     const scheduled = scheduledMatches.length;
 
@@ -2680,17 +2740,17 @@ function showDiagnostics() {
 
     let msg = `📊 系統診斷與紀錄報告\n` +
 
-              `───────────────────\n` +
+        `───────────────────\n` +
 
-              `✅ 目前顯示賽事：${total} 場\n` +
+        `✅ 目前顯示賽事：${total} 場\n` +
 
-              `⛔ 已手動刪除(隱藏)：${deletedIds.length} 場\n` +
+        `⛔ 已手動刪除(隱藏)：${deletedIds.length} 場\n` +
 
-              `📌 已排入課表：${scheduled} 場\n` +
+        `📌 已排入課表：${scheduled} 場\n` +
 
-              `───────────────────\n`;
+        `───────────────────\n`;
 
-              
+
 
     if (deletedIds.length > 0) {
 
@@ -2715,6 +2775,8 @@ function showDiagnostics() {
 // 恢復所有已刪除赛次
 
 function restoreDeletedMatches() {
+    if (!checkAdmin()) return;
+
 
     const deletedIds = JSON.parse(localStorage.getItem('classVSclass_deleted_matches') || '[]');
 
@@ -2726,7 +2788,7 @@ function restoreDeletedMatches() {
 
     }
 
-    
+
 
     if (confirm(`確定要恢復這 ${deletedIds.length} 場被隱藏的賽事嗎？`)) {
 
@@ -2754,13 +2816,13 @@ function shiftDatesOneDay(delta) {
 
     if (!confirm(`📅 確定要把所有賽程${label}天嗎？`)) return;
 
-    
+
 
     const repaired = scheduledMatches.map(m => {
 
         let d = new Date(m.date);
 
-        d.setDate(d.getDate() + delta); 
+        d.setDate(d.getDate() + delta);
 
         const y = d.getFullYear();
 
@@ -2778,7 +2840,7 @@ function shiftDatesOneDay(delta) {
 
     saveScheduledMatches();
 
-    
+
 
     if (window.db) {
 
@@ -2814,7 +2876,7 @@ function rescue502() {
 
     if (!confirm('確定要把所有在 5/02 的 63 場賽程通通拉回到 4/27 (週一) 嗎？')) return;
 
-    
+
 
     const repaired = scheduledMatches.map(m => {
 
@@ -2834,7 +2896,7 @@ function rescue502() {
 
     saveScheduledMatches();
 
-    
+
 
     if (window.db) {
 
@@ -2897,6 +2959,8 @@ function exportScheduleData() {
 
 
 function importScheduleData(event) {
+    if (!checkAdmin()) return;
+
 
     const file = event.target.files[0];
 
@@ -2904,7 +2968,7 @@ function importScheduleData(event) {
 
     const reader = new FileReader();
 
-    reader.onload = function(e) {
+    reader.onload = function (e) {
 
         try {
 
@@ -2962,13 +3026,13 @@ function toggleScheduledPanel() {
 
     const btn = document.querySelector('.btn-action i.fa-arrows-alt-v'); // 獲取按鈕中的圖示
 
-    
+
 
     // 如果目前是 grid 分佈（或是初始狀態），就切換到隱藏
 
     const isHidden = (grid.style.display === 'none');
 
-    
+
 
     if (isHidden) {
 
@@ -3008,7 +3072,7 @@ function getOriginalTeacher(className, dayIdx, periodIdx) {
         return targetKey.startsWith(kClean) || kClean.startsWith(targetKey);
     }) || className;
 
-    const dayKey = ['Mon','Tue','Wed','Thu','Fri'][dayIdx];
+    const dayKey = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'][dayIdx];
     if (!dayKey) return '日期錯誤';
     const classSched = sd.schedules[actualKey];
     if (!classSched || !classSched[dayKey]) return '無課表資料';
@@ -3048,24 +3112,24 @@ function printMatchSlipById(matchId) {
     const scheduled = scheduledMatches.find(sm => String(sm.matchId) === String(matchId));
     if (!scheduled) { alert('此賽事尚未排定時間，無法列印通知單。'); return; }
 
-    const PNAMES = ['早自習','第1節','第2節','第3節','第4節','第5節','第6節','第7節','課業輔導','精進學習'];
-    const DNAMES = ['週一','週二','週三','週四','週五'];
-    const PTIMES = ['07:40-08:00','08:05-08:50','09:00-09:45','10:00-10:45','11:00-11:45','13:00-13:45','14:00-14:45','15:00-15:45','15:55-16:40','16:45-17:30'];
+    const PNAMES = ['早自習', '第1節', '第2節', '第3節', '第4節', '第5節', '第6節', '第7節', '課業輔導', '精進學習'];
+    const DNAMES = ['週一', '週二', '週三', '週四', '週五'];
+    const PTIMES = ['07:40-08:00', '08:05-08:50', '09:00-09:45', '10:00-10:45', '11:00-11:45', '13:00-13:45', '14:00-14:45', '15:00-15:45', '15:55-16:40', '16:45-17:30'];
 
-    const dateObj  = new Date(scheduled.date + 'T00:00:00');
-    const dayIdx   = (dateObj.getDay() + 6) % 7;
-    const dayName  = DNAMES[dayIdx] || '';
-    const pName    = PNAMES[scheduled.periodIndex] || ('第' + scheduled.periodIndex + '節');
-    const pTime    = PTIMES[scheduled.periodIndex] || '';
+    const dateObj = new Date(scheduled.date + 'T00:00:00');
+    const dayIdx = (dateObj.getDay() + 6) % 7;
+    const dayName = DNAMES[dayIdx] || '';
+    const pName = PNAMES[scheduled.periodIndex] || ('第' + scheduled.periodIndex + '節');
+    const pTime = PTIMES[scheduled.periodIndex] || '';
 
     const rawA = getOriginalTeacher(match.teamA, dayIdx, scheduled.periodIndex);
     const rawB = getOriginalTeacher(match.teamB, dayIdx, scheduled.periodIndex);
-    const subjA  = rawA.includes('/') ? rawA.split('/')[0].trim() : '課程';
+    const subjA = rawA.includes('/') ? rawA.split('/')[0].trim() : '課程';
     const tNameA = rawA.includes('/') ? rawA.split('/')[1].trim() : '任課老師';
-    const subjB  = rawB.includes('/') ? rawB.split('/')[0].trim() : '課程';
+    const subjB = rawB.includes('/') ? rawB.split('/')[0].trim() : '課程';
     const tNameB = rawB.includes('/') ? rawB.split('/')[1].trim() : '任課老師';
 
-    const serialNo = String(matchId).slice(-4).padStart(4,'0');
+    const serialNo = String(matchId).slice(-4).padStart(4, '0');
 
     const printWin = window.open('', '_blank');
     if (!printWin) { alert('請允許彈出視窗以列印'); return; }
@@ -3233,6 +3297,8 @@ window.onload = function() {
 }
 
 function openEditScoreModal(matchId) {
+    if (!checkAdmin()) return;
+
     const m = matchesData.find(match => String(match.id) === String(matchId));
     if (!m) return;
     currentEditingMatchId = matchId;
@@ -3250,6 +3316,8 @@ function openEditScoreModal(matchId) {
 function closeMatchModal() { document.getElementById('matchModal').style.display = 'none'; }
 
 function saveMatchResult() {
+    if (!checkAdmin()) return;
+
     const m = matchesData.find(match => String(match.id) === String(currentEditingMatchId));
     if (!m) return;
     m.scoreA = parseInt(document.getElementById('inputScoreA').value);
@@ -3296,7 +3364,7 @@ function loadClassSelection() {
     try {
         const saved = localStorage.getItem(STORAGE_KEY_CLASSES);
         if (saved) selectedClasses = JSON.parse(saved);
-    } catch(e) { selectedClasses = []; }
+    } catch (e) { selectedClasses = []; }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -3386,7 +3454,7 @@ function setOverviewViewMode(mode) {
 
 // ─── 主渲染入口 ──────────────────────────────────────────────
 function renderTournamentOverview() {
-    const sidebar  = document.getElementById('categorySidebar');
+    const sidebar = document.getElementById('categorySidebar');
     const container = document.getElementById('tournamentContainer');
     if (!sidebar || !container) return;
 
@@ -3399,13 +3467,13 @@ function renderTournamentOverview() {
             <button class="ov-add-btn" onclick="openAddMatchModal()" title="新增比賽">＋</button>
         </div>
         ${categories.map(cat => {
-            const catMs = getCategoryMatches(cat);
-            const done  = catMs.filter(m => m.status.includes('已結束')).length;
-            const type  = getTournamentType(catMs);
-            const icon  = type === 'roundrobin' ? '⚽' : '🏆';
-            const active = currentOverviewCategory === cat;
-            return `<div class="ov-sidebar-item ${active ? 'ov-active' : ''}"
-                        onclick="selectOverviewCategory('${cat.replace(/'/g,"\\'")}')">
+        const catMs = getCategoryMatches(cat);
+        const done = catMs.filter(m => m.status.includes('已結束')).length;
+        const type = getTournamentType(catMs);
+        const icon = type === 'roundrobin' ? '⚽' : '🏆';
+        const active = currentOverviewCategory === cat;
+        return `<div class="ov-sidebar-item ${active ? 'ov-active' : ''}"
+                        onclick="selectOverviewCategory('${cat.replace(/'/g, "\\'")}')">
                 <div class="ov-item-main">
                     <span class="ov-item-icon">${getSportIcon ? getSportIcon(cat) : icon}</span>
                     <span class="ov-item-name">${cat}</span>
@@ -3415,7 +3483,7 @@ function renderTournamentOverview() {
                     <span class="ov-progress">${done}/${catMs.length}</span>
                 </div>
             </div>`;
-        }).join('')}
+    }).join('')}
     `;
 
     if (!currentOverviewCategory && categories.length > 0) {
@@ -3430,8 +3498,8 @@ function renderTournamentOverview() {
 
     const catMatches = getCategoryMatches(currentOverviewCategory);
     const type = getTournamentType(catMatches);
-    const done  = catMatches.filter(m => m.status.includes('已結束')).length;
-    const pct   = catMatches.length ? Math.round(done / catMatches.length * 100) : 0;
+    const done = catMatches.filter(m => m.status.includes('已結束')).length;
+    const pct = catMatches.length ? Math.round(done / catMatches.length * 100) : 0;
 
     // ── 主內容區 ─────────────────────────────────────────────
     container.innerHTML = `
@@ -3464,12 +3532,12 @@ function renderTournamentOverview() {
             <!-- 視圖切換 TAB -->
             <div class="ov-view-tabs">
                 ${type === 'roundrobin' ? `
-                <button class="ov-tab ${overviewViewMode==='standings'?'ov-tab-active':''}" onclick="setOverviewViewMode('standings')">🏅 積分榜</button>
-                <button class="ov-tab ${overviewViewMode==='matrix'?'ov-tab-active':''}" onclick="setOverviewViewMode('matrix')">📊 對戰矩陣</button>
+                <button class="ov-tab ${overviewViewMode === 'standings' ? 'ov-tab-active' : ''}" onclick="setOverviewViewMode('standings')">🏅 積分榜</button>
+                <button class="ov-tab ${overviewViewMode === 'matrix' ? 'ov-tab-active' : ''}" onclick="setOverviewViewMode('matrix')">📊 對戰矩陣</button>
                 ` : `
-                <button class="ov-tab ${overviewViewMode==='bracket'?'ov-tab-active':''}" onclick="setOverviewViewMode('bracket')">🏆 賽程樹</button>
+                <button class="ov-tab ${overviewViewMode === 'bracket' ? 'ov-tab-active' : ''}" onclick="setOverviewViewMode('bracket')">🏆 賽程樹</button>
                 `}
-                <button class="ov-tab ${overviewViewMode==='list'?'ov-tab-active':''}" onclick="setOverviewViewMode('list')">📋 場次列表</button>
+                <button class="ov-tab ${overviewViewMode === 'list' ? 'ov-tab-active' : ''}" onclick="setOverviewViewMode('list')">📋 場次列表</button>
             </div>
 
             <!-- 內容區 -->
@@ -3480,9 +3548,9 @@ function renderTournamentOverview() {
     // 渲染對應視圖
     const body = document.getElementById('ovViewBody');
     if (overviewViewMode === 'standings') renderOvStandings(catMatches, body);
-    else if (overviewViewMode === 'matrix')   renderOvMatrix(catMatches, body);
-    else if (overviewViewMode === 'bracket')  renderOvBracket(catMatches, body);
-    else if (overviewViewMode === 'list')     renderOvList(catMatches, body);
+    else if (overviewViewMode === 'matrix') renderOvMatrix(catMatches, body);
+    else if (overviewViewMode === 'bracket') renderOvBracket(catMatches, body);
+    else if (overviewViewMode === 'list') renderOvList(catMatches, body);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -3491,40 +3559,40 @@ function renderTournamentOverview() {
 function renderOvStandings(matches, el) {
     const teams = Array.from(new Set(matches.flatMap(m => [m.teamA, m.teamB]))).sort();
     const stats = {};
-    teams.forEach(t => { stats[t] = { pts:0, w:0, l:0, pf:0, pa:0, played:0 }; });
+    teams.forEach(t => { stats[t] = { pts: 0, w: 0, l: 0, pf: 0, pa: 0, played: 0 }; });
 
     matches.forEach(m => {
         if (!m.status.includes('已結束') || !m.score) return;
-        const sa = Number(m.scoreA)||0, sb = Number(m.scoreB)||0;
+        const sa = Number(m.scoreA) || 0, sb = Number(m.scoreB) || 0;
         stats[m.teamA].played++; stats[m.teamB].played++;
         stats[m.teamA].pf += sa; stats[m.teamA].pa += sb;
         stats[m.teamB].pf += sb; stats[m.teamB].pa += sa;
-        if (m.winner === m.teamA) { stats[m.teamA].w++; stats[m.teamA].pts+=3; stats[m.teamB].l++; }
-        else if (m.winner === m.teamB) { stats[m.teamB].w++; stats[m.teamB].pts+=3; stats[m.teamA].l++; }
+        if (m.winner === m.teamA) { stats[m.teamA].w++; stats[m.teamA].pts += 3; stats[m.teamB].l++; }
+        else if (m.winner === m.teamB) { stats[m.teamB].w++; stats[m.teamB].pts += 3; stats[m.teamA].l++; }
         else { stats[m.teamA].pts++; stats[m.teamB].pts++; }
     });
 
-    const sorted = Object.entries(stats).sort((a,b) => {
+    const sorted = Object.entries(stats).sort((a, b) => {
         if (b[1].pts !== a[1].pts) return b[1].pts - a[1].pts;
         const diffA = a[1].pf - a[1].pa, diffB = b[1].pf - b[1].pa;
         return diffB - diffA;
     });
 
-    const medals = ['🥇','🥈','🥉'];
+    const medals = ['🥇', '🥈', '🥉'];
     el.innerHTML = `
         <div class="ov-standings">
             <div class="ov-standings-head">
                 <div>名次</div><div>班級</div><div>場次</div><div>勝</div><div>敗</div><div>得分</div><div>得失差</div><div>積分</div>
             </div>
             ${sorted.map(([team, s], i) => `
-                <div class="ov-standings-row ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''}">
-                    <div class="ov-rank">${medals[i] || (i+1)}</div>
+                <div class="ov-standings-row ${i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : ''}">
+                    <div class="ov-rank">${medals[i] || (i + 1)}</div>
                     <div class="ov-team-name">${team}</div>
                     <div>${s.played}</div>
                     <div class="ov-win">${s.w}</div>
                     <div class="ov-lose">${s.l}</div>
                     <div>${s.pf}:${s.pa}</div>
-                    <div class="${s.pf-s.pa>=0?'ov-pos':'ov-neg'}">${s.pf-s.pa>=0?'+':''}${s.pf-s.pa}</div>
+                    <div class="${s.pf - s.pa >= 0 ? 'ov-pos' : 'ov-neg'}">${s.pf - s.pa >= 0 ? '+' : ''}${s.pf - s.pa}</div>
                     <div class="ov-pts">${s.pts}</div>
                 </div>
             `).join('')}
@@ -3542,7 +3610,7 @@ function renderOvMatrix(matches, el) {
         if (!matrix[m.teamA]) matrix[m.teamA] = {};
         if (!matrix[m.teamB]) matrix[m.teamB] = {};
         if (m.status.includes('已結束') && m.score) {
-            const sa = m.scoreA||0, sb = m.scoreB||0;
+            const sa = m.scoreA || 0, sb = m.scoreB || 0;
             matrix[m.teamA][m.teamB] = { score: `${sa}:${sb}`, win: m.winner === m.teamA, id: m.id };
             matrix[m.teamB][m.teamA] = { score: `${sb}:${sa}`, win: m.winner === m.teamB, id: m.id };
         } else if (m) {
@@ -3565,16 +3633,16 @@ function renderOvMatrix(matches, el) {
                         <tr>
                             <td class="ov-matrix-label">${row}</td>
                             ${teams.map(col => {
-                                if (row === col) return `<td class="ov-matrix-self">—</td>`;
-                                const cell = matrix[row] && matrix[row][col];
-                                if (!cell) return `<td class="ov-matrix-empty">-</td>`;
-                                if (!cell.score) return `<td class="ov-matrix-pending" onclick="openEditScoreModal('${cell.id}')" title="點擊輸入比分">⏳</td>`;
-                                return `<td class="ov-matrix-done ${cell.win?'ov-win-cell':'ov-lose-cell'}"
+        if (row === col) return `<td class="ov-matrix-self">—</td>`;
+        const cell = matrix[row] && matrix[row][col];
+        if (!cell) return `<td class="ov-matrix-empty">-</td>`;
+        if (!cell.score) return `<td class="ov-matrix-pending" onclick="openEditScoreModal('${cell.id}')" title="點擊輸入比分">⏳</td>`;
+        return `<td class="ov-matrix-done ${cell.win ? 'ov-win-cell' : 'ov-lose-cell'}"
                                     onclick="openEditScoreModal('${cell.id}')" title="點擊修改比分">
                                     ${cell.score}
                                     ${cell.win ? '<span class="ov-win-dot">●</span>' : ''}
                                 </td>`;
-                            }).join('')}
+    }).join('')}
                         </tr>
                     `).join('')}
                 </tbody>
@@ -3587,7 +3655,7 @@ function renderOvMatrix(matches, el) {
 // 視圖 3：淘汰賽樹狀圖 (Bracket)
 // ══════════════════════════════════════════════════════════════
 function renderOvBracket(matches, el) {
-    const roundOrder = ['第一輪','第二輪','第三輪','準決賽','決賽','季軍賽'];
+    const roundOrder = ['第一輪', '第二輪', '第三輪', '準決賽', '決賽', '季軍賽'];
     const roundsMap = {};
     matches.forEach(m => {
         let r = '第一輪';
@@ -3607,30 +3675,30 @@ function renderOvBracket(matches, el) {
             <div class="ov-round-label">${rKey}</div>
             <div class="ov-round-matches">
                 ${roundsMap[rKey].map(m => {
-                    const sch = scheduledMatches.find(sm => String(sm.matchId) === String(m.id));
-                    const done = m.status.includes('已結束');
-                    const PNAMES = ['早自習','第1節','第2節','第3節','第4節','第5節','第6節','第7節','課業輔導','精進學習'];
-                    return `
-                    <div class="ov-match-card ${done?'ov-match-done':''}" onclick="openEditScoreModal('${m.id}')">
-                        <div class="ov-match-team ${m.winner===m.teamA?'ov-winner':''}">
+        const sch = scheduledMatches.find(sm => String(sm.matchId) === String(m.id));
+        const done = m.status.includes('已結束');
+        const PNAMES = ['早自習', '第1節', '第2節', '第3節', '第4節', '第5節', '第6節', '第7節', '課業輔導', '精進學習'];
+        return `
+                    <div class="ov-match-card ${done ? 'ov-match-done' : ''}" onclick="openEditScoreModal('${m.id}')">
+                        <div class="ov-match-team ${m.winner === m.teamA ? 'ov-winner' : ''}">
                             <span class="ov-team-label">${m.teamA}</span>
-                            <span class="ov-team-score">${done?(m.scoreA??'-'):''}</span>
+                            <span class="ov-team-score">${done ? (m.scoreA ?? '-') : ''}</span>
                         </div>
                         <div class="ov-match-divider"></div>
-                        <div class="ov-match-team ${m.winner===m.teamB?'ov-winner':''}">
+                        <div class="ov-match-team ${m.winner === m.teamB ? 'ov-winner' : ''}">
                             <span class="ov-team-label">${m.teamB}</span>
-                            <span class="ov-team-score">${done?(m.scoreB??'-'):''}</span>
+                            <span class="ov-team-score">${done ? (m.scoreB ?? '-') : ''}</span>
                         </div>
                         <div class="ov-match-footer">
                             <span class="ov-match-id">#${String(m.id).slice(-3)}</span>
                             <div class="ov-match-actions">
-                                ${sch ? `<span class="ov-sched-tag">📅 ${sch.date.slice(5)} ${PNAMES[sch.periodIndex]||'P'+sch.periodIndex}</span>
+                                ${sch ? `<span class="ov-sched-tag">📅 ${sch.date.slice(5)} ${PNAMES[sch.periodIndex] || 'P' + sch.periodIndex}</span>
                                 <button class="ov-print-btn" onclick="event.stopPropagation();printMatchSlipById('${m.id}')" title="列印通知單">🖨️</button>` : `<span class="ov-unsched-tag">⏳ 待排</span>`}
                                 <button class="ov-del-btn" onclick="event.stopPropagation();confirmDeleteMatch('${m.id}')" title="刪除此場次">🗑️</button>
                             </div>
                         </div>
                     </div>`;
-                }).join('')}
+    }).join('')}
             </div>
         </div>
     `).join('')}</div>`;
@@ -3640,7 +3708,7 @@ function renderOvBracket(matches, el) {
 // 視圖 4：場次列表 (List)
 // ══════════════════════════════════════════════════════════════
 function renderOvList(matches, el) {
-    const PNAMES = ['早自習','第1節','第2節','第3節','第4節','第5節','第6節','第7節','課業輔導','精進學習'];
+    const PNAMES = ['早自習', '第1節', '第2節', '第3節', '第4節', '第5節', '第6節', '第7節', '課業輔導', '精進學習'];
     const groups = {};
     matches.forEach(m => {
         if (!groups[m.category]) groups[m.category] = [];
@@ -3652,24 +3720,24 @@ function renderOvList(matches, el) {
             <div class="ov-list-group">
                 <div class="ov-list-group-header">${cat} <span class="ov-group-count">${ms.length} 場</span></div>
                 ${ms.map(m => {
-                    const sch = scheduledMatches.find(sm => String(sm.matchId) === String(m.id));
-                    const done = m.status.includes('已結束');
-                    return `
-                    <div class="ov-list-row ${done?'ov-list-done':''}">
+        const sch = scheduledMatches.find(sm => String(sm.matchId) === String(m.id));
+        const done = m.status.includes('已結束');
+        return `
+                    <div class="ov-list-row ${done ? 'ov-list-done' : ''}">
                         <div class="ov-list-status">${done ? '✅' : sch ? '📅' : '⏳'}</div>
                         <div class="ov-list-teams">
-                            <span class="${m.winner===m.teamA?'ov-list-winner':''}">${m.teamA}</span>
+                            <span class="${m.winner === m.teamA ? 'ov-list-winner' : ''}">${m.teamA}</span>
                             <span class="ov-vs">VS</span>
-                            <span class="${m.winner===m.teamB?'ov-list-winner':''}">${m.teamB}</span>
+                            <span class="${m.winner === m.teamB ? 'ov-list-winner' : ''}">${m.teamB}</span>
                         </div>
-                        <div class="ov-list-score">${done ? (m.score || `${m.scoreA}:${m.scoreB}`) : (sch ? `${sch.date.slice(5)} ${PNAMES[sch.periodIndex]||''}` : '待排')}</div>
+                        <div class="ov-list-score">${done ? (m.score || `${m.scoreA}:${m.scoreB}`) : (sch ? `${sch.date.slice(5)} ${PNAMES[sch.periodIndex] || ''}` : '待排')}</div>
                         <div class="ov-list-actions">
                             <button onclick="openEditScoreModal('${m.id}')" class="ov-list-btn" title="編輯">✏️</button>
                             ${sch ? `<button onclick="printMatchSlipById('${m.id}')" class="ov-list-btn" title="通知單">🖨️</button>` : ''}
                             <button onclick="confirmDeleteMatch('${m.id}')" class="ov-list-btn ov-list-del" title="刪除">🗑️</button>
                         </div>
                     </div>`;
-                }).join('')}
+    }).join('')}
             </div>
         `).join('')}
     </div>`;
@@ -3679,6 +3747,8 @@ function renderOvList(matches, el) {
 // 刪除比賽確認
 // ══════════════════════════════════════════════════════════════
 function confirmDeleteMatch(matchId) {
+    if (!checkAdmin()) return;
+
     const m = matchesData.find(x => String(x.id) === String(matchId));
     if (!m) return;
     if (!confirm(`確定要刪除此場次？\n\n【${m.category}】\n${m.teamA} VS ${m.teamB}\n\n此操作無法復原。`)) return;
@@ -3711,6 +3781,8 @@ function confirmDeleteMatch(matchId) {
 // 新增比賽 Modal
 // ══════════════════════════════════════════════════════════════
 function openAddMatchModal() {
+    if (!checkAdmin()) return;
+
     const cats = Array.from(new Set(matchesData.map(m => m.category))).sort();
     const catOpts = cats.map(c => `<option value="${c}">${c}</option>`).join('');
 
@@ -3751,13 +3823,15 @@ function openAddMatchModal() {
     `;
     document.body.appendChild(modal);
 
-    document.getElementById('am-cat').addEventListener('change', function() {
+    document.getElementById('am-cat').addEventListener('change', function () {
         document.getElementById('am-newcat').style.display = this.value === '__new__' ? 'block' : 'none';
     });
     modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
 }
 
 function submitAddMatch() {
+    if (!checkAdmin()) return;
+
     const catSel = document.getElementById('am-cat').value;
     const cat = catSel === '__new__' ? document.getElementById('am-newcat').value.trim() : catSel;
     const teamA = document.getElementById('am-teamA').value.trim();
@@ -3777,7 +3851,7 @@ function submitAddMatch() {
     }
 
     document.getElementById('addMatchModal')?.remove();
-    currentOverviewCategory = cat.replace(/第\s*\d+\s*輪|準決賽|決賽|季軍賽|循環賽|預賽/g,'').trim() || cat;
+    currentOverviewCategory = cat.replace(/第\s*\d+\s*輪|準決賽|決賽|季軍賽|循環賽|預賽/g, '').trim() || cat;
     renderTournamentOverview();
     renderMatchList && renderMatchList();
     alert(`✅ 已新增：${teamA} VS ${teamB}`);
